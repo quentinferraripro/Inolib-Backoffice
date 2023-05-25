@@ -2,13 +2,16 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import "./App.css";
 import AllRoutes from "@components/AllRoutes";
+// import { DashboardContextProvider } from "./context/DashboardContext";
 import NavigationBar from "@components/NavBar";
 
 function App() {
   return (
     <Router>
+      {/* <DashboardContextProvider> */}
       <NavigationBar />
       <AllRoutes />
+      {/* </DashboardContextProvider> */}
     </Router>
   );
 }
