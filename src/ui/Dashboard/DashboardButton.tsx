@@ -1,20 +1,21 @@
-import { useContext, useEffect, useRef, type PropsWithChildren } from "react";
+import { useEffect, useRef, type PropsWithChildren } from "react";
+import { useComposite } from "./Composite";
 
-import { DashboardModuleContext } from "./DashboardModuleContext";
+// import { DashboardModuleContext } from "./DashboardModuleContext";
 
 type DashboardButtonProps = {
+  index: number;
   href: string;
   styles: string;
 };
 
 export function DashboardButton(props: PropsWithChildren<DashboardButtonProps>) {
+  const { dispatch, register, state } = useComposite();
   const ref = useRef<HTMLButtonElement>();
 
-  const context = useContext(DashboardModuleContext);
-
   useEffect(() => {
-    context.buttons.push(ref.current);
-  }, [context.buttons]);
+    register(state.id, props.index, ref);
+  }, [register, state.id, props.index]);
 
   return (
     <li className="mt-20">
@@ -22,7 +23,7 @@ export function DashboardButton(props: PropsWithChildren<DashboardButtonProps>) 
         className={`bg-[#0B3168] rounded-md px-8 py-4 text-white text-xl ${props.styles} hover:scale-105 transition ease-in delay-75`}
         href={props.href}
         ref={ref}
-        tabIndex={-1}
+        onKeyDown={dispatch}
       >
         {props.children}
       </a>
