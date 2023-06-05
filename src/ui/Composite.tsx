@@ -54,7 +54,7 @@ const focus = (draft: State, index: Index) => {
 //gestion du focus au prochain élément si est dans le tableau
 const focusNext = (draft: State) => {
   if (draft.focusableIndex < Object.keys(draft.focusables).length - 1) {
-    return focus(draft, ++draft.focusableIndex);
+    draft.focusableIndex += 1;
   }
 
   return draft;
@@ -63,8 +63,9 @@ const focusNext = (draft: State) => {
 //gestion focus élément précédent
 const focusPrevious = (draft: State) => {
   if (draft.focusableIndex > 0) {
-    return focus(draft, --draft.focusableIndex);
+    draft.focusableIndex -= 1;
   }
+
   return draft;
 };
 
@@ -142,6 +143,10 @@ export const Composite = (props: PropsWithChildren<Props>) => {
       ref.current?.setAttribute("tabindex", index === focusableIndex ? "0" : "-1");
     });
   }, [focusableIndex, props.id]);
+
+  useEffect(() => {
+    focus(state, state.focusableIndex);
+  }, [state]);
 
   return (
     <DispatchContext.Provider value={dispatch}>
