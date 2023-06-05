@@ -1,8 +1,6 @@
-import { useContext, useEffect, useId, type PropsWithChildren } from "react";
+import { useId, type PropsWithChildren } from "react";
 
-import { DashboardModuleContext } from "./DashboardModuleContext";
-
-import { Composite } from "./Composite";
+import { Composite } from "../Composite";
 
 type Props = {
   focusableIndex?: number;
