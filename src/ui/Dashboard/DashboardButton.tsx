@@ -1,7 +1,5 @@
 import { useEffect, useRef, type PropsWithChildren } from "react";
-import { useComposite } from "./Composite";
-
-// import { DashboardModuleContext } from "./DashboardModuleContext";
+import { useComposite } from "../Composite";
 
 type DashboardButtonProps = {
   index: number;

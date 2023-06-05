@@ -1,34 +1,8 @@
-import { useState, useId, type PropsWithChildren } from "react";
-
 import { DashboardButton } from "./DashboardButton";
 import { DashboardButtonlist } from "./DashboardButtonList";
 import { DashboardModule } from "./DashboardModule";
 
-import { Composite, type Axis, type Index } from "./Composite";
-
-// import { DashboardContext, type Context } from "./DashboardContext";
-
-type Props = {
-  axis?: Axis | undefined;
-  focusableIndex?: Index | undefined;
-};
-
-export function DashboardModuleList(props: PropsWithChildren<Props>) {
-  // const context: Context = [
-  //   useState({
-  //     buttons: [],
-  //     focusableIndex: 0,
-  //   }),
-  //   useState({
-  //     buttons: [],
-  //     focusableIndex: 0,
-  //   }),
-  //   useState({
-  //     buttons: [],
-  //     focusableIndex: 0,
-  //   }),
-  // ];
-
+export function DashboardModuleList() {
   return (
     <ul className="grid grid-cols-5 grid-rows-3">
       <DashboardModule moduleName="Utilisateur" styles="col-start-1  col-span-1 row-start-1 row-span-1">
