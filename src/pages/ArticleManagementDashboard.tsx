@@ -1,5 +1,5 @@
-import { ArticleManagementModuleList } from "../ui/ArticleDashboard/ArticleManagementModuleList";
+import ArticleManagementModule from "../ui/ArticleDashboard/ArticleManagementModule";
 
 export default function Connexion() {
-  return <ArticleManagementModuleList />;
+  return <ArticleManagementModule />;
 }
