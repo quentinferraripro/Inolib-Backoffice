@@ -15,5 +15,5 @@ export default {
       ["link", "image"],
     ],
   },
-  formats: ["size", "align", "bold", "underline", "italic", "color", "background", "list", "link", "image"],
+  formats: ["align", "bold", "underline", "italic", "color", "background", "list", "link", "image"],
 };

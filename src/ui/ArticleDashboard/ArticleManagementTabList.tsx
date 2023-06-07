@@ -18,7 +18,7 @@ export default function ArticleManagementTabList(props: PropsWithChildren<Props>
       <ArticleManagementTabCreation creationDate={props.creationDate} styles="pr-10 focus:bg-slate-400" />
       <th>
         <Composite axis="horizontal" id={useId()} focusableIndex={props.focusableIndex ?? 0}>
-          <ul aria-orientation="horizontal" role="menu" tabIndex={-1}>
+          <ul aria-orientation="horizontal" className="flex" role="menu" tabIndex={-1}>
             <li role="none">
               <ArticleManagementButton styles="p-2 mx-4 bg-yellow-600 rounded-lg" title="modifier" index={0} />
             </li>

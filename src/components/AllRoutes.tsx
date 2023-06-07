@@ -4,14 +4,16 @@ import Connexion from "../pages/Connexion";
 import ArticleManagementDashboard from "../pages/ArticleManagementDashboard";
 import ArticleCreation from "../pages/ArticleCreation";
 import Dashboard from "@pages/Dashboard";
+import Test from "@pages/Test";
 
 function AllRoutes() {
   return (
     <Routes>
       <Route path="/articlecreation" element={<ArticleCreation />} />
-      <Route path="/articledashboard" element={<ArticleManagementDashboard />} />
+      <Route path="/articlemanagementdashboard" element={<ArticleManagementDashboard />} />
       <Route path="/connexion" element={<Connexion />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/test" element={<Test />} />
       <Route path="/" element={<Home />} />
     </Routes>
   );

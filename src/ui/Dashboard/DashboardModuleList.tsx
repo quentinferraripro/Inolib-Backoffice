@@ -18,10 +18,14 @@ export function DashboardModuleList() {
 
       <DashboardModule moduleName="Articles" style="col-start-2  col-span-1 row-start-1 row-span-1">
         <DashboardButtonlist>
-          <DashboardButton index={0} href="/articlecreation" styles="col-start-2 col-span-1 row-start-2 row-span-1">
+          <DashboardButton
+            index={0}
+            href="/articlemanagementdashboard"
+            styles="col-start-2 col-span-1 row-start-2 row-span-1"
+          >
             Gestion des articles
           </DashboardButton>
-          <DashboardButton index={1} href="/articlemanagement" styles="col-start-2  col-span-1 row-start-3 row-span-1">
+          <DashboardButton index={1} href="/articlecreation" styles="col-start-2  col-span-1 row-start-3 row-span-1">
             Création d’article
           </DashboardButton>
         </DashboardButtonlist>
@@ -32,7 +36,7 @@ export function DashboardModuleList() {
           <DashboardButton index={0} href="/" styles="col-start-3  col-span-1 row-start-2 row-span-1">
             Gestion des quizz
           </DashboardButton>
-          <DashboardButton index={1} href="/" styles="col-start-3 col-span-1 row-start-3 row-span-1">
+          <DashboardButton index={1} href="/" styles="col-start-3 col-span-1 row-start-3 row-span-1é">
             Création des quizz
           </DashboardButton>
         </DashboardButtonlist>
