@@ -1,10 +1,11 @@
-import { useEffect, useId, useRef, type PropsWithChildren } from "react";
+import { useEffect, useState, useId, useRef, type PropsWithChildren } from "react";
 import { useComposite } from "../Composite";
 
 type ButtonProps = {
   styles: string;
   title: string;
   index: number;
+  handleModal: () => void;
 };
 
 export default function ArticleManagementButton(props: PropsWithChildren<ButtonProps>) {
@@ -17,7 +18,7 @@ export default function ArticleManagementButton(props: PropsWithChildren<ButtonP
   }, [register, state.id, props.index]);
 
   return (
-    <button className={props.styles} id={id} ref={ref} onKeyDown={dispatch} role="menuitem">
+    <button className={props.styles} id={id} ref={ref} onKeyDown={dispatch} role="menuitem" onClick={props.handleModal}>
       {props.title}
     </button>
   );
