@@ -1,26 +1,30 @@
 import { useId, type PropsWithChildren } from "react";
 import { useState } from "react";
+
 import ArticleManagementButton from "./ArticleManagementButton";
-import ArticleManagementLineTitle from "./ArticleManagementLineTitle";
-import ArticleManagementLineCreation from "./ArticleManagementLineCreation";
+import ArticleManagementTitle from "./ArticleManagementTitle";
+import ArticleManagementCreationDate from "./ArticleManagementCreationDate";
 import TestModal from "@components/TestModal";
 import { Composite } from "../Composite";
+import ArticleManagementContent from "./ArticleManagementContent";
 
 type Props = {
   focusableIndex?: number;
   title: string;
-  creationDate: number;
+  createdAt: string;
+  content: string;
 };
 
-export default function ArticleManagementLineList(props: PropsWithChildren<Props>) {
+export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
   const [open, setOpen] = useState(false);
   const handleModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
 
   return (
     <>
-      <ArticleManagementLineTitle title={props.title} styles="px-10 focus:bg-slate-400" />
-      <ArticleManagementLineCreation creationDate={props.creationDate} styles="pr-10 focus:bg-slate-400" />
+      <ArticleManagementTitle title={props.title} styles="px-10 focus:bg-slate-400" />
+      <ArticleManagementCreationDate creationDate={props.createdAt} styles="pr-10 focus:bg-slate-400" />
+      <ArticleManagementContent content={props.content} styles="pr-10 focus:bg-slate-400" />
       <th>
         <Composite axis="horizontal" id={useId()} focusableIndex={props.focusableIndex ?? 0}>
           <ul aria-orientation="horizontal" className="flex" role="menu" tabIndex={-1}>

@@ -1,23 +1,30 @@
-import ArticleManagementLineList from "./ArticleManagementLineList";
+import ArticleManagementLine from "./ArticleManagementLine";
+import { useQuery, gql } from "@apollo/client";
 
-const lines = [
-  { id: 1, title: "Handicap et blabla", creationDate: 1 },
-  { id: 2, title: "Inclusivité et BlaBla", creationDate: 5 },
-  { id: 3, title: "Salon du blabla", creationDate: 6 },
-  { id: 4, title: "Inolib et Blabla", creationDate: 7 },
-];
+const GET_ARTICLE_DATA = gql`
+  query GetArticleData {
+    documents {
+      title
+      content
+      createdAt
+    }
+  }
+`;
 
 export default function ArticleManagementModule() {
+  const result = useQuery(GET_ARTICLE_DATA);
+
+  console.log(result);
+
   return (
     <table className="w-full">
       <tbody>
-        {lines.map((line) => (
-          <tr key={line.id} className="flex border-y-[1px] border-t-black">
-            <ArticleManagementLineList title={line.title} creationDate={line.creationDate} />
+        {result.data.documents.map((document) => (
+          <tr key={document.id} className="flex border-y-[1px] border-t-black">
+            <ArticleManagementLine title={document.title} createdAt={document.createdAt} content={document.content} />
           </tr>
         ))}
       </tbody>
     </table>
   );
 }
-console.log(<ArticleManagementLineList />);

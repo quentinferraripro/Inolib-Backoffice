@@ -12,7 +12,7 @@ export function DashboardModule(props: PropsWithChildren<Props>) {
   return (
     <Composite axis="vertical" id={useId()} focusableIndex={props.focusableIndex ?? 0}>
       <li className={props.styles}>
-        <h2 className="text-2xl mb-8">{props.moduleName}</h2>
+        <h2 className="text-2xl mb-8 text-center">{props.moduleName}</h2>
 
         {props.children}
       </li>

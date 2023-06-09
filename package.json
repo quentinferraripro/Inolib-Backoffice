@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.15",
+    "graphql": "^16.6.0",
     "immer": "^10.0.2",
     "nanoid": "^4.0.2",
     "prop-types": "^15.8.1",

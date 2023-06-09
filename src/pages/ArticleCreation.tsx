@@ -157,7 +157,7 @@ export default function ArticleCreation() {
   }, [handleToolbarEvent]);
 
   return (
-    <div className="mx-28">
+    <div className="mx-28 mt-10 text-[#0B3168]">
       <header>
         <h1 className="text-3xl font-bold underline mb-10">Créer votre article</h1>
       </header>
