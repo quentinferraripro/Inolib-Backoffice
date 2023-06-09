@@ -1,32 +1,23 @@
-import { type PropsWithChildren } from "react";
+import ArticleManagementLineList from "./ArticleManagementLineList";
 
-import ArticleManagementTabList from "./ArticleManagementTabList";
-
-type Props = {
-  focusableIndex?: number;
-  title: string;
-  id: number;
-  creationDate: number;
-};
-
-const tabs = [
+const lines = [
   { id: 1, title: "Handicap et blabla", creationDate: 1 },
   { id: 2, title: "Inclusivité et BlaBla", creationDate: 5 },
   { id: 3, title: "Salon du blabla", creationDate: 6 },
   { id: 4, title: "Inolib et Blabla", creationDate: 7 },
 ];
 
-export default function ArticleManagementModule(props: PropsWithChildren<Props>) {
+export default function ArticleManagementModule() {
   return (
     <table className="w-full">
       <tbody>
-        {tabs.map((tab) => (
-          <tr key={tab.id} className="flex border-y-[1px] border-t-black">
-            <ArticleManagementTabList title={tab.title} creationDate={tab.creationDate} />
+        {lines.map((line) => (
+          <tr key={line.id} className="flex border-y-[1px] border-t-black">
+            <ArticleManagementLineList title={line.title} creationDate={line.creationDate} />
           </tr>
         ))}
       </tbody>
     </table>
   );
 }
-console.log(<ArticleManagementTabList />);
+console.log(<ArticleManagementLineList />);

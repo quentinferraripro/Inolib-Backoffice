@@ -1,8 +1,8 @@
 import { useId, type PropsWithChildren } from "react";
-import React, { useState } from "react";
+import { useState } from "react";
 import ArticleManagementButton from "./ArticleManagementButton";
-import ArticleManagementTabTitle from "./ArticleManagementTabTitle";
-import ArticleManagementTabCreation from "./ArticleManagementTabCreation";
+import ArticleManagementLineTitle from "./ArticleManagementLineTitle";
+import ArticleManagementLineCreation from "./ArticleManagementLineCreation";
 import TestModal from "@components/TestModal";
 import { Composite } from "../Composite";
 
@@ -12,15 +12,15 @@ type Props = {
   creationDate: number;
 };
 
-export default function ArticleManagementTabList(props: PropsWithChildren<Props>) {
+export default function ArticleManagementLineList(props: PropsWithChildren<Props>) {
   const [open, setOpen] = useState(false);
   const handleModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
 
   return (
     <>
-      <ArticleManagementTabTitle title={props.title} styles="px-10 focus:bg-slate-400" />
-      <ArticleManagementTabCreation creationDate={props.creationDate} styles="pr-10 focus:bg-slate-400" />
+      <ArticleManagementLineTitle title={props.title} styles="px-10 focus:bg-slate-400" />
+      <ArticleManagementLineCreation creationDate={props.creationDate} styles="pr-10 focus:bg-slate-400" />
       <th>
         <Composite axis="horizontal" id={useId()} focusableIndex={props.focusableIndex ?? 0}>
           <ul aria-orientation="horizontal" className="flex" role="menu" tabIndex={-1}>
@@ -38,7 +38,9 @@ export default function ArticleManagementTabList(props: PropsWithChildren<Props>
           </ul>
         </Composite>
       </th>
-      {open && <TestModal open={open} onClose={handleCloseModal} title={props.title} />}
+      {open && (
+        <TestModal open={open} onClose={handleCloseModal} title={props.title} styles="absolute top-1/2 left-1/4" />
+      )}
     </>
   );
 }

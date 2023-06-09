@@ -1,4 +1,4 @@
-import { useEffect, useState, useId, useRef, type PropsWithChildren } from "react";
+import { useEffect, useId, useRef, type PropsWithChildren } from "react";
 import { useComposite } from "../Composite";
 
 type ButtonProps = {

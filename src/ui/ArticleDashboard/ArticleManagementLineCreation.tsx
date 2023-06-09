@@ -3,7 +3,7 @@ type CreationProps = {
   creationDate: number;
 };
 
-export default function ArticleManagementTabCreation(props: CreationProps) {
+export default function ArticleManagementLineCreation(props: CreationProps) {
   return (
     <th className="pr-10" scope="col">
       {props.creationDate}

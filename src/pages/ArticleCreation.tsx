@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
+import TestModal from "@components/TestModal";
 
 export default function ArticleCreation() {
   const quillTitleRef = useRef<ReactQuill | null>(null);
@@ -188,6 +189,7 @@ export default function ArticleCreation() {
         <div className="my-16">
           <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
         </div>
+        <TestModal />
       </form>
     </div>
   );
