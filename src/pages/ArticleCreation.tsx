@@ -2,14 +2,29 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { nanoid } from "nanoid";
+import { gql, useMutation } from "@apollo/client";
 
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
 import TestModal from "@components/TestModal";
 
+const CREATE_DOCUMENT = gql`
+  mutation CreateDocument($title: String!, $content: String!) {
+    newDocumentRequest(title: $title, content: $content) {
+      id
+      title
+      content
+      createdAt
+    }
+  }
+`;
+
 export default function ArticleCreation() {
+  const [createArticle] = useMutation(CREATE_DOCUMENT);
+
   const quillTitleRef = useRef<ReactQuill | null>(null);
   const quillContentRef = useRef<ReactQuill | null>(null);
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -27,6 +42,19 @@ export default function ArticleCreation() {
   const handleToolbarEvent = useCallback(() => {
     setChanged(!changed);
   }, [changed]);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const response = await createArticle({
+      variables: {
+        title,
+        content,
+      },
+    });
+
+    console.log(response);
+  };
 
   useEffect(() => {
     const contentEditor = quillContentRef.current?.getEditor();
@@ -161,7 +189,7 @@ export default function ArticleCreation() {
       <header>
         <h1 className="text-3xl font-bold underline mb-10">Créer votre article</h1>
       </header>
-      <form>
+      <form onSubmit={(event) => void (async (event) => await handleSubmit(event))(event)}>
         <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
         <div>
           <ReactQuill
@@ -190,6 +218,7 @@ export default function ArticleCreation() {
           <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
         </div>
         <TestModal />
+        <button type="submit">Soumettre</button>
       </form>
     </div>
   );

@@ -14,8 +14,6 @@ const GET_ARTICLE_DATA = gql`
 export default function ArticleManagementModule() {
   const result = useQuery(GET_ARTICLE_DATA);
 
-  console.log(result);
-
   return (
     <table className="w-full">
       <tbody>
