@@ -6,7 +6,7 @@ import { gql, useMutation } from "@apollo/client";
 
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
-import TestModal from "@components/TestModal";
+import DeleteModal from "../ui/ArticleDashboard/DeleteModal";
 
 //requete POST
 const CREATE_ARTICLE = gql`
@@ -219,7 +219,7 @@ export default function ArticleCreation() {
         <div className="my-16">
           <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
         </div>
-        <TestModal />
+        <DeleteModal />
         <button type="submit">Soumettre</button>
       </form>
     </div>

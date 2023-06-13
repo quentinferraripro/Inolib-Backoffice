@@ -1,15 +1,14 @@
-type TestModalProps = {
+type DeleteModalProps = {
+  title: string;
   open: boolean;
   onClose: () => void;
-  title: string;
+  onDelete: () => void;
+  titleCloseButton: string;
+  titleDeleteButton;
   styles: string;
 };
 
-function TestModal(props: TestModalProps) {
-  const handleClose = () => {
-    props.onClose();
-  };
-
+function DeleteModal(props: DeleteModalProps) {
   return (
     <div className={props.styles}>
       {props.open && (
@@ -17,9 +16,15 @@ function TestModal(props: TestModalProps) {
           <p className="py-4">Etes-vous sur de vouloir supprimer l'article : {props.title}?</p>
           <button
             className="bg-white rounded-md px-8 py-4 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
-            onClick={handleClose}
+            onClick={props.onClose}
           >
-            Fermer
+            {props.titleCloseButton}
+          </button>
+          <button
+            className="bg-white rounded-md px-8 py-4 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
+            onClick={props.onDelete}
+          >
+            {props.titleDeleteButton}
           </button>
         </div>
       )}
@@ -27,4 +32,4 @@ function TestModal(props: TestModalProps) {
   );
 }
 
-export default TestModal;
+export default DeleteModal;

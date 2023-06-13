@@ -5,7 +5,7 @@ import { gql, useMutation } from "@apollo/client";
 import ArticleManagementButton from "./ArticleManagementButton";
 import ArticleManagementTitle from "./ArticleManagementTitle";
 import ArticleManagementCreationDate from "./ArticleManagementCreationDate";
-import TestModal from "@components/TestModal";
+import DeleteModal from "./DeleteModal";
 import { Composite } from "../Composite";
 import ArticleManagementContent from "./ArticleManagementContent";
 
@@ -39,6 +39,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
   const [deleteArticle, { data, error, loading }] = useMutation<Data>(DELETE_ARTICLE);
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => setOpen(false);
+  const handleOpenModal = () => setOpen(true);
 
   const handleDelete = async () => {
     setOpen(true);
@@ -74,7 +75,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
                     styles="p-2 mx-4 bg-red-600 rounded-lg"
                     title="supprimer"
                     index={1}
-                    onClick={() => void (async () => await handleDelete())()}
+                    onClick={handleOpenModal}
                   />
                 </li>
               </ul>
@@ -83,7 +84,14 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
         </>
       )}
       {open && (
-        <TestModal open={open} onClose={handleCloseModal} title={props.title} styles="absolute top-1/2 left-1/4" />
+        <DeleteModal
+          open={open}
+          titleCloseButton="Fermer"
+          titleDeleteButton="Supprimer"
+          styles="absolute top-1/2 left-1/4"
+          onClose={handleCloseModal}
+          onDelete={handleDelete}
+        />
       )}
     </>
   );
