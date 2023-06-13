@@ -8,9 +8,10 @@ import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
 import TestModal from "@components/TestModal";
 
-const CREATE_DOCUMENT = gql`
-  mutation CreateDocument($title: String!, $content: String!) {
-    newDocumentRequest(title: $title, content: $content) {
+//requete POST
+const CREATE_ARTICLE = gql`
+  mutation CreateArticle($title: String!, $content: String!) {
+    newDocument(title: $title, content: $content) {
       id
       title
       content
@@ -20,7 +21,7 @@ const CREATE_DOCUMENT = gql`
 `;
 
 export default function ArticleCreation() {
-  const [createArticle] = useMutation(CREATE_DOCUMENT);
+  const [createArticle] = useMutation(CREATE_ARTICLE);
 
   const quillTitleRef = useRef<ReactQuill | null>(null);
   const quillContentRef = useRef<ReactQuill | null>(null);
@@ -43,6 +44,7 @@ export default function ArticleCreation() {
     setChanged(!changed);
   }, [changed]);
 
+  //a la soumission formulaire appel de la requete POST définie plus haut
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 

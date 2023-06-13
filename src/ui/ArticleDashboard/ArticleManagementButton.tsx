@@ -5,7 +5,7 @@ type ButtonProps = {
   styles: string;
   title: string;
   index: number;
-  handleModal: () => void;
+  onClick: () => void;
 };
 
 export default function ArticleManagementButton(props: PropsWithChildren<ButtonProps>) {
@@ -18,7 +18,15 @@ export default function ArticleManagementButton(props: PropsWithChildren<ButtonP
   }, [register, state.id, props.index]);
 
   return (
-    <button className={props.styles} id={id} ref={ref} onKeyDown={dispatch} role="menuitem" onClick={props.handleModal}>
+    <button
+      type="button"
+      className={props.styles}
+      id={id}
+      ref={ref}
+      onKeyDown={dispatch}
+      role="menuitem"
+      onClick={props.onClick}
+    >
       {props.title}
     </button>
   );
