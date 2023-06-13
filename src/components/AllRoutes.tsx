@@ -9,7 +9,7 @@ function AllRoutes() {
   return (
     <Routes>
       <Route path="/articlecreation" element={<ArticleCreation />} />
-      <Route path="/articledashboard" element={<ArticleManagementDashboard />} />
+      <Route path="/articlemanagementdashboard" element={<ArticleManagementDashboard />} />
       <Route path="/connexion" element={<Connexion />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/" element={<Home />} />

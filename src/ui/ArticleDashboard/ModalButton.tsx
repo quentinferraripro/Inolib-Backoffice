@@ -8,7 +8,7 @@ type ButtonProps = {
   onClick: () => void;
 };
 
-export default function ArticleManagementButton(props: PropsWithChildren<ButtonProps>) {
+export default function ModalButton(props: PropsWithChildren<ButtonProps>) {
   const { dispatch, register, state } = useComposite();
   const id = useId();
   const ref = useRef<HTMLButtonElement>();
@@ -19,13 +19,12 @@ export default function ArticleManagementButton(props: PropsWithChildren<ButtonP
 
   return (
     <button
-      type="button"
-      className={props.styles}
       id={id}
       ref={ref}
       onKeyDown={dispatch}
-      role="menuitem"
       onClick={props.onClick}
+      className="bg-white rounded-md px-8 py-4 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
+      type="button"
     >
       {props.title}
     </button>

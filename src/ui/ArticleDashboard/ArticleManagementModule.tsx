@@ -1,32 +1,55 @@
-import { type PropsWithChildren } from "react";
+import ArticleManagementLine from "./ArticleManagementLine";
+import { useQuery, gql } from "@apollo/client";
 
-import ArticleManagementTabList from "./ArticleManagementTabList";
-
-type Props = {
-  focusableIndex?: number;
-  title: string;
-  id: number;
-  creationDate: number;
+type Data = {
+  documents: Document[];
 };
 
-const tabs = [
-  { id: 1, title: "Handicap et blabla", creationDate: 1 },
-  { id: 2, title: "Inclusivité et BlaBla", creationDate: 5 },
-  { id: 3, title: "Salon du blabla", creationDate: 6 },
-  { id: 4, title: "Inolib et Blabla", creationDate: 7 },
-];
+type Document = {
+  id?: string;
+  title?: string;
+  content?: string;
+  createdAt?: string;
+};
 
-export default function ArticleManagementModule(props: PropsWithChildren<Props>) {
+const GET_ARTICLE_DATA = gql`
+  query GetArticleData {
+    documents {
+      id
+      title
+      content
+      createdAt
+    }
+  }
+`;
+
+export default function ArticleManagementModule() {
+  const { data, error, loading } = useQuery<Data>(GET_ARTICLE_DATA);
+
   return (
-    <table className="w-full">
-      <tbody>
-        {tabs.map((tab) => (
-          <tr key={tab.id} className="flex border-y-[1px] border-t-black">
-            <ArticleManagementTabList title={tab.title} creationDate={tab.creationDate} />
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      {error !== undefined ? (
+        <p>{error.message}</p>
+      ) : loading ? (
+        <p>Chargement...</p>
+      ) : (
+        <table className="w-full">
+          <tbody>
+            {data !== undefined
+              ? data.documents.map((document) => (
+                  <tr key={document.id} className="flex border-y-[1px] border-t-black">
+                    <ArticleManagementLine
+                      cuid={document.id}
+                      title={document.title}
+                      createdAt={document.createdAt}
+                      content={document.content}
+                    />
+                  </tr>
+                ))
+              : null}
+          </tbody>
+        </table>
+      )}
+    </>
   );
 }
-console.log(<ArticleManagementTabList />);

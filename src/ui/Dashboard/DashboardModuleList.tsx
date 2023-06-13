@@ -4,35 +4,35 @@ import { DashboardModule } from "./DashboardModule";
 
 export function DashboardModuleList() {
   return (
-    <ul className="grid grid-cols-5 grid-rows-3">
-      <DashboardModule moduleName="Utilisateur" styles="col-start-1  col-span-1 row-start-1 row-span-1">
+    <ul className="flex justify-around w-[70%]">
+      <DashboardModule moduleName="Utilisateur" styles="flex flex-col items-center">
         <DashboardButtonlist>
-          <DashboardButton index={0} href="/" styles="col-start-1 col-span-1 row-start-2 row-span-1">
+          <DashboardButton index={0} href="/" styles="">
             Création d’utilisateur
           </DashboardButton>
-          <DashboardButton index={1} href="/" styles="col-start-1 col-span-1 row-start-3 row-span-1">
+          <DashboardButton index={1} href="/" styles="">
             Gestion d’utilisateur
           </DashboardButton>
         </DashboardButtonlist>
       </DashboardModule>
 
-      <DashboardModule moduleName="Articles" style="col-start-2  col-span-1 row-start-1 row-span-1">
+      <DashboardModule moduleName="Articles" style="flex flex-col items-center">
         <DashboardButtonlist>
-          <DashboardButton index={0} href="/articlecreation" styles="col-start-2 col-span-1 row-start-2 row-span-1">
+          <DashboardButton index={0} href="/articlemanagementdashboard" styles="">
             Gestion des articles
           </DashboardButton>
-          <DashboardButton index={1} href="/articlemanagement" styles="col-start-2  col-span-1 row-start-3 row-span-1">
+          <DashboardButton index={1} href="/articlecreation" styles="">
             Création d’article
           </DashboardButton>
         </DashboardButtonlist>
       </DashboardModule>
 
-      <DashboardModule moduleName="Quizz" style="col-start-3  col-span-1 row-start-1 row-span-1">
+      <DashboardModule moduleName="Quizz" style="flex flex-col items-center">
         <DashboardButtonlist>
-          <DashboardButton index={0} href="/" styles="col-start-3  col-span-1 row-start-2 row-span-1">
+          <DashboardButton index={0} href="/" styles="">
             Gestion des quizz
           </DashboardButton>
-          <DashboardButton index={1} href="/" styles="col-start-3 col-span-1 row-start-3 row-span-1">
+          <DashboardButton index={1} href="/" styles="">
             Création des quizz
           </DashboardButton>
         </DashboardButtonlist>
