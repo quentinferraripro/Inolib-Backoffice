@@ -40,16 +40,16 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => setOpen(false);
   const handleOpenModal = () => setOpen(true);
+  const nohtmlTitle = props.title.replace(/(<([^>]+)>)/gi, "");
+  const nohtmlContent = props.content.replace(/(<([^>]+)>)/gi, "");
 
   const handleDelete = async () => {
-    setOpen(true);
-
     const response = await deleteArticle({
       variables: {
         id: props.cuid,
       },
     });
-
+    window.location.reload(false);
     console.log(response);
   };
 
@@ -61,14 +61,20 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
         <p>Chargement...</p>
       ) : (
         <>
-          <ArticleManagementTitle title={props.title} styles="px-10 focus:bg-slate-400" />
-          <ArticleManagementCreationDate creationDate={props.createdAt} styles="pr-10 focus:bg-slate-400" />
-          <ArticleManagementContent content={props.content} styles="pr-10 focus:bg-slate-400" />
+          <ArticleManagementTitle
+            title={nohtmlTitle}
+            styles="px-10 py-2 focus:bg-slate-400 w-1/5 flex justify-center items-center"
+          />
+          <ArticleManagementCreationDate creationDate={props.createdAt} styles=" py-2 pr-10 focus:bg-slate-400 w-1/5" />
+          <ArticleManagementContent
+            content={nohtmlContent}
+            styles="pr-10 focus:bg-slate-400 w-1/5 flex items-center  truncate ..."
+          />
           <th>
             <Composite axis="horizontal" id={id} focusableIndex={props.focusableIndex ?? 0}>
-              <ul aria-orientation="horizontal" className="flex" role="menu" tabIndex={-1}>
+              <ul aria-orientation="horizontal" className="py-2 flex w-1/5" role="menu" tabIndex={-1}>
                 <li role="none">
-                  <ArticleManagementButton styles="p-2 mx-4 bg-yellow-600 rounded-lg" title="modifier" index={0} />
+                  <ArticleManagementButton styles="p-2 mx-4 bg-yellow-600 rounded-lg " title="modifier" index={0} />
                 </li>
                 <li role="none">
                   <ArticleManagementButton
