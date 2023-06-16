@@ -2,16 +2,38 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { nanoid } from "nanoid";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
-import CreateModal from "../ui/ArticleDashboard/CreateModal";
+import { useParams } from "react-router-dom";
 
-//requete POST
-const CREATE_ARTICLE = gql`
-  mutation CreateArticle($title: String!, $content: String!) {
-    newDocument(title: $title, content: $content) {
+type Data = {
+  documents: Document;
+};
+
+type Document = {
+  id?: string;
+  title?: string;
+  content?: string;
+  createdAt?: string;
+};
+
+// requete UPDATE
+// const UPDATE_ARTICLE = gql`
+//   mutation updateDocument($id: Cuid!, $title: String!, $content: String!) {
+//     updateDocument(id: $id, title: $title, content: $content) {
+//       id
+//       title
+//       content
+//       createdAt
+//     }
+//   }
+// `;
+
+const ARTICLE = gql`
+  query findDocuments($id: Cuid!) {
+    documents(id: $id) {
       id
       title
       content
@@ -49,19 +71,26 @@ const observeOptions = (listbox: Element) => {
   return classObserver;
 };
 
-export default function ArticleCreation() {
+export default function ArticleUpdate() {
+  const { id } = useParams();
+  const { data, error, loading } = useQuery<Data>(ARTICLE, {
+    variables: {
+      id: useParams().id,
+    },
+  });
+  console.log(data?.documents);
   //gestion de la modale
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => setOpen(false);
   const handleOpenModal = () => setOpen(true);
 
-  const [createArticle] = useMutation(CREATE_ARTICLE);
+  // const [updateArticle] = useMutation(UPDATE_ARTICLE);
 
   const quillTitleRef = useRef<ReactQuill | null>(null);
   const quillContentRef = useRef<ReactQuill | null>(null);
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState();
+  const [content, setContent] = useState();
 
   //gestion du re-render du composant lors du clic des bouton de la toolbar
   const [changed, setChanged] = useState(false);
@@ -79,18 +108,18 @@ export default function ArticleCreation() {
   }, [changed]);
 
   //a la soumission formulaire appel de la requete POST définie plus haut
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  // const handleUpdate = async (event: React.FormEvent) => {
+  //   event.preventDefault();
 
-    const response = await createArticle({
-      variables: {
-        title,
-        content,
-      },
-    });
-    window.location.reload(false);
-    console.log(response);
-  };
+  // const response = await updateArticle({
+  //   variables: {
+  //     title,
+  //     content,
+  //   },
+  // });
+  //   window.location.reload(false);
+  //   console.log(response);
+  // };
 
   useEffect(() => {
     const contentEditor = quillContentRef.current?.getEditor();
@@ -100,8 +129,8 @@ export default function ArticleCreation() {
     const keyboardContent = contentEditor?.getModule("keyboard") as { bindings: unknown[] };
 
     // empeche de sortir de la toolbar avec tab
-    delete keyboardTitle.bindings[9];
-    delete keyboardContent.bindings[9];
+    // delete keyboardTitle.bindings[9];
+    // delete keyboardContent.bindings[9];
 
     const contentToolbar = contentEditor?.root.parentElement?.parentElement?.querySelector(".ql-toolbar");
     const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");
@@ -455,41 +484,49 @@ export default function ArticleCreation() {
   }, [handleToolbarEvent]);
 
   return (
-    <div className="mx-28 mt-10 text-[#0B3168]">
-      <header>
-        <h1 className="text-3xl font-bold underline mb-10">Créer votre article</h1>
-      </header>
-      <form onSubmit={(event) => void (async (event) => await handleSubmit(event))(event)}>
-        <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
-        <div>
-          <ReactQuill
-            ref={quillTitleRef}
-            value={title}
-            onChange={handleTitle}
-            placeholder="espace de rédaction"
-            modules={quillTitleConfig.modules}
-            formats={quillTitleConfig.formats}
-            style={{ height: "10rem" }}
-          />
-        </div>
-        <p className="text-xl² my-16 font-bold">Contenu de votre article</p>
-        <div>
-          <ReactQuill
-            ref={quillContentRef}
-            value={content}
-            onChange={handleContent}
-            placeholder="espace de rédaction"
-            modules={quillContentConfig.modules}
-            formats={quillContentConfig.formats}
-            style={{ height: "10rem" }}
-          />
-        </div>
-        <div className="my-16">
-          <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
-        </div>
+    <>
+      {error !== undefined ? (
+        <p>{error.message}</p>
+      ) : loading ? (
+        <p>Chargement...</p>
+      ) : (
+        <div className="mx-28 mt-10 text-[#0B3168]">
+          {data !== undefined ? (
+            <>
+              <header>
+                <h1 className="text-3xl font-bold underline mb-10">Modifier votre article</h1>
+              </header>
+              <form /*onSubmit={(event) => void (async (event) => await handleUpdate(event))(event)}*/>
+                <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
+                <div>
+                  <ReactQuill
+                    ref={quillTitleRef}
+                    value={title}
+                    onChange={handleTitle}
+                    placeholder="espace de rédaction"
+                    modules={quillTitleConfig.modules}
+                    formats={quillTitleConfig.formats}
+                    style={{ height: "10rem" }}
+                  />
+                </div>
+                <p className="text-xl² my-16 font-bold">Contenu de votre article</p>
+                <div>
+                  <ReactQuill
+                    ref={quillContentRef}
+                    value={content}
+                    onChange={handleContent}
+                    placeholder="espace de rédaction"
+                    modules={quillContentConfig.modules}
+                    formats={quillContentConfig.formats}
+                    style={{ height: "10rem" }}
+                  />
+                </div>
+                <div className="my-16">
+                  <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
+                </div>
 
-        <button onClick={handleOpenModal}>Valider</button>
-        {open && (
+                <button type="submit">Valider</button>
+                {/* {open && (
           <CreateModal
             open={open}
             titleCloseButton="Fermer"
@@ -497,9 +534,12 @@ export default function ArticleCreation() {
             styles="absolute top-1/2 left-1/4"
             onClose={handleCloseModal}
             onSubmit={handleSubmit}
-          />
-        )}
-      </form>
-    </div>
+          /> */}
+              </form>
+            </>
+          ) : null}
+        </div>
+      )}
+    </>
   );
 }

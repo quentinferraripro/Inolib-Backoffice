@@ -9,14 +9,6 @@ import DeleteModal from "./DeleteModal";
 import { Composite } from "../Composite";
 import ArticleManagementContent from "./ArticleManagementContent";
 
-const DELETE_ARTICLE = gql`
-  mutation DeleteArticle($id: Cuid!) {
-    deleteDocument(id: $id) {
-      id
-    }
-  }
-`;
-
 type Data = {
   deleteDocument: {
     id?: string;
@@ -36,10 +28,18 @@ type Props = {
 
 export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
   const id = useId();
-  const [deleteArticle, { data, error, loading }] = useMutation<Data>(DELETE_ARTICLE);
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => setOpen(false);
   const handleOpenModal = () => setOpen(true);
+
+  const DELETE_ARTICLE = gql`
+    mutation DeleteArticle($id: Cuid!) {
+      deleteDocument(id: $id) {
+        id
+      }
+    }
+  `;
+  const [deleteArticle, { data, error, loading }] = useMutation<Data>(DELETE_ARTICLE);
   const nohtmlTitle = props.title.replace(/(<([^>]+)>)/gi, "");
   const nohtmlContent = props.content.replace(/(<([^>]+)>)/gi, "");
 
@@ -74,15 +74,24 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
             <Composite axis="horizontal" id={id} focusableIndex={props.focusableIndex ?? 0}>
               <ul aria-orientation="horizontal" className="py-2 flex w-1/5" role="menu" tabIndex={-1}>
                 <li role="none">
-                  <ArticleManagementButton styles="p-2 mx-4 bg-yellow-600 rounded-lg " title="modifier" index={0} />
+                  <ArticleManagementButton
+                    as="a"
+                    cuid={props.cuid}
+                    index={0}
+                    styles="p-2 mx-4 bg-yellow-600 rounded-lg "
+                  >
+                    Modifier
+                  </ArticleManagementButton>
                 </li>
                 <li role="none">
                   <ArticleManagementButton
-                    styles="p-2 mx-4 bg-red-600 rounded-lg"
-                    title="supprimer"
+                    as="button"
                     index={1}
                     onClick={handleOpenModal}
-                  />
+                    styles="p-2 mx-4 bg-red-600 rounded-lg"
+                  >
+                    Supprimer
+                  </ArticleManagementButton>
                 </li>
               </ul>
             </Composite>
@@ -96,7 +105,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
           titleDeleteButton="Supprimer"
           styles="absolute top-1/2 left-1/4"
           onClose={handleCloseModal}
-          onDelete={handleDelete}
+          onDelete={() => void (async () => await handleDelete())()}
         />
       )}
     </>

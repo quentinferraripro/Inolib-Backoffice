@@ -2,10 +2,11 @@ import { useEffect, useId, useRef, type PropsWithChildren } from "react";
 import { useComposite } from "../Composite";
 
 type ButtonProps = {
-  styles: string;
-  title: string;
+  as: "a" | "button";
+  cuid?: string;
   index: number;
-  onClick: () => void;
+  onClick?: () => void;
+  styles: string;
 };
 
 export default function ArticleManagementButton(props: PropsWithChildren<ButtonProps>) {
@@ -18,16 +19,31 @@ export default function ArticleManagementButton(props: PropsWithChildren<ButtonP
   }, [register, state.id, props.index]);
 
   return (
-    <button
-      type="button"
-      className={props.styles}
-      id={id}
-      ref={ref}
-      onKeyDown={dispatch}
-      role="menuitem"
-      onClick={props.onClick}
-    >
-      {props.title}
-    </button>
+    <>
+      {props.as === "a" ? (
+        <a
+          className={props.styles}
+          href={`/articleupdate/${props.cuid as string}`}
+          id={id}
+          onKeyDown={dispatch}
+          ref={ref}
+          role="menuitem"
+        >
+          {props.children}
+        </a>
+      ) : (
+        <button
+          type="button"
+          className={props.styles}
+          id={id}
+          ref={ref}
+          onKeyDown={dispatch}
+          role="menuitem"
+          onClick={props.onClick}
+        >
+          {props.children}
+        </button>
+      )}
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import ArticleManagementLine from "./ArticleManagementLine";
 import { useQuery, gql } from "@apollo/client";
+import { useParams } from "react-router-dom";
 
 type Data = {
   documents: Document[];
@@ -25,7 +26,7 @@ const GET_ARTICLE_DATA = gql`
 
 export default function ArticleManagementModule() {
   const { data, error, loading } = useQuery<Data>(GET_ARTICLE_DATA);
-
+  const { id } = useParams();
   return (
     <>
       {error !== undefined ? (
@@ -43,6 +44,7 @@ export default function ArticleManagementModule() {
                       title={document.title}
                       createdAt={document.createdAt}
                       content={document.content}
+                      id={id}
                     />
                   </tr>
                 ))
