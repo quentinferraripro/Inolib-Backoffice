@@ -19,29 +19,6 @@ type Document = {
   createdAt?: string;
 };
 
-// requete UPDATE
-// const UPDATE_ARTICLE = gql`
-//   mutation updateDocument($id: Cuid!, $title: String!, $content: String!) {
-//     updateDocument(id: $id, title: $title, content: $content) {
-//       id
-//       title
-//       content
-//       createdAt
-//     }
-//   }
-// `;
-
-const ARTICLE = gql`
-  query findDocuments($id: Cuid!) {
-    documents(id: $id) {
-      id
-      title
-      content
-      createdAt
-    }
-  }
-`;
-
 const observeOptions = (listbox: Element) => {
   const classObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
@@ -73,24 +50,59 @@ const observeOptions = (listbox: Element) => {
 
 export default function ArticleUpdate() {
   const { id } = useParams();
+  const ARTICLE = gql`
+    query findDocument($id: Cuid!) {
+      findDocument(id: $id) {
+        id
+        title
+        content
+        createdAt
+      }
+    }
+  `;
+  // requete UPDATE
+  const UPDATE_ARTICLE = gql`
+    mutation updateDocument($id: Cuid!, $title: String!, $content: String!) {
+      updateDocument(id: $id, title: $title, content: $content) {
+        id
+        title
+        content
+        createdAt
+      }
+    }
+  `;
+
   const { data, error, loading } = useQuery<Data>(ARTICLE, {
     variables: {
-      id: useParams().id,
+      id,
     },
   });
-  console.log(data?.documents);
+  const handleUpdate = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const response = await updateArticle({
+      variables: {
+        id,
+        title,
+        content,
+      },
+    });
+
+    window.location.reload(false);
+    console.log(response);
+  };
+
+  const [updateArticle] = useMutation(UPDATE_ARTICLE);
+
   //gestion de la modale
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => setOpen(false);
   const handleOpenModal = () => setOpen(true);
 
-  // const [updateArticle] = useMutation(UPDATE_ARTICLE);
-
   const quillTitleRef = useRef<ReactQuill | null>(null);
   const quillContentRef = useRef<ReactQuill | null>(null);
 
-  const [title, setTitle] = useState();
-  const [content, setContent] = useState();
+  const [title, setTitle] = useState<string>(data?.findDocument?.title);
+  const [content, setContent] = useState<string>(data?.findDocument?.content);
 
   //gestion du re-render du composant lors du clic des bouton de la toolbar
   const [changed, setChanged] = useState(false);
@@ -108,20 +120,14 @@ export default function ArticleUpdate() {
   }, [changed]);
 
   //a la soumission formulaire appel de la requete POST définie plus haut
-  // const handleUpdate = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-
-  // const response = await updateArticle({
-  //   variables: {
-  //     title,
-  //     content,
-  //   },
-  // });
-  //   window.location.reload(false);
-  //   console.log(response);
-  // };
 
   useEffect(() => {
+    if (data?.findDocument) {
+      const { title, content } = data.findDocument as Document;
+      setTitle(title || "");
+      setContent(content || "");
+    }
+    [data];
     const contentEditor = quillContentRef.current?.getEditor();
     const titleEditor = quillTitleRef.current?.getEditor();
 
@@ -496,14 +502,14 @@ export default function ArticleUpdate() {
               <header>
                 <h1 className="text-3xl font-bold underline mb-10">Modifier votre article</h1>
               </header>
-              <form /*onSubmit={(event) => void (async (event) => await handleUpdate(event))(event)}*/>
+              <form onSubmit={(event) => void (async (event) => await handleUpdate(event))(event)}>
                 <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
                 <div>
                   <ReactQuill
                     ref={quillTitleRef}
                     value={title}
                     onChange={handleTitle}
-                    placeholder="espace de rédaction"
+                    placeholder={"titre de votre article"}
                     modules={quillTitleConfig.modules}
                     formats={quillTitleConfig.formats}
                     style={{ height: "10rem" }}
@@ -515,7 +521,7 @@ export default function ArticleUpdate() {
                     ref={quillContentRef}
                     value={content}
                     onChange={handleContent}
-                    placeholder="espace de rédaction"
+                    placeholder="Nouveau contenu"
                     modules={quillContentConfig.modules}
                     formats={quillContentConfig.formats}
                     style={{ height: "10rem" }}
@@ -538,6 +544,8 @@ export default function ArticleUpdate() {
               </form>
             </>
           ) : null}
+          {console.log(title)}
+          {console.log(content)}
         </div>
       )}
     </>
