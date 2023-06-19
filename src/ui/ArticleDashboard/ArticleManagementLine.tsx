@@ -72,28 +72,18 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
           />
           <th>
             <Composite axis="horizontal" id={id} focusableIndex={props.focusableIndex ?? 0}>
-              <ul aria-orientation="horizontal" className="py-2 flex w-1/5" role="menu" tabIndex={-1}>
-                <li role="none">
-                  <ArticleManagementButton
-                    as="a"
-                    cuid={props.cuid}
-                    index={0}
-                    styles="p-2 mx-4 bg-yellow-600 rounded-lg "
-                  >
-                    Modifier
-                  </ArticleManagementButton>
-                </li>
-                <li role="none">
-                  <ArticleManagementButton
-                    as="button"
-                    index={1}
-                    onClick={handleOpenModal}
-                    styles="p-2 mx-4 bg-red-600 rounded-lg"
-                  >
-                    Supprimer
-                  </ArticleManagementButton>
-                </li>
-              </ul>
+              <ArticleManagementButton as="a" cuid={props.cuid} index={0} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
+                Modifier
+              </ArticleManagementButton>
+
+              <ArticleManagementButton
+                as="button"
+                index={1}
+                onClick={handleOpenModal}
+                styles="p-2 mx-4 bg-red-600 rounded-lg"
+              >
+                Supprimer
+              </ArticleManagementButton>
             </Composite>
           </th>
         </>

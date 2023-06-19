@@ -93,15 +93,15 @@ export default function ArticleCreation() {
   };
 
   useEffect(() => {
-    const contentEditor = quillContentRef.current?.getEditor();
     const titleEditor = quillTitleRef.current?.getEditor();
+    const contentEditor = quillContentRef.current?.getEditor();
 
-    const keyboardTitle = quillTitleRef.current?.getEditor().getModule("keyboard") as { bindings: unknown[] };
-    const keyboardContent = contentEditor?.getModule("keyboard") as { bindings: unknown[] };
+    const keyboardTitle = titleEditor?.getModule("keyboard") as { bindings: unknown[] } | undefined;
+    const keyboardContent = contentEditor?.getModule("keyboard") as { bindings: unknown[] } | undefined;
 
     // empeche de sortir de la toolbar avec tab
-    delete keyboardTitle.bindings[9];
-    delete keyboardContent.bindings[9];
+    delete keyboardTitle?.bindings[9];
+    delete keyboardContent?.bindings[9];
 
     const contentToolbar = contentEditor?.root.parentElement?.parentElement?.querySelector(".ql-toolbar");
     const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");

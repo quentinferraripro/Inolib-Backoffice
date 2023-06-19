@@ -1,19 +1,19 @@
-type CreateModalProps = {
+type UpdateModalProps = {
   title: string;
   open: boolean;
   onClose: () => void;
-  onCreate: () => void;
+  onUpdate: () => void;
   titleCloseButton: string;
   titleCreateButton;
   styles: string;
 };
 
-function CreateModal(props: CreateModalProps) {
+function UpdateModal(props: UpdateModalProps) {
   return (
     <span className={props.styles}>
       {props.open && (
         <span className="bg-red-700 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center">
-          <p className="py-4">Etes-vous sur de vouloir créer l’article : {props.title}?</p>
+          <p className="py-4">Mettre à jour l’article : {props.title}?</p>
           <button
             className="bg-white rounded-md px-8 py-4 mb-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
             onClick={props.onClose}
@@ -22,7 +22,7 @@ function CreateModal(props: CreateModalProps) {
           </button>
           <button
             className="bg-white rounded-md px-8 py-4 mt-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
-            onSubmit={props.onCreate}
+            onSubmit={props.onUpdate}
           >
             {props.titleCreateButton}
           </button>
@@ -32,4 +32,4 @@ function CreateModal(props: CreateModalProps) {
   );
 }
 
-export default CreateModal;
+export default UpdateModal;

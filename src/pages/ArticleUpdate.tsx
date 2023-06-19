@@ -3,13 +3,14 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { nanoid } from "nanoid";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import UpdateModal from "../ui/ArticleDashboard/UpdateModal";
 
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
 import { useParams } from "react-router-dom";
 
 type Data = {
-  documents: Document;
+  findDocument: Document[];
 };
 
 type Document = {
@@ -19,7 +20,7 @@ type Document = {
   createdAt?: string;
 };
 
-const observeOptions = (listbox: Element) => {
+const observeOptions = (listbox: Element, listboxLabel: string) => {
   const classObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       const target = mutation.target as Element;
@@ -37,7 +38,7 @@ const observeOptions = (listbox: Element) => {
             option.removeAttribute("aria-selected");
           });
 
-          listbox.setAttribute("aria-label", "changer alignement texte");
+          listbox.setAttribute("aria-label", listboxLabel);
         }
       }
     });
@@ -77,6 +78,7 @@ export default function ArticleUpdate() {
       id,
     },
   });
+
   const handleUpdate = async (event: React.FormEvent) => {
     event.preventDefault();
     const response = await updateArticle({
@@ -101,8 +103,8 @@ export default function ArticleUpdate() {
   const quillTitleRef = useRef<ReactQuill | null>(null);
   const quillContentRef = useRef<ReactQuill | null>(null);
 
-  const [title, setTitle] = useState<string>(data?.findDocument?.title);
-  const [content, setContent] = useState<string>(data?.findDocument?.content);
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
   //gestion du re-render du composant lors du clic des bouton de la toolbar
   const [changed, setChanged] = useState(false);
@@ -119,24 +121,21 @@ export default function ArticleUpdate() {
     setChanged(!changed);
   }, [changed]);
 
-  //a la soumission formulaire appel de la requete POST définie plus haut
-
   useEffect(() => {
-    if (data?.findDocument) {
-      const { title, content } = data.findDocument as Document;
-      setTitle(title || "");
-      setContent(content || "");
+    if (data?.findDocument[0]) {
+      setTitle(data?.findDocument[0].title || "");
+      setContent(data?.findDocument[0].content || "");
     }
-    [data];
-    const contentEditor = quillContentRef.current?.getEditor();
-    const titleEditor = quillTitleRef.current?.getEditor();
 
-    const keyboardTitle = quillTitleRef.current?.getEditor().getModule("keyboard") as { bindings: unknown[] };
-    const keyboardContent = contentEditor?.getModule("keyboard") as { bindings: unknown[] };
+    const titleEditor = quillTitleRef.current?.getEditor();
+    const contentEditor = quillContentRef.current?.getEditor();
+
+    const keyboardTitle = titleEditor?.getModule("keyboard") as { bindings: unknown[] } | undefined;
+    const keyboardContent = contentEditor?.getModule("keyboard") as { bindings: unknown[] } | undefined;
 
     // empeche de sortir de la toolbar avec tab
-    // delete keyboardTitle.bindings[9];
-    // delete keyboardContent.bindings[9];
+    delete keyboardTitle?.bindings[9];
+    delete keyboardContent?.bindings[9];
 
     const contentToolbar = contentEditor?.root.parentElement?.parentElement?.querySelector(".ql-toolbar");
     const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");
@@ -159,9 +158,9 @@ export default function ArticleUpdate() {
     if (colorcontentButton?.getAttribute("aria-label") === null) {
       colorcontentButton?.setAttribute("aria-label", "changer couleur texte");
     }
-    const titlecontentButton = titleToolbar?.querySelector(".ql-color");
-    if (titlecontentButton?.getAttribute("aria-label") === null) {
-      titlecontentButton?.setAttribute("aria-label", "changer couleur texte");
+    const colortitleButton = titleToolbar?.querySelector(".ql-color");
+    if (colortitleButton?.getAttribute("aria-label") === null) {
+      colortitleButton?.setAttribute("aria-label", "changer couleur texte");
     }
 
     //ecoute chaque bouton, au clic provoque au re-render
@@ -251,7 +250,7 @@ export default function ArticleUpdate() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer alignement texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -293,7 +292,7 @@ export default function ArticleUpdate() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer couleur texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -403,7 +402,7 @@ export default function ArticleUpdate() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer alignement texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -445,7 +444,7 @@ export default function ArticleUpdate() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer couleur texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -487,7 +486,7 @@ export default function ArticleUpdate() {
         classObserver.disconnect();
       });
     };
-  }, [handleToolbarEvent]);
+  }, [handleToolbarEvent, data?.findDocument]);
 
   return (
     <>
@@ -509,7 +508,6 @@ export default function ArticleUpdate() {
                     ref={quillTitleRef}
                     value={title}
                     onChange={handleTitle}
-                    placeholder={"titre de votre article"}
                     modules={quillTitleConfig.modules}
                     formats={quillTitleConfig.formats}
                     style={{ height: "10rem" }}
@@ -521,31 +519,32 @@ export default function ArticleUpdate() {
                     ref={quillContentRef}
                     value={content}
                     onChange={handleContent}
-                    placeholder="Nouveau contenu"
                     modules={quillContentConfig.modules}
                     formats={quillContentConfig.formats}
                     style={{ height: "10rem" }}
-                  />
+                  ></ReactQuill>
                 </div>
                 <div className="my-16">
                   <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
                 </div>
-
-                <button type="submit">Valider</button>
-                {/* {open && (
-          <CreateModal
-            open={open}
-            titleCloseButton="Fermer"
-            titleCreateButton="Creer"
-            styles="absolute top-1/2 left-1/4"
-            onClose={handleCloseModal}
-            onSubmit={handleSubmit}
-          /> */}
+                <button onClick={handleOpenModal} type="button">
+                  Valider
+                </button>
+                {open && (
+                  <UpdateModal
+                    open={open}
+                    titleCloseButton="Fermer"
+                    titleCreateButton="Mettre à jour"
+                    styles="absolute top-1/2 left-1/4"
+                    onClose={handleCloseModal}
+                    onSubmit={handleUpdate}
+                  />
+                )}
               </form>
             </>
           ) : null}
-          {console.log(title)}
-          {console.log(content)}
+          {console.log(data?.findDocument[0]?.title)}
+          {console.log(data?.findDocument[0]?.content)}
         </div>
       )}
     </>
