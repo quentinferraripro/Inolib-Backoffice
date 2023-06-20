@@ -9,14 +9,6 @@ import DeleteModal from "./DeleteModal";
 import { Composite } from "../Composite";
 import ArticleManagementContent from "./ArticleManagementContent";
 
-const DELETE_ARTICLE = gql`
-  mutation DeleteArticle($id: Cuid!) {
-    deleteDocument(id: $id) {
-      id
-    }
-  }
-`;
-
 type Data = {
   deleteDocument: {
     id?: string;
@@ -36,20 +28,28 @@ type Props = {
 
 export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
   const id = useId();
-  const [deleteArticle, { data, error, loading }] = useMutation<Data>(DELETE_ARTICLE);
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => setOpen(false);
   const handleOpenModal = () => setOpen(true);
 
-  const handleDelete = async () => {
-    setOpen(true);
+  const DELETE_ARTICLE = gql`
+    mutation DeleteArticle($id: Cuid!) {
+      deleteDocument(id: $id) {
+        id
+      }
+    }
+  `;
+  const [deleteArticle, { data, error, loading }] = useMutation<Data>(DELETE_ARTICLE);
+  const nohtmlTitle = props.title.replace(/(<([^>]+)>)/gi, "");
+  const nohtmlContent = props.content.replace(/(<([^>]+)>)/gi, "");
 
+  const handleDelete = async () => {
     const response = await deleteArticle({
       variables: {
         id: props.cuid,
       },
     });
-
+    window.location.reload(false);
     console.log(response);
   };
 
@@ -61,24 +61,29 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
         <p>Chargement...</p>
       ) : (
         <>
-          <ArticleManagementTitle title={props.title} styles="px-10 focus:bg-slate-400" />
-          <ArticleManagementCreationDate creationDate={props.createdAt} styles="pr-10 focus:bg-slate-400" />
-          <ArticleManagementContent content={props.content} styles="pr-10 focus:bg-slate-400" />
+          <ArticleManagementTitle
+            title={nohtmlTitle}
+            styles="px-10 py-2 focus:bg-slate-400 w-1/5 flex justify-center items-center"
+          />
+          <ArticleManagementCreationDate creationDate={props.createdAt} styles=" py-2 pr-10 focus:bg-slate-400 w-1/5" />
+          <ArticleManagementContent
+            content={nohtmlContent}
+            styles="pr-10 focus:bg-slate-400 w-1/5 flex items-center  truncate ..."
+          />
           <th>
             <Composite axis="horizontal" id={id} focusableIndex={props.focusableIndex ?? 0}>
-              <ul aria-orientation="horizontal" className="flex" role="menu" tabIndex={-1}>
-                <li role="none">
-                  <ArticleManagementButton styles="p-2 mx-4 bg-yellow-600 rounded-lg" title="modifier" index={0} />
-                </li>
-                <li role="none">
-                  <ArticleManagementButton
-                    styles="p-2 mx-4 bg-red-600 rounded-lg"
-                    title="supprimer"
-                    index={1}
-                    onClick={handleOpenModal}
-                  />
-                </li>
-              </ul>
+              <ArticleManagementButton as="a" cuid={props.cuid} index={0} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
+                Modifier
+              </ArticleManagementButton>
+
+              <ArticleManagementButton
+                as="button"
+                index={1}
+                onClick={handleOpenModal}
+                styles="p-2 mx-4 bg-red-600 rounded-lg"
+              >
+                Supprimer
+              </ArticleManagementButton>
             </Composite>
           </th>
         </>
@@ -90,7 +95,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
           titleDeleteButton="Supprimer"
           styles="absolute top-1/2 left-1/4"
           onClose={handleCloseModal}
-          onDelete={handleDelete}
+          onDelete={() => void (async () => await handleDelete())()}
         />
       )}
     </>

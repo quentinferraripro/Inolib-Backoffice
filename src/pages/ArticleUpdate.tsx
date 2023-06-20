@@ -2,25 +2,25 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { nanoid } from "nanoid";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import UpdateModal from "../ui/ArticleDashboard/UpdateModal";
 
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
-import CreateModal from "../ui/ArticleDashboard/CreateModal";
+import { useParams } from "react-router-dom";
 
-//requete POST
-const CREATE_ARTICLE = gql`
-  mutation CreateArticle($title: String!, $content: String!) {
-    newDocument(title: $title, content: $content) {
-      id
-      title
-      content
-      createdAt
-    }
-  }
-`;
+type Data = {
+  findDocument: Document[];
+};
 
-const observeOptions = (listbox: Element) => {
+type Document = {
+  id?: string;
+  title?: string;
+  content?: string;
+  createdAt?: string;
+};
+
+const observeOptions = (listbox: Element, listboxLabel: string) => {
   const classObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       const target = mutation.target as Element;
@@ -38,7 +38,7 @@ const observeOptions = (listbox: Element) => {
             option.removeAttribute("aria-selected");
           });
 
-          listbox.setAttribute("aria-label", "changer alignement texte");
+          listbox.setAttribute("aria-label", listboxLabel);
         }
       }
     });
@@ -49,19 +49,62 @@ const observeOptions = (listbox: Element) => {
   return classObserver;
 };
 
-export default function ArticleCreation() {
+export default function ArticleUpdate() {
+  const { id } = useParams();
+  const ARTICLE = gql`
+    query findDocument($id: Cuid!) {
+      findDocument(id: $id) {
+        id
+        title
+        content
+        createdAt
+      }
+    }
+  `;
+  // requete UPDATE
+  const UPDATE_ARTICLE = gql`
+    mutation updateDocument($id: Cuid!, $title: String!, $content: String!) {
+      updateDocument(id: $id, title: $title, content: $content) {
+        id
+        title
+        content
+        createdAt
+      }
+    }
+  `;
+
+  const { data, error, loading } = useQuery<Data>(ARTICLE, {
+    variables: {
+      id,
+    },
+  });
+
+  const handleUpdate = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const response = await updateArticle({
+      variables: {
+        id,
+        title,
+        content,
+      },
+    });
+
+    window.location.reload(false);
+    console.log(response);
+  };
+
+  const [updateArticle] = useMutation(UPDATE_ARTICLE);
+
   //gestion de la modale
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => setOpen(false);
   const handleOpenModal = () => setOpen(true);
 
-  const [createArticle] = useMutation(CREATE_ARTICLE);
-
   const quillTitleRef = useRef<ReactQuill | null>(null);
   const quillContentRef = useRef<ReactQuill | null>(null);
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
   //gestion du re-render du composant lors du clic des bouton de la toolbar
   const [changed, setChanged] = useState(false);
@@ -78,21 +121,12 @@ export default function ArticleCreation() {
     setChanged(!changed);
   }, [changed]);
 
-  //a la soumission formulaire appel de la requete POST définie plus haut
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const response = await createArticle({
-      variables: {
-        title,
-        content,
-      },
-    });
-    window.location.reload(false);
-    console.log(response);
-  };
-
   useEffect(() => {
+    if (data?.findDocument[0]) {
+      setTitle(data?.findDocument[0].title || "");
+      setContent(data?.findDocument[0].content || "");
+    }
+
     const titleEditor = quillTitleRef.current?.getEditor();
     const contentEditor = quillContentRef.current?.getEditor();
 
@@ -124,9 +158,9 @@ export default function ArticleCreation() {
     if (colorcontentButton?.getAttribute("aria-label") === null) {
       colorcontentButton?.setAttribute("aria-label", "changer couleur texte");
     }
-    const titlecontentButton = titleToolbar?.querySelector(".ql-color");
-    if (titlecontentButton?.getAttribute("aria-label") === null) {
-      titlecontentButton?.setAttribute("aria-label", "changer couleur texte");
+    const colortitleButton = titleToolbar?.querySelector(".ql-color");
+    if (colortitleButton?.getAttribute("aria-label") === null) {
+      colortitleButton?.setAttribute("aria-label", "changer couleur texte");
     }
 
     //ecoute chaque bouton, au clic provoque au re-render
@@ -216,7 +250,7 @@ export default function ArticleCreation() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer alignement texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -258,7 +292,7 @@ export default function ArticleCreation() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer couleur texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -368,7 +402,7 @@ export default function ArticleCreation() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer alignement texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -410,7 +444,7 @@ export default function ArticleCreation() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer couleur texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -452,54 +486,67 @@ export default function ArticleCreation() {
         classObserver.disconnect();
       });
     };
-  }, [handleToolbarEvent]);
+  }, [handleToolbarEvent, data?.findDocument]);
 
   return (
-    <div className="mx-28 mt-10 text-[#0B3168]">
-      <header>
-        <h1 className="text-3xl font-bold underline mb-10">Créer votre article</h1>
-      </header>
-      <form onSubmit={(event) => void (async (event) => await handleSubmit(event))(event)}>
-        <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
-        <div>
-          <ReactQuill
-            ref={quillTitleRef}
-            value={title}
-            onChange={handleTitle}
-            placeholder="espace de rédaction"
-            modules={quillTitleConfig.modules}
-            formats={quillTitleConfig.formats}
-            style={{ height: "10rem" }}
-          />
+    <>
+      {error !== undefined ? (
+        <p>{error.message}</p>
+      ) : loading ? (
+        <p>Chargement...</p>
+      ) : (
+        <div className="mx-28 mt-10 text-[#0B3168]">
+          {data !== undefined ? (
+            <>
+              <header>
+                <h1 className="text-3xl font-bold underline mb-10">Modifier votre article</h1>
+              </header>
+              <form onSubmit={(event) => void (async (event) => await handleUpdate(event))(event)}>
+                <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
+                <div>
+                  <ReactQuill
+                    ref={quillTitleRef}
+                    value={title}
+                    onChange={handleTitle}
+                    modules={quillTitleConfig.modules}
+                    formats={quillTitleConfig.formats}
+                    style={{ height: "10rem" }}
+                  />
+                </div>
+                <p className="text-xl² my-16 font-bold">Contenu de votre article</p>
+                <div>
+                  <ReactQuill
+                    ref={quillContentRef}
+                    value={content}
+                    onChange={handleContent}
+                    modules={quillContentConfig.modules}
+                    formats={quillContentConfig.formats}
+                    style={{ height: "10rem" }}
+                  ></ReactQuill>
+                </div>
+                <div className="my-16">
+                  <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
+                </div>
+                <button onClick={handleOpenModal} type="button">
+                  Valider
+                </button>
+                {open && (
+                  <UpdateModal
+                    open={open}
+                    titleCloseButton="Fermer"
+                    titleCreateButton="Mettre à jour"
+                    styles="absolute top-1/2 left-1/4"
+                    onClose={handleCloseModal}
+                    onSubmit={handleUpdate}
+                  />
+                )}
+              </form>
+            </>
+          ) : null}
+          {console.log(data?.findDocument[0]?.title)}
+          {console.log(data?.findDocument[0]?.content)}
         </div>
-        <p className="text-xl² my-16 font-bold">Contenu de votre article</p>
-        <div>
-          <ReactQuill
-            ref={quillContentRef}
-            value={content}
-            onChange={handleContent}
-            placeholder="espace de rédaction"
-            modules={quillContentConfig.modules}
-            formats={quillContentConfig.formats}
-            style={{ height: "10rem" }}
-          />
-        </div>
-        <div className="my-16">
-          <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
-        </div>
-
-        <button onClick={handleOpenModal}>Valider</button>
-        {open && (
-          <CreateModal
-            open={open}
-            titleCloseButton="Fermer"
-            titleCreateButton="Creer"
-            styles="absolute top-1/2 left-1/4"
-            onClose={handleCloseModal}
-            onSubmit={handleSubmit}
-          />
-        )}
-      </form>
-    </div>
+      )}
+    </>
   );
 }

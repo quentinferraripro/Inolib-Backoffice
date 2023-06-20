@@ -9,10 +9,9 @@ export default {
         {
           color: ["#0B3168", "black", "white"],
         },
-        { background: [] },
       ],
       [{ list: "ordered" }, { list: "bullet" }],
     ],
   },
-  formats: ["size", "align", "bold", "underline", "italic", "color", "background", "list"],
+  formats: ["size", "align", "bold", "underline", "italic", "color", "list"],
 };
