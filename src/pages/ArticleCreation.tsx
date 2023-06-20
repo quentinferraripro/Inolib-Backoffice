@@ -20,7 +20,7 @@ const CREATE_ARTICLE = gql`
   }
 `;
 
-const observeOptions = (listbox: Element) => {
+const observeOptions = (listbox: Element, listboxLabel: string) => {
   const classObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       const target = mutation.target as Element;
@@ -38,7 +38,7 @@ const observeOptions = (listbox: Element) => {
             option.removeAttribute("aria-selected");
           });
 
-          listbox.setAttribute("aria-label", "changer alignement texte");
+          listbox.setAttribute("aria-label", listboxLabel);
         }
       }
     });
@@ -216,7 +216,7 @@ export default function ArticleCreation() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer alignement texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -258,7 +258,7 @@ export default function ArticleCreation() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer couleur texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -368,7 +368,7 @@ export default function ArticleCreation() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer alignement texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -410,7 +410,7 @@ export default function ArticleCreation() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element));
+                classObservers.push(observeOptions(element, "changer couleur texte"));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
