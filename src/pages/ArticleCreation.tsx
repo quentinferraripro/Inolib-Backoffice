@@ -20,7 +20,7 @@ const CREATE_ARTICLE = gql`
   }
 `;
 
-const observeOptions = (listbox: Element) => {
+const observeOptions = (listbox: Element, listboxLabel: string) => {
   const classObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       const target = mutation.target as Element;
@@ -38,7 +38,7 @@ const observeOptions = (listbox: Element) => {
             option.removeAttribute("aria-selected");
           });
 
-          listbox.setAttribute("aria-label", "changer alignement texte");
+          listbox.setAttribute("aria-label", listboxLabel);
         }
       }
     });

@@ -250,7 +250,7 @@ export default function ArticleUpdate() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element, "changer alignement texte"));
+                classObservers.push(observeOptions(element));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -292,7 +292,7 @@ export default function ArticleUpdate() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element, "changer couleur texte"));
+                classObservers.push(observeOptions(element));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -402,7 +402,7 @@ export default function ArticleUpdate() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element, "changer alignement texte"));
+                classObservers.push(observeOptions(element));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
@@ -444,7 +444,7 @@ export default function ArticleUpdate() {
                 item.setAttribute("id", nanoid());
                 item.setAttribute("role", "option");
 
-                classObservers.push(observeOptions(element, "changer couleur texte"));
+                classObservers.push(observeOptions(element));
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
