@@ -89,7 +89,7 @@ export default function ArticleUpdate() {
       },
     });
 
-    window.location.reload(false);
+    window.location.reload();
     console.log(response);
   };
 
@@ -532,10 +532,11 @@ export default function ArticleUpdate() {
                 </button>
                 {open && (
                   <UpdateModal
+                    title={title}
                     open={open}
                     titleCloseButton="Fermer"
                     titleCreateButton="Mettre à jour"
-                    styles="absolute top-1/2 left-1/4"
+                    styles="absolute top-1/2 left-1/2"
                     onClose={handleCloseModal}
                     onSubmit={handleUpdate}
                   />
@@ -543,8 +544,6 @@ export default function ArticleUpdate() {
               </form>
             </>
           ) : null}
-          {console.log(data?.findDocument[0]?.title)}
-          {console.log(data?.findDocument[0]?.content)}
         </div>
       )}
     </>

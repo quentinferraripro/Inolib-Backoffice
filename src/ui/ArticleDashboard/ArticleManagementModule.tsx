@@ -34,11 +34,20 @@ export default function ArticleManagementModule() {
       ) : loading ? (
         <p>Chargement...</p>
       ) : (
-        <table className="w-full">
+        <table className="w-[100vw]">
+          <caption className="text-2xl font-bold">Tableau de gestion des documents</caption>
+          <thead className="w-full">
+            <tr className="flex border-y-[1px] border-t-black w-full justify-around items-center">
+              <th className="px-10 py-2">Titre</th>
+              <th className="mr-10">Contenu</th>
+              <th>Date de création</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
           <tbody>
             {data !== undefined
               ? data.documents.map((document) => (
-                  <tr key={document.id} className="flex border-y-[1px] border-t-black">
+                  <tr key={document.id} className="flex border-y-[1px] border-t-black w-[100vw] justify-around">
                     <ArticleManagementLine
                       cuid={document.id}
                       title={document.title}

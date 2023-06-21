@@ -4,16 +4,16 @@ type UpdateModalProps = {
   onClose: () => void;
   onUpdate: () => void;
   titleCloseButton: string;
-  titleCreateButton;
+  titleCreateButton: string;
   styles: string;
 };
 
 function UpdateModal(props: UpdateModalProps) {
   return (
-    <span className={props.styles}>
+    <div className={props.styles} role="dialog">
       {props.open && (
-        <span className="bg-red-700 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center">
-          <p className="py-4">Mettre à jour l’article : {props.title}?</p>
+        <span className="bg-yellow-600 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center">
+          <p className="py-4">Mettre à jour l’article ?</p>
           <button
             className="bg-white rounded-md px-8 py-4 mb-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
             onClick={props.onClose}
@@ -28,7 +28,7 @@ function UpdateModal(props: UpdateModalProps) {
           </button>
         </span>
       )}
-    </span>
+    </div>
   );
 }
 

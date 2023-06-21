@@ -4,13 +4,13 @@ type DeleteModalProps = {
   onClose: () => void;
   onDelete: () => void;
   titleCloseButton: string;
-  titleDeleteButton;
+  titleDeleteButton: string;
   styles: string;
 };
 
 function DeleteModal(props: DeleteModalProps) {
   return (
-    <span className={props.styles}>
+    <span className={props.styles} role="dialog">
       {props.open && (
         <span className="bg-red-700 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center">
           <p className="py-4">Etes-vous sur de vouloir supprimer l’article : {props.title}?</p>

@@ -9,17 +9,10 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "prettier",
   ],
-  settings: {
-    react: {
-      version: "detect",
-    },
-  },
   env: {
     browser: true,
     node: true,
   },
-  plugins: ["@typescript-eslint"],
-  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -32,5 +25,10 @@ module.exports = {
   rules: {
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
+  },
+  settings: {
+    react: {
+      version: "detect",
+    },
   },
 };
