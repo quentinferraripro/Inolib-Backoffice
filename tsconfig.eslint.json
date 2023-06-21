@@ -1,5 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["."],
-  "files": ["./.eslintrc.cjs", "./.prettierrc.cjs", "./postcss.config.cjs", "./tailwind.config.cjs"]
+  "files": ["./.eslintrc.cjs", "./.prettierrc.cjs"]
 }

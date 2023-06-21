@@ -16,24 +16,24 @@ export function DashboardModuleList() {
         </DashboardButtonlist>
       </DashboardModule>
 
-      <DashboardModule moduleName="Articles" style="flex flex-col items-center">
+      <DashboardModule moduleName="Articles" styles="flex flex-col items-center">
         <DashboardButtonlist>
-          <DashboardButton index={0} href="/articlemanagementdashboard" styles="">
-            Gestion des articles
-          </DashboardButton>
-          <DashboardButton index={1} href="/articlecreation" styles="">
+          <DashboardButton index={0} href="/articlecreation" styles="">
             Création d’article
+          </DashboardButton>
+          <DashboardButton index={1} href="/articlemanagementdashboard" styles="">
+            Gestion d’article
           </DashboardButton>
         </DashboardButtonlist>
       </DashboardModule>
 
-      <DashboardModule moduleName="Quizz" style="flex flex-col items-center">
+      <DashboardModule moduleName="Quizz" styles="flex flex-col items-center">
         <DashboardButtonlist>
           <DashboardButton index={0} href="/" styles="">
-            Gestion des quizz
+            Création des quizz
           </DashboardButton>
           <DashboardButton index={1} href="/" styles="">
-            Création des quizz
+            Gestion des quizz
           </DashboardButton>
         </DashboardButtonlist>
       </DashboardModule>

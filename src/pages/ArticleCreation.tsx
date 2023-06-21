@@ -88,7 +88,7 @@ export default function ArticleCreation() {
         content,
       },
     });
-    window.location.reload(false);
+    window.location.reload();
     console.log(response);
   };
 
@@ -491,6 +491,7 @@ export default function ArticleCreation() {
         <button onClick={handleOpenModal}>Valider</button>
         {open && (
           <CreateModal
+            title={title}
             open={open}
             titleCloseButton="Fermer"
             titleCreateButton="Creer"

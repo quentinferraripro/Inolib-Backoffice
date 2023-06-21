@@ -20,10 +20,10 @@ type Data = {
 
 type Props = {
   focusableIndex?: number;
-  cuid: string;
-  title: string;
-  createdAt: string;
-  content: string;
+  cuid?: string;
+  title?: string;
+  createdAt?: string;
+  content?: string;
 };
 
 export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
@@ -39,7 +39,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
       }
     }
   `;
-  const [deleteArticle, { data, error, loading }] = useMutation<Data>(DELETE_ARTICLE);
+  const [deleteArticle, { error, loading }] = useMutation<Data>(DELETE_ARTICLE);
   const nohtmlTitle = props.title.replace(/(<([^>]+)>)/gi, "");
   const nohtmlContent = props.content.replace(/(<([^>]+)>)/gi, "");
 
@@ -49,7 +49,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
         id: props.cuid,
       },
     });
-    window.location.reload(false);
+    window.location.reload();
     console.log(response);
   };
 
@@ -65,12 +65,12 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
             title={nohtmlTitle}
             styles="px-10 py-2 focus:bg-slate-400 w-1/5 flex justify-center items-center"
           />
-          <ArticleManagementCreationDate creationDate={props.createdAt} styles=" py-2 pr-10 focus:bg-slate-400 w-1/5" />
           <ArticleManagementContent
             content={nohtmlContent}
-            styles="pr-10 focus:bg-slate-400 w-1/5 flex items-center  truncate ..."
+            styles="mr-10 focus:bg-slate-400 w-1/5 flex items-center  truncate ..."
           />
-          <th>
+          <ArticleManagementCreationDate creationDate={props.createdAt} styles=" py-2 mx-10 focus:bg-slate-400 w-1/5" />
+          <td>
             <Composite axis="horizontal" id={id} focusableIndex={props.focusableIndex ?? 0}>
               <ArticleManagementButton as="a" cuid={props.cuid} index={0} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
                 Modifier
@@ -85,12 +85,13 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
                 Supprimer
               </ArticleManagementButton>
             </Composite>
-          </th>
+          </td>
         </>
       )}
       {open && (
         <DeleteModal
           open={open}
+          title={props.title}
           titleCloseButton="Fermer"
           titleDeleteButton="Supprimer"
           styles="absolute top-1/2 left-1/4"

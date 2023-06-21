@@ -1,6 +1,6 @@
 type creationDateProps = {
   styles: string;
-  creationDate: number;
+  creationDate: string;
 };
 
 export default function ArticleManagementcreationDate(props: creationDateProps) {
