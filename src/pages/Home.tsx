@@ -11,25 +11,13 @@ export default function Home() {
               Si vous n’êtes pas membre de notre équipe retournez sur notre site en cliquant ici
             </p>
             <a href="/connexion">
-              <BasicButton
-                label="employé"
-                type="button"
-                color="blue"
-                className=""
-                styles="bg-[#0B3168] text-white md:w-48"
-              />
+              <BasicButton label="employé" type="button" color="white" styles="border-[#0B3168] border-[1px]" />
             </a>
           </div>
           <div className="flex flex-col justify-center items-center md:w-1/2">
             <p className="text-lg pb-16">Sinon connectez-vous en cliquant ici</p>
             <a href="https://www.inolib.com/">
-              <BasicButton
-                label="retour au site"
-                type="button"
-                color="blue"
-                className=""
-                styles="bg-[#0B3168] text-white md:w-48"
-              />
+              <BasicButton label="retour au site" type="button" color="blue" />
             </a>
           </div>
         </div>

@@ -1,9 +1,9 @@
 import type { PropsWithChildren } from "react";
 
 type DashboardButtonListProps = {
-  index: number;
-  href: string;
-  styles: string;
+  index?: number;
+  href?: string;
+  styles?: string;
 };
 
 export function DashboardButtonlist(props: PropsWithChildren<DashboardButtonListProps>) {

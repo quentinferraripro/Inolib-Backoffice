@@ -24,6 +24,7 @@ type Props = {
   title?: string;
   createdAt?: string;
   content?: string;
+  id?: string;
 };
 
 export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
@@ -39,9 +40,11 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
       }
     }
   `;
+  const title = props.title !== undefined ? props.title : "";
+  const content = props.content !== undefined ? props.content : "";
   const [deleteArticle, { error, loading }] = useMutation<Data>(DELETE_ARTICLE);
-  const nohtmlTitle = props.title.replace(/(<([^>]+)>)/gi, "");
-  const nohtmlContent = props.content.replace(/(<([^>]+)>)/gi, "");
+  const nohtmlTitle = title?.replace(/(<([^>]+)>)/gi, "");
+  const nohtmlContent = content?.replace(/(<([^>]+)>)/gi, "");
 
   const handleDelete = async () => {
     const response = await deleteArticle({
@@ -69,7 +72,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
             content={nohtmlContent}
             styles="mr-10 focus:bg-slate-400 w-1/5 flex items-center  truncate ..."
           />
-          <ArticleManagementCreationDate creationDate={props.createdAt} styles=" py-2 mx-10 focus:bg-slate-400 w-1/5" />
+          <ArticleManagementCreationDate creationDate={props.createdAt} />
           <td>
             <Composite axis="horizontal" id={id} focusableIndex={props.focusableIndex ?? 0}>
               <ArticleManagementButton as="a" cuid={props.cuid} index={0} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
@@ -91,7 +94,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
       {open && (
         <DeleteModal
           open={open}
-          title={props.title}
+          title={nohtmlTitle}
           titleCloseButton="Fermer"
           titleDeleteButton="Supprimer"
           styles="absolute top-1/2 left-1/4"

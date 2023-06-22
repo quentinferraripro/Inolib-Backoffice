@@ -1,14 +1,16 @@
 type DeleteModalProps = {
-  title: string;
   open: boolean;
   onClose: () => void;
   onDelete: () => void;
-  titleCloseButton: string;
-  titleDeleteButton: string;
-  styles: string;
+  styles?: string;
+  title?: string;
+  titleCloseButton?: string;
+  titleDeleteButton?: string;
 };
 
 function DeleteModal(props: DeleteModalProps) {
+  props.title !== undefined ? props.title : "";
+
   return (
     <span className={props.styles} role="dialog">
       {props.open && (

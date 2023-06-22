@@ -14,14 +14,8 @@ export default function Connexion() {
           <input type="password" name="password" required className="w-full border border-black rounded-lg mt-1 pl-2" />
         </label>
         <div>
-          <BasicButton
-            label="Effacer"
-            type="reset"
-            color="white"
-            className=""
-            styles="mr-4 border-[#0B3168] border-[1px]"
-          />
-          <BasicButton label="Connexion" type="submit" color="blue" className="" styles="bg-[#0B3168] text-white" />
+          <BasicButton label="Effacer" type="reset" color="white" styles="mr-4 border-[#0B3168] border-[1px]" />
+          <BasicButton label="Connexion" type="submit" color="blue" />
         </div>
       </form>
     </div>

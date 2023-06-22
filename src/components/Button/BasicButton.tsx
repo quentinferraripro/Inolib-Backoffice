@@ -1,6 +1,6 @@
 type ButtonProps = {
   color: "blue" | "white";
-  type: string;
+  type: "button" | "submit" | "reset" | undefined;
   label: string;
   styles?: string;
 };

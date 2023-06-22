@@ -1,5 +1,4 @@
 type creationDateProps = {
-  styles: string;
   creationDate: string;
 };
 
