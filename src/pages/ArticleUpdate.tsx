@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { nanoid } from "nanoid";
+
 import { gql, useMutation, useQuery } from "@apollo/client";
-import UpdateModal from "../ui/ArticleDashboard/UpdateModal";
+import { nanoid } from "nanoid";
+import ReactQuill from "react-quill";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
-import { useParams } from "react-router-dom";
+import { setAttribute } from "../helpers";
+import UpdateModal from "../ui/ArticleDashboard/UpdateModal";
 
 type Data = {
   findDocument: Document[];
@@ -32,7 +34,7 @@ const observeOptions = (listbox: Element, listboxLabel: string) => {
           });
           target.setAttribute("aria-selected", "");
 
-          listbox.setAttribute("aria-label", target.getAttribute("aria-label"));
+          listbox.setAttribute("aria-label", target.getAttribute("aria-label") as string);
         } else if (listbox.querySelector(".ql-selected") === null) {
           listbox.querySelectorAll(".ql-picker-item").forEach((option) => {
             option.removeAttribute("aria-selected");
@@ -79,9 +81,9 @@ export default function ArticleUpdate() {
     },
   });
 
-  const handleUpdate = async (event: React.FormEvent) => {
+  const handleUpdate = (event: React.FormEvent) => {
     event.preventDefault();
-    const response = await updateArticle({
+    const response = updateArticle({
       variables: {
         id,
         title,
@@ -279,7 +281,7 @@ export default function ArticleUpdate() {
 
               //ajout d'attribut pour mimer le comportement d'un <select>
               element.setAttribute("role", "listbox");
-              element.setAttribute("aria-activedescendant", selectedItem?.getAttribute("id"));
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
 
@@ -320,7 +322,7 @@ export default function ArticleUpdate() {
 
               //ajout d'attribut pour mimer le comportement d'un <select>
               element.setAttribute("role", "listbox");
-              element.setAttribute("aria-activedescendant", selectedItem?.getAttribute("id"));
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
           }
@@ -431,7 +433,7 @@ export default function ArticleUpdate() {
 
               //ajout d'attribut pour mimer le comportement d'un <select>
               element.setAttribute("role", "listbox");
-              element.setAttribute("aria-activedescendant", selectedItem?.getAttribute("id"));
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
 
@@ -472,7 +474,7 @@ export default function ArticleUpdate() {
 
               //ajout d'attribut pour mimer le comportement d'un <select>
               element.setAttribute("role", "listbox");
-              element.setAttribute("aria-activedescendant", selectedItem?.getAttribute("id"));
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
           }
@@ -501,7 +503,7 @@ export default function ArticleUpdate() {
               <header>
                 <h1 className="text-3xl font-bold underline mb-10">Modifier votre article</h1>
               </header>
-              <form onSubmit={(event) => void (async (event) => await handleUpdate(event))(event)}>
+              <form onSubmit={(event) => void ((event) => handleUpdate(event))(event)}>
                 <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
                 <div>
                   <ReactQuill
@@ -538,7 +540,7 @@ export default function ArticleUpdate() {
                     titleCreateButton="Mettre à jour"
                     styles="absolute top-1/2 left-1/2"
                     onClose={handleCloseModal}
-                    onSubmit={handleUpdate}
+                    onUpdate={handleUpdate}
                   />
                 )}
               </form>

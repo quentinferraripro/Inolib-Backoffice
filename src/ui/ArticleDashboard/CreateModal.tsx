@@ -2,7 +2,7 @@ type CreateModalProps = {
   title: string;
   open: boolean;
   onClose: () => void;
-  onCreate: () => void;
+  onSubmit: () => Promise;
   titleCloseButton: string;
   titleCreateButton: string;
   styles: string;
@@ -23,7 +23,7 @@ function CreateModal(props: CreateModalProps) {
           </button>
           <button
             className="bg-white rounded-md px-8 py-4 mt-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
-            onSubmit={props.onCreate}
+            onSubmit={props.onSubmit}
           >
             {props.titleCreateButton}
           </button>

@@ -1,11 +1,13 @@
+import "react-quill/dist/quill.snow.css";
+
+import { gql, useMutation } from "@apollo/client";
+import { nanoid } from "nanoid";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { nanoid } from "nanoid";
-import { gql, useMutation } from "@apollo/client";
 
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
+import { setAttribute } from "../helpers";
 import CreateModal from "../ui/ArticleDashboard/CreateModal";
 
 //requete POST
@@ -32,7 +34,7 @@ const observeOptions = (listbox: Element, listboxLabel: string) => {
           });
           target.setAttribute("aria-selected", "");
 
-          listbox.setAttribute("aria-label", target.getAttribute("aria-label"));
+          listbox.setAttribute("aria-label", target.getAttribute("aria-label") as string);
         } else if (listbox.querySelector(".ql-selected") === null) {
           listbox.querySelectorAll(".ql-picker-item").forEach((option) => {
             option.removeAttribute("aria-selected");
@@ -245,7 +247,7 @@ export default function ArticleCreation() {
 
               //ajout d'attribut pour mimer le comportement d'un <select>
               element.setAttribute("role", "listbox");
-              element.setAttribute("aria-activedescendant", selectedItem?.getAttribute("id"));
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
 
@@ -286,7 +288,7 @@ export default function ArticleCreation() {
 
               //ajout d'attribut pour mimer le comportement d'un <select>
               element.setAttribute("role", "listbox");
-              element.setAttribute("aria-activedescendant", selectedItem?.getAttribute("id"));
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
           }
@@ -397,7 +399,7 @@ export default function ArticleCreation() {
 
               //ajout d'attribut pour mimer le comportement d'un <select>
               element.setAttribute("role", "listbox");
-              element.setAttribute("aria-activedescendant", selectedItem?.getAttribute("id"));
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
 
@@ -438,7 +440,7 @@ export default function ArticleCreation() {
 
               //ajout d'attribut pour mimer le comportement d'un <select>
               element.setAttribute("role", "listbox");
-              element.setAttribute("aria-activedescendant", selectedItem?.getAttribute("id"));
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
           }
