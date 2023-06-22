@@ -81,9 +81,9 @@ export default function ArticleUpdate() {
     },
   });
 
-  const handleUpdate = (event: React.FormEvent) => {
+  const handleUpdate = async (event: React.FormEvent) => {
     event.preventDefault();
-    const response = updateArticle({
+    const response = await updateArticle({
       variables: {
         id,
         title,
