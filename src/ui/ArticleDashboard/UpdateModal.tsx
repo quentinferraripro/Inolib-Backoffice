@@ -1,8 +1,10 @@
+import { type FormEventHandler, type MouseEventHandler } from "react";
+
 type UpdateModalProps = {
   title: string;
   open: boolean;
-  onClose: () => void;
-  onUpdate: () => void;
+  onClose: MouseEventHandler<HTMLButtonElement>;
+  onUpdate: FormEventHandler<HTMLButtonElement>;
   titleCloseButton: string;
   titleCreateButton: string;
   styles: string;
@@ -22,7 +24,7 @@ function UpdateModal(props: UpdateModalProps) {
           </button>
           <button
             className="bg-white rounded-md px-8 py-4 mt-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
-            onSubmit={props.onUpdate}
+            onClick={props.onUpdate}
           >
             {props.titleCreateButton}
           </button>

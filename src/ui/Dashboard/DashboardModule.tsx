@@ -1,4 +1,4 @@
-import { useId, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 
 import { Composite } from "../Composite";
 
@@ -10,7 +10,7 @@ type Props = {
 
 export function DashboardModule(props: PropsWithChildren<Props>) {
   return (
-    <Composite axis="vertical" id={useId()} focusableIndex={props.focusableIndex ?? 0}>
+    <Composite orientation="vertical">
       <li className={props.styles}>
         <h2 className="text-2xl mb-8 text-center">{props.moduleName}</h2>
 

@@ -2,7 +2,7 @@ import "react-quill/dist/quill.snow.css";
 
 import { gql, useMutation } from "@apollo/client";
 import { nanoid } from "nanoid";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import ReactQuill from "react-quill";
 
 import quillTitleConfig from "../config/quillTitleConfig";
@@ -81,17 +81,20 @@ export default function ArticleCreation() {
   }, [changed]);
 
   //a la soumission formulaire appel de la requete POST définie plus haut
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    const response = await createArticle({
-      variables: {
-        title,
-        content,
-      },
-    });
-    window.location.reload();
-    console.log(response);
+    void (async () => {
+      const response = await createArticle({
+        variables: {
+          title,
+          content,
+        },
+      });
+
+      window.location.reload();
+      console.log(response);
+    })();
   };
 
   useEffect(() => {
@@ -188,7 +191,7 @@ export default function ArticleCreation() {
 
               case "ql-list":
                 {
-                  switch (element.value) {
+                  switch ((element as HTMLButtonElement).value) {
                     case "ordered": {
                       element.addEventListener("click", handleToolbarEvent, { once: true });
                       element.setAttribute("aria-label", "transformer en liste ordonée");
@@ -340,7 +343,7 @@ export default function ArticleCreation() {
 
               case "ql-list":
                 {
-                  switch (element.value) {
+                  switch ((element as HTMLButtonElement).value) {
                     case "ordered": {
                       element.addEventListener("click", handleToolbarEvent, { once: true });
                       element.setAttribute("aria-label", "transformer en liste ordonée");
@@ -461,7 +464,7 @@ export default function ArticleCreation() {
       <header>
         <h1 className="text-3xl font-bold underline mb-10">Créer votre article</h1>
       </header>
-      <form onSubmit={(event) => void (async (event) => await handleSubmit(event))(event)}>
+      <form onSubmit={handleSubmit}>
         <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
         <div>
           <ReactQuill
@@ -474,7 +477,7 @@ export default function ArticleCreation() {
             style={{ height: "10rem" }}
           />
         </div>
-        <p className="text-xl² my-16 font-bold">Contenu de votre article</p>
+        <p className="text-xl² mt-16 mb-5 font-bold">Contenu de votre article</p>
         <div>
           <ReactQuill
             ref={quillContentRef}
@@ -486,11 +489,18 @@ export default function ArticleCreation() {
             style={{ height: "10rem" }}
           />
         </div>
-        <div className="my-16">
-          <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
-        </div>
+        <div className="my-16 flex">
+          <button className="p-2 border-[1px] font-s border-[#0B3168] rounded lg mr-10 hover:scale-105 transition ease-in delay-75">
+            ajouter une image
+          </button>
 
-        <button onClick={handleOpenModal}>Valider</button>
+          <button
+            className="bg-[#0B3168] rounded-lg p-2 text-white hover:scale-105 transition ease-in delay-75"
+            onClick={handleOpenModal}
+          >
+            Valider
+          </button>
+        </div>
         {open && (
           <CreateModal
             title={title}
@@ -499,7 +509,7 @@ export default function ArticleCreation() {
             titleCreateButton="Creer"
             styles="absolute top-1/2 left-1/4"
             onClose={handleCloseModal}
-            onSubmit={handleSubmit}
+            onCreate={handleSubmit}
           />
         )}
       </form>

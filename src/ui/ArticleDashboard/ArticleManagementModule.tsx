@@ -1,16 +1,15 @@
 import ArticleManagementLine from "./ArticleManagementLine";
 import { useQuery, gql } from "@apollo/client";
-import { useParams } from "react-router-dom";
 
 type Data = {
   documents: Document[];
 };
 
 type Document = {
-  id?: string;
-  title?: string;
-  content?: string;
-  createdAt?: string;
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
 };
 
 const GET_ARTICLE_DATA = gql`
@@ -26,20 +25,20 @@ const GET_ARTICLE_DATA = gql`
 
 export default function ArticleManagementModule() {
   const { data, error, loading } = useQuery<Data>(GET_ARTICLE_DATA);
-  const { id } = useParams();
+
   return (
-    <>
+    <div className="mt-10">
       {error !== undefined ? (
         <p>{error.message}</p>
       ) : loading ? (
         <p>Chargement...</p>
       ) : (
-        <table className="w-[100vw]">
-          <caption className="text-2xl font-bold">Tableau de gestion des documents</caption>
-          <thead className="w-full">
+        <table className="border-y-2 border-y-black">
+          <caption className="text-2xl font-bold mb-6 ">Tableau de gestion des documents</caption>
+          <thead className="border-b-2 border-b-black">
             <tr className="flex border-y-[1px] border-t-black w-full justify-around items-center">
               <th className="px-10 py-2">Titre</th>
-              <th className="mr-10">Contenu</th>
+              <th className="ml-16">Contenu</th>
               <th>Date de création</th>
               <th>Actions</th>
             </tr>
@@ -53,7 +52,6 @@ export default function ArticleManagementModule() {
                       title={document.title}
                       createdAt={document.createdAt}
                       content={document.content}
-                      id={id}
                     />
                   </tr>
                 ))
@@ -61,6 +59,6 @@ export default function ArticleManagementModule() {
           </tbody>
         </table>
       )}
-    </>
+    </div>
   );
 }

@@ -1,49 +1,23 @@
-import { useEffect, useId, useRef, type PropsWithChildren } from "react";
+import { useEffect, useId, useRef, type MouseEventHandler, type PropsWithChildren } from "react";
 import { useComposite } from "../Composite";
 
-type ButtonProps = {
-  as: "a" | "button";
-  cuid?: string;
-  index: number;
-  onClick?: () => void;
+type Props = {
+  onClick: MouseEventHandler<HTMLButtonElement>;
   styles: string;
 };
 
-export default function ArticleManagementButton(props: PropsWithChildren<ButtonProps>) {
-  const { dispatch, register, state } = useComposite();
+export default function ArticleManagementButton(props: PropsWithChildren<Props>) {
+  const { addRef } = useComposite();
   const id = useId();
-  const ref = useRef<HTMLButtonElement>();
+  const ref = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    register(state.id, props.index, ref);
-  }, [register, state.id, props.index]);
+    addRef(ref);
+  }, [addRef]);
 
   return (
-    <>
-      {props.as === "a" ? (
-        <a
-          className={props.styles}
-          href={`/articleupdate/${props.cuid as string}`}
-          id={id}
-          onKeyDown={dispatch}
-          ref={ref}
-          role="menuitem"
-        >
-          {props.children}
-        </a>
-      ) : (
-        <button
-          type="button"
-          className={props.styles}
-          id={id}
-          ref={ref}
-          onKeyDown={dispatch}
-          role="menuitem"
-          onClick={props.onClick}
-        >
-          {props.children}
-        </button>
-      )}
-    </>
+    <button type="button" className={props.styles} id={id} ref={ref} role="menuitem" onClick={props.onClick}>
+      {props.children}
+    </button>
   );
 }

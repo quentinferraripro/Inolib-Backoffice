@@ -1,13 +1,14 @@
-import { useId, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 
-import ArticleManagementButton from "./ArticleManagementButton";
-import ArticleManagementTitle from "./ArticleManagementTitle";
-import ArticleManagementCreationDate from "./ArticleManagementCreationDate";
-import DeleteModal from "./DeleteModal";
 import { Composite } from "../Composite";
+import ArticleManagementButton from "./ArticleManagementButton";
 import ArticleManagementContent from "./ArticleManagementContent";
+import ArticleManagementCreationDate from "./ArticleManagementCreationDate";
+import ArticleManagementLink from "./ArticleManagementLink";
+import ArticleManagementTitle from "./ArticleManagementTitle";
+import DeleteModal from "./DeleteModal";
 
 type Data = {
   deleteDocument: {
@@ -20,15 +21,14 @@ type Data = {
 
 type Props = {
   focusableIndex?: number;
-  cuid?: string;
-  title?: string;
-  createdAt?: string;
-  content?: string;
+  cuid: string;
+  title: string;
+  createdAt: string;
+  content: string;
   id?: string;
 };
 
 export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
-  const id = useId();
   const [open, setOpen] = useState(false);
   const handleCloseModal = () => setOpen(false);
   const handleOpenModal = () => setOpen(true);
@@ -42,6 +42,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
   `;
   const title = props.title !== undefined ? props.title : "";
   const content = props.content !== undefined ? props.content : "";
+
   const [deleteArticle, { error, loading }] = useMutation<Data>(DELETE_ARTICLE);
   const nohtmlTitle = title?.replace(/(<([^>]+)>)/gi, "");
   const nohtmlContent = content?.replace(/(<([^>]+)>)/gi, "");
@@ -72,19 +73,14 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
             content={nohtmlContent}
             styles="mr-10 focus:bg-slate-400 w-1/5 flex items-center  truncate ..."
           />
-          <ArticleManagementCreationDate creationDate={props.createdAt} />
+          <ArticleManagementCreationDate createdAt={props.createdAt} />
           <td>
-            <Composite axis="horizontal" id={id} focusableIndex={props.focusableIndex ?? 0}>
-              <ArticleManagementButton as="a" cuid={props.cuid} index={0} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
+            <Composite orientation="horizontal">
+              <ArticleManagementLink cuid={props.cuid} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
                 Modifier
-              </ArticleManagementButton>
+              </ArticleManagementLink>
 
-              <ArticleManagementButton
-                as="button"
-                index={1}
-                onClick={handleOpenModal}
-                styles="p-2 mx-4 bg-red-600 rounded-lg"
-              >
+              <ArticleManagementButton onClick={handleOpenModal} styles="p-2 mx-4 bg-red-600 rounded-lg">
                 Supprimer
               </ArticleManagementButton>
             </Composite>
