@@ -6,9 +6,7 @@ type TitleProps = {
 export default function ArticleManagementTitle(props: TitleProps) {
   return (
     <>
-      <th className={props.styles} scope="col">
-        {props.title}
-      </th>
+      <td className={props.styles}>{props.title}</td>
     </>
   );
 }

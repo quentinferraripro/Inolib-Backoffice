@@ -71,7 +71,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
           />
           <ArticleManagementContent
             content={nohtmlContent}
-            styles="mr-10 focus:bg-slate-400 w-1/5 flex items-center  truncate ..."
+            styles="mr-10 focus:bg-slate-400 w-1/5 flex items-center truncate ..."
           />
           <ArticleManagementCreationDate createdAt={props.createdAt} />
           <td>

@@ -3,8 +3,7 @@ import { expect, it } from "vitest";
 import { MockedProvider } from "@apollo/client/testing";
 import { gql } from "@apollo/client";
 
-import ArticleManagementModule, { GET_ARTICLE_DATA } from "../../../src/ui/ArticleDashboard/ArticleManagementModule";
-
+import ArticleManagementModule from "../../../src/ui/ArticleDashboard/ArticleManagementModule";
 const GET_ARTICLE_DATA = gql`
   query GetArticleData {
     documents {

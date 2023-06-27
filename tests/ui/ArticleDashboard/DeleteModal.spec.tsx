@@ -5,11 +5,7 @@ import { it, expect, vi } from "vitest";
 import DeleteModal from "../../../src/ui/ArticleDashboard/DeleteModal";
 
 it("should render a dialog element", async () => {
-  render(
-    <DeleteModal title="" titleCloseButton="" titleDeleteButton="" onClose={() => undefined} onDelete={() => undefined}>
-      Contenu de la modale
-    </DeleteModal>
-  );
+  render(<DeleteModal>Contenu de la modale</DeleteModal>);
   const modal = await screen.findByRole("dialog");
 
   expect(modal).toBeInTheDocument();
