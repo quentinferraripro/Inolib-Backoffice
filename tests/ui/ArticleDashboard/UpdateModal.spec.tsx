@@ -6,9 +6,15 @@ import UpdateModal from "../../../src/ui/ArticleDashboard/UpdateModal";
 
 it("should render a dialog element", async () => {
   render(
-    <UpdateModal title="" titleCloseButton="" titleCreateButton="" onClose={() => undefined} onUpdate={() => undefined}>
-      Contenu de la modale
-    </UpdateModal>
+    <UpdateModal
+      title=""
+      titleCloseButton=""
+      titleCreateButton=""
+      onClose={() => undefined}
+      onUpdate={() => undefined}
+      open={true}
+      styles=""
+    />
   );
   const modal = await screen.findByRole("dialog");
 
@@ -29,11 +35,9 @@ it("should call `onClose` callback when clicking on the button internal element"
       titleCloseButton="Fermer"
       titleCreateButton=""
       onClose={_.callback}
-      onClick={() => undefined}
+      onUpdate={() => undefined}
       open={true}
-    >
-      Contenu de la modale
-    </UpdateModal>
+    />
   );
   const user = userEvent.setup();
   await user.click(await screen.findByText("Fermer"));
@@ -57,11 +61,9 @@ it("should call `onClick` callback when clicking on the button internal element"
       onClose={() => undefined}
       onUpdate={_.callback}
       open={true}
-    >
-      Contenu de la modale
-    </UpdateModal>
+    />
   );
-  //comment faire pour designer le bon boutton qui porte la fonction
+
   const user = userEvent.setup();
   await user.click(await screen.findByText("Mettre à jour"));
 

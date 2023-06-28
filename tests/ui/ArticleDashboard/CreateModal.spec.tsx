@@ -6,9 +6,15 @@ import CreateModal from "../../../src/ui/ArticleDashboard/CreateModal";
 
 it("should render a dialog element", async () => {
   render(
-    <CreateModal title="" titleCloseButton="" titleCreateButton="" onClose={() => undefined} onCreate={() => undefined}>
-      Contenu de la modale
-    </CreateModal>
+    <CreateModal
+      title=""
+      titleCloseButton=""
+      titleCreateButton=""
+      onClose={() => undefined}
+      onCreate={() => undefined}
+      styles=""
+      open
+    />
   );
   const modal = await screen.findByRole("dialog");
 
@@ -31,9 +37,7 @@ it("should call `onClose` callback when clicking on the button internal element"
       onClose={_.callback}
       onCreate={() => undefined}
       open={true}
-    >
-      Contenu de la modale
-    </CreateModal>
+    />
   );
 
   const user = userEvent.setup();
@@ -58,11 +62,9 @@ it("should call `onCreate` callback when clicking on the button internal element
       onClose={() => undefined}
       onCreate={_.callback}
       open={true}
-    >
-      Contenu de la modale
-    </CreateModal>
+    />
   );
-  //comment faire pour designer le bon boutton qui porte la fonction
+
   const user = userEvent.setup();
   await user.click(await screen.findByText("Créer"));
 

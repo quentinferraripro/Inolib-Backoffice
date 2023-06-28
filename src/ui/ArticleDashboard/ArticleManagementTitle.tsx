@@ -4,9 +4,5 @@ type TitleProps = {
 };
 
 export default function ArticleManagementTitle(props: TitleProps) {
-  return (
-    <>
-      <td className={props.styles}>{props.title}</td>
-    </>
-  );
+  return <td className={props.styles}>{props.title}</td>;
 }

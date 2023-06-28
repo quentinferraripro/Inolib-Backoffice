@@ -54,8 +54,8 @@ const observeOptions = (listbox: Element, listboxLabel: string) => {
 export default function ArticleCreation() {
   //gestion de la modale
   const [open, setOpen] = useState(false);
-  const handleCloseModal = () => setOpen(false);
-  const handleOpenModal = () => setOpen(true);
+  const handleCloseCreationModal = () => setOpen(false);
+  const handleOpenCreationModal = () => setOpen(true);
 
   const [createArticle] = useMutation(CREATE_ARTICLE);
 
@@ -81,7 +81,7 @@ export default function ArticleCreation() {
   }, [changed]);
 
   //a la soumission formulaire appel de la requete POST définie plus haut
-  const handleSubmit = (event: FormEvent) => {
+  const handleCreation = (event: FormEvent) => {
     event.preventDefault();
 
     void (async () => {
@@ -464,7 +464,7 @@ export default function ArticleCreation() {
       <header>
         <h1 className="text-3xl font-bold underline mb-10">Créer votre article</h1>
       </header>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleCreation}>
         <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
         <div>
           <ReactQuill
@@ -496,7 +496,7 @@ export default function ArticleCreation() {
 
           <button
             className="bg-[#0B3168] rounded-lg p-2 text-white hover:scale-105 transition ease-in delay-75"
-            onClick={handleOpenModal}
+            onClick={handleOpenCreationModal}
           >
             Valider
           </button>
@@ -508,8 +508,8 @@ export default function ArticleCreation() {
             titleCloseButton="Fermer"
             titleCreateButton="Creer"
             styles="absolute top-1/2 left-1/4"
-            onClose={handleCloseModal}
-            onCreate={handleSubmit}
+            onClose={handleCloseCreationModal}
+            onCreate={handleCreation}
           />
         )}
       </form>
