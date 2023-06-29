@@ -19,7 +19,6 @@
 /tailwind.config.cjs
 /tsconfig.eslint.json
 /tsconfig.json
-/vercel.json
 /vite.config.js
 
 !/dist/
