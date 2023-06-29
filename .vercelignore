@@ -16,7 +16,7 @@
 /package.json
 /pnpm-lock.yaml
 /postcss.config.cjs
-/tailwindcss.config.cjs
+/tailwind.config.cjs
 /tsconfig.eslint.json
 /tsconfig.json
 /vercel.json
