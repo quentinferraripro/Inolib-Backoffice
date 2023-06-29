@@ -1,5 +1,5 @@
 {
-  "buildCommand": "vite build",
+  "buildCommand": "",
   "devCommand": "vite --port $PORT",
   "installCommand": "pnpm install --frozen-lockfile",
   "outputDirectory": "./dist",
