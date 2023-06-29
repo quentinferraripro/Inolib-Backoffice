@@ -55,7 +55,12 @@ export default function ArticleCreation() {
   //gestion de la modale
   const [open, setOpen] = useState(false);
   const handleCloseCreationModal = () => setOpen(false);
-  const handleOpenCreationModal = () => setOpen(true);
+  const handleOpenCreationModal = () => {
+    setOpen(true);
+    if (createModalRef.current) {
+      createModalRef.current.focus();
+    }
+  };
 
   const [createArticle] = useMutation(CREATE_ARTICLE);
 
@@ -96,6 +101,8 @@ export default function ArticleCreation() {
       console.log(response);
     })();
   };
+
+  const createModalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const titleEditor = quillTitleRef.current?.getEditor();
@@ -497,6 +504,7 @@ export default function ArticleCreation() {
           <button
             className="bg-[#0B3168] rounded-lg p-2 text-white hover:scale-105 transition ease-in delay-75"
             onClick={handleOpenCreationModal}
+            type="button"
           >
             Valider
           </button>

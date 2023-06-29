@@ -12,7 +12,7 @@ type UpdateModalProps = {
 
 function UpdateModal(props: UpdateModalProps) {
   return (
-    <div className={props.styles} role="dialog">
+    <div className={props.styles} role="dialog" aria-modal="true">
       {props.open && (
         <span className="bg-yellow-600 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center">
           <p className="py-4">Mettre à jour l’article ?</p>
@@ -25,6 +25,7 @@ function UpdateModal(props: UpdateModalProps) {
           <button
             className="bg-white rounded-md px-8 py-4 mt-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
             onClick={props.onUpdate}
+            type="button"
           >
             {props.titleCreateButton}
           </button>

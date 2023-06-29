@@ -46,7 +46,18 @@ export const GET_ARTICLE_DATA = gql`
 `;
 
 export default function ArticleManagementModule() {
-  const handleDeleteModalClose = () => void setDeleteModalState({ ...deleteModalState, isOpen: false });
+  const [deleteModalState, setDeleteModalState] = useState({
+    cuid: "",
+    isOpen: false,
+    title: "",
+  });
+
+  const { data, error, loading } = useQuery<GetArticleData>(GET_ARTICLE_DATA);
+  const [deleteArticle] = useMutation<DeleteArticleData>(DELETE_ARTICLE);
+
+  const handleDeleteModalClose = () => {
+    setDeleteModalState({ ...deleteModalState, isOpen: false });
+  };
 
   const handleDeleteModalDelete = async () => {
     const response = await deleteArticle({
@@ -58,17 +69,6 @@ export default function ArticleManagementModule() {
     window.location.reload();
     console.log(response);
   };
-
-  const [deleteModalState, setDeleteModalState] = useState({
-    cuid: "",
-    isOpen: false,
-    title: "",
-    handleDeleteModalClose,
-    handleDeleteModalDelete,
-  });
-
-  const { data, error, loading } = useQuery<GetArticleData>(GET_ARTICLE_DATA);
-  const [deleteArticle] = useMutation<DeleteArticleData>(DELETE_ARTICLE);
 
   const openDeleteModal: OpenDeleteModal = (cuid, title) => {
     setDeleteModalState({ ...deleteModalState, cuid, isOpen: true, title });
@@ -117,8 +117,8 @@ export default function ArticleManagementModule() {
           titleCloseButton="Fermer"
           titleDeleteButton="Supprimer"
           styles="absolute top-1/2 left-1/4"
-          onClose={deleteModalState.handleDeleteModalClose}
-          onDelete={() => void (async () => await deleteModalState.handleDeleteModalDelete())()}
+          onClose={handleDeleteModalClose}
+          onDelete={() => void (async () => await handleDeleteModalDelete())()}
         />
       )}
     </>

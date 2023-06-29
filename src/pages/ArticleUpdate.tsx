@@ -530,7 +530,9 @@ export default function ArticleUpdate() {
                   ></ReactQuill>
                 </div>
                 <div className="my-16">
-                  <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
+                  <button className="p-2 border-[1px] border-black rounded lg" type="button">
+                    ajouter une image
+                  </button>
                 </div>
                 <button onClick={handleOpenModal} type="button">
                   Valider
