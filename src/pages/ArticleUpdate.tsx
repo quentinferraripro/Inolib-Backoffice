@@ -3,7 +3,7 @@ import "react-quill/dist/quill.snow.css";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { nanoid } from "nanoid";
 import ReactQuill from "react-quill";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
 
 import quillTitleConfig from "../config/quillTitleConfig";
@@ -81,18 +81,21 @@ export default function ArticleUpdate() {
     },
   });
 
-  const handleUpdate = async (event: React.FormEvent) => {
+  const handleUpdate = (event: FormEvent) => {
     event.preventDefault();
-    const response = await updateArticle({
-      variables: {
-        id,
-        title,
-        content,
-      },
-    });
 
-    window.location.reload();
-    console.log(response);
+    void (async () => {
+      const response = await updateArticle({
+        variables: {
+          id,
+          title,
+          content,
+        },
+      });
+
+      window.location.reload();
+      console.log(response);
+    })();
   };
 
   const [updateArticle] = useMutation(UPDATE_ARTICLE);
@@ -222,7 +225,7 @@ export default function ArticleUpdate() {
 
               case "ql-list":
                 {
-                  switch (element.value) {
+                  switch ((element as HTMLButtonElement).value) {
                     case "ordered": {
                       element.addEventListener("click", handleToolbarEvent, { once: true });
                       element.setAttribute("aria-label", "transformer en liste ordonée");
@@ -374,7 +377,7 @@ export default function ArticleUpdate() {
 
               case "ql-list":
                 {
-                  switch (element.value) {
+                  switch ((element as HTMLButtonElement).value) {
                     case "ordered": {
                       element.addEventListener("click", handleToolbarEvent, { once: true });
                       element.setAttribute("aria-label", "transformer en liste ordonée");
@@ -503,7 +506,7 @@ export default function ArticleUpdate() {
               <header>
                 <h1 className="text-3xl font-bold underline mb-10">Modifier votre article</h1>
               </header>
-              <form onSubmit={(event) => void ((event) => handleUpdate(event))(event)}>
+              <form onSubmit={handleUpdate}>
                 <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
                 <div>
                   <ReactQuill
@@ -527,7 +530,9 @@ export default function ArticleUpdate() {
                   ></ReactQuill>
                 </div>
                 <div className="my-16">
-                  <button className="p-2 border-[1px] border-black rounded lg">ajouter une image</button>
+                  <button className="p-2 border-[1px] border-black rounded lg" type="button">
+                    ajouter une image
+                  </button>
                 </div>
                 <button onClick={handleOpenModal} type="button">
                   Valider

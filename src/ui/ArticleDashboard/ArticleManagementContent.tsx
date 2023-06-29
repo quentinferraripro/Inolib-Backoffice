@@ -4,11 +4,5 @@ type ContentProps = {
 };
 
 export default function ArticleManagementContent(props: ContentProps) {
-  return (
-    <>
-      <th className={props.styles} scope="col">
-        {props.content}
-      </th>
-    </>
-  );
+  return <td className={props.styles}>{props.content}</td>;
 }
