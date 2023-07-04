@@ -10,7 +10,7 @@ type UpdateModalProps = {
   styles: string;
 };
 
-function UpdateModal(props: UpdateModalProps) {
+function UserUpdateModal(props: UpdateModalProps) {
   return (
     <div className={props.styles} role="dialog" aria-modal="true">
       {props.open && (
@@ -35,4 +35,4 @@ function UpdateModal(props: UpdateModalProps) {
   );
 }
 
-export default UpdateModal;
+export default UserUpdateModal;

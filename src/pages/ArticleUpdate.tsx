@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
 import { setAttribute } from "../helpers";
-import UpdateModal from "../ui/ArticleDashboard/UpdateModal";
+import UpdateModal from "../ui/ArticleDashboard/ArticleUpdateModal";
 
 type Data = {
   findDocument: Document[];

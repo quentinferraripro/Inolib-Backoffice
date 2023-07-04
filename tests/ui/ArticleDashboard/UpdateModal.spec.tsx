@@ -2,11 +2,11 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { it, expect, vi } from "vitest";
 
-import UpdateModal from "../../../src/ui/ArticleDashboard/UpdateModal";
+import ArticleUpdateModal from "../../../src/ui/ArticleDashboard/ArticleUpdateModal";
 
 it("should render a dialog element", async () => {
   render(
-    <UpdateModal
+    <ArticleUpdateModal
       title=""
       titleCloseButton=""
       titleCreateButton=""
@@ -29,7 +29,7 @@ it("should call `onClose` callback when clicking on the button internal element"
   const spy = vi.spyOn(_, "callback");
 
   render(
-    <UpdateModal
+    <ArticleUpdateModal
       styles=""
       title=""
       titleCloseButton="Fermer"
@@ -53,7 +53,7 @@ it("should call `onClick` callback when clicking on the button internal element"
   const spy = vi.spyOn(_, "callback");
 
   render(
-    <UpdateModal
+    <ArticleUpdateModal
       styles=""
       title=""
       titleCloseButton=""

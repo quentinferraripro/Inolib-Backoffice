@@ -10,7 +10,7 @@ export function DashboardModuleList() {
           <DashboardButton href="/" styles="">
             Création d’utilisateur
           </DashboardButton>
-          <DashboardButton href="/" styles="">
+          <DashboardButton href="/usermanagementdashboard" styles="">
             Gestion d’utilisateur
           </DashboardButton>
         </DashboardButtonlist>

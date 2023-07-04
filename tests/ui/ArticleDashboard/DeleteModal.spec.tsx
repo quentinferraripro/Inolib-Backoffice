@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { it, expect, vi } from "vitest";
 
-import DeleteModal from "../../../src/ui/ArticleDashboard/DeleteModal";
+import ArticleDeleteModal from "../../../src/ui/ArticleDashboard/ArticleDeleteModal";
 
 const DELETE_ARTICLE = gql`
   mutation DeleteArticle($id: Cuid!) {
@@ -42,7 +42,7 @@ const mocks = [
 ];
 
 it("should render a dialog element", async () => {
-  render(<DeleteModal open={true} onClose={() => undefined} onDelete={() => undefined} />);
+  render(<ArticleDeleteModal open={true} onClose={() => undefined} onDelete={() => undefined} />);
   const modal = await screen.findByRole("dialog");
 
   expect(modal).toBeInTheDocument();
@@ -57,7 +57,7 @@ it("should call `onClose` callback when clicking on the button internal element"
 
   render(
     <MockedProvider mocks={mocks} addTypename={false}>
-      <DeleteModal
+      <ArticleDeleteModal
         styles=""
         title=""
         titleCloseButton="Fermer"
@@ -88,7 +88,7 @@ it("should call `onDelete` callback when clicking on the button internal element
 
   render(
     <MockedProvider mocks={mocks} addTypename={false}>
-      <DeleteModal
+      <ArticleDeleteModal
         styles=""
         title=""
         titleCloseButton=""

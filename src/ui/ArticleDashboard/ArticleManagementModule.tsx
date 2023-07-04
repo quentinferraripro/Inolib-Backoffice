@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation, useQuery, gql } from "@apollo/client";
 
 import ArticleManagementLine from "./ArticleManagementLine";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./ArticleDeleteModal";
 
 type DeleteArticleData = {
   deleteDocument: {
