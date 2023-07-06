@@ -2,10 +2,10 @@ import { type PropsWithChildren } from "react";
 
 import { Composite } from "../Composite";
 
-// import { type OpenDeleteModal } from "./ArticleManagementModule";
+import { type OpenDeleteModal } from "./UserManagementModule";
 
-// import UserManagementLink from "./UserManagementLink";
-// import UserManagementButton from "./UserManagementButton";
+import UserManagementLink from "./UserManagementLink";
+import UserManagementButton from "./UserManagementButton";
 import UserManagementFirstName from "./UserManagementFistName";
 import UserManagementLastname from "./UserManagementLastName";
 import UserManagementEmail from "./UserManagementEmail";
@@ -13,12 +13,13 @@ import UserManagementPhone from "./UserManagementPhone";
 import UserManagementPassword from "./UserManagementPassword";
 
 type Props = {
+  cuid: string;
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
   password: string;
-  // openDeleteModal: OpenDeleteModal;
+  openDeleteModal: OpenDeleteModal;
 };
 
 export default function UserManagementLine(props: PropsWithChildren<Props>) {
@@ -48,20 +49,20 @@ export default function UserManagementLine(props: PropsWithChildren<Props>) {
         <UserManagementEmail email={nohtmlEmail} styles="" />
         <UserManagementPhone phone={nohtmlPhone} styles="" />
         <UserManagementPassword password={nohtmlPassword} styles="" />
-        {/* <td> */}
-        {/* <Composite orientation="horizontal"> */}
-        {/* <UserManagementLink cuid={props.cuid} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
+        <td>
+          <Composite orientation="horizontal">
+            <UserManagementLink cuid={props.cuid} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
               Modifier
-            </UserManagementLink> */}
+            </UserManagementLink>
 
-        {/* <UserManagementButton
-              // onClick={() => void props.openDeleteModal(props.cuid, nohtmlTitle)}
+            <UserManagementButton
+              onClick={() => void props.openDeleteModal(props.cuid, nohtmlFirstName)}
               styles="p-2 mx-4 bg-red-600 rounded-lg"
             >
               Supprimer
-            </UserManagementButton> */}
-        {/* </Composite> */}
-        {/* </td> */}
+            </UserManagementButton>
+          </Composite>
+        </td>
       </>
     </tr>
   );

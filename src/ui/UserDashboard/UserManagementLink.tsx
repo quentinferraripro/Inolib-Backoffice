@@ -16,7 +16,7 @@ export default function UserManagementLink(props: PropsWithChildren<ButtonProps>
   }, [addRef]);
 
   return (
-    <a className={props.styles} href={`/contactupdate/${props.cuid}`} id={id} ref={ref} role="menuitem">
+    <a className={props.styles} href={`/userupdate/${props.cuid}`} id={id} ref={ref} role="menuitem">
       {props.children}
     </a>
   );

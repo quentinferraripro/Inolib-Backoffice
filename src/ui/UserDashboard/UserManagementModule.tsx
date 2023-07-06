@@ -1,17 +1,19 @@
-// import { useState } from "react";
+import { useState } from "react";
 import { useMutation, useQuery, gql } from "@apollo/client";
 
 import UserManagementLine from "./UserManagementLine";
-// import DeleteModal from "./DeleteModal";
+import UserDeleteModal from "./UserDeleteModal";
 
-// type DeleteArticleData = {
-//   deleteuser: {
-//     id?: string;
-//     title?: string;
-//     content?: string;
-//     createdAt?: string;
-//   };
-// };
+type DeleteUserData = {
+  deleteUser: {
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    password?: string;
+  };
+};
 
 type GetUserData = {
   users: User[];
@@ -26,15 +28,15 @@ type User = {
   password: string;
 };
 
-// export type OpenDeleteModal = (cuid: string, title: string) => void;
+export type OpenDeleteModal = (cuid: string, firstName: string) => void;
 
-// export const DELETE_ARTICLE = gql`
-//   mutation DeleteArticle($id: Cuid!) {
-//     deleteuser(id: $id) {
-//       id
-//     }
-//   }
-// `;
+export const DELETE_USER = gql`
+  mutation deleteUser($id: Cuid!) {
+    deleteUser(id: $id) {
+      id
+    }
+  }
+`;
 
 export const GET_USER_DATA = gql`
   query GetUserData {
@@ -50,33 +52,33 @@ export const GET_USER_DATA = gql`
 `;
 
 export default function UserManagementModule() {
-  // const [deleteModalState, setDeleteModalState] = useState({
-  //   cuid: "",
-  //   isOpen: false,
-  //   title: "",
-  // });
+  const [deleteModalState, setDeleteModalState] = useState({
+    cuid: "",
+    isOpen: false,
+    firstName: "",
+  });
 
   const { data, error, loading } = useQuery<GetUserData>(GET_USER_DATA);
-  // const [deleteArticle] = useMutation<DeleteArticleData>(DELETE_ARTICLE);
+  const [deleteUser] = useMutation<DeleteUserData>(DELETE_USER);
 
-  // const handleDeleteModalClose = () => {
-  //   setDeleteModalState({ ...deleteModalState, isOpen: false });
-  // };
+  const handleDeleteModalClose = () => {
+    setDeleteModalState({ ...deleteModalState, isOpen: false });
+  };
 
-  // const handleDeleteModalDelete = async () => {
-  //   const response = await deleteArticle({
-  //     variables: {
-  //       id: deleteModalState.cuid,
-  //     },
-  //   });
+  const handleDeleteModalDelete = async () => {
+    const response = await deleteUser({
+      variables: {
+        id: deleteModalState.cuid,
+      },
+    });
 
-  //   window.location.reload();
-  //   console.log(response);
-  // };
+    window.location.reload();
+    console.log(response);
+  };
 
-  // const openDeleteModal: OpenDeleteModal = (cuid, title) => {
-  //   setDeleteModalState({ ...deleteModalState, cuid, isOpen: true, title });
-  // };
+  const openDeleteModal: OpenDeleteModal = (cuid, firstName) => {
+    setDeleteModalState({ ...deleteModalState, cuid, isOpen: true, firstName });
+  };
 
   return (
     <>
@@ -101,12 +103,13 @@ export default function UserManagementModule() {
                 ? data.users.map((user) => (
                     <UserManagementLine
                       key={user.id}
-                      // cuid={user.id}
+                      cuid={user.id}
                       firstName={user.firstName}
                       lastName={user.lastName}
                       email={user.email}
                       phone={user.phone}
                       password={user.password}
+                      openDeleteModal={openDeleteModal}
                     />
                   ))
                 : null}
@@ -115,17 +118,17 @@ export default function UserManagementModule() {
         )}
       </div>
 
-      {/* {deleteModalState.isOpen && (
-        <DeleteModal
+      {deleteModalState.isOpen && (
+        <UserDeleteModal
           open={deleteModalState.isOpen}
-          title={deleteModalState.title}
+          firstName={deleteModalState.firstName}
           titleCloseButton="Fermer"
           titleDeleteButton="Supprimer"
           styles="absolute top-1/2 left-1/4"
           onClose={handleDeleteModalClose}
-          // onDelete={() => void (async () => await handleDeleteModalDelete())()}
+          onDelete={() => void (async () => await handleDeleteModalDelete())()}
         />
-      )} */}
+      )}
     </>
   );
 }
