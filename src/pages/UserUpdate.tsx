@@ -1,9 +1,8 @@
 import "react-quill/dist/quill.snow.css";
 
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { nanoid } from "nanoid";
 
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useParams } from "react-router-dom";
 
 import UserUpdateModal from "../ui/UserDashboard/UserUpdateModal";
@@ -46,7 +45,7 @@ export default function UserUpdate() {
       $phone: String!
       $password: String!
     ) {
-      updateDocument(
+      updateUser(
         id: $id
         firstName: $firstName
         lastName: $lastName
@@ -92,10 +91,10 @@ export default function UserUpdate() {
 
   const [updateUser] = useMutation(UPDATE_USER);
 
-  //gestion de la modale
-  // const [open, setOpen] = useState(false);
-  // const handleCloseModal = () => setOpen(false);
-  // const handleOpenModal = () => setOpen(true);
+  // gestion de la modale
+  const [open, setOpen] = useState(false);
+  const handleCloseModal = () => setOpen(false);
+  const handleOpenModal = () => setOpen(true);
 
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -103,20 +102,20 @@ export default function UserUpdate() {
   const [phone, setPhone] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleFirstName = (firstNameValue: string) => {
-    setFirstName(firstNameValue);
+  const handleFirstName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFirstName(event.target.value);
   };
-  const handleLastName = (lastNameValue: string) => {
-    setLastName(lastNameValue);
+  const handleLastName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLastName(event.target.value);
   };
-  const handleEmail = (emailValue: string) => {
-    setEmail(emailValue);
+  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
   };
-  const handlePhone = (phoneValue: string) => {
-    setPhone(phoneValue);
+  const handlePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(event.target.value);
   };
-  const handlePassword = (passwordValue: string) => {
-    setPassword(passwordValue);
+  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
   };
 
   useEffect(() => {
@@ -140,7 +139,7 @@ export default function UserUpdate() {
           {data !== undefined ? (
             <>
               <header>
-                <h1 className="text-3xl font-bold underline mb-10">Modifier les donnée de l'utilisateur</h1>
+                <h1 className="text-3xl font-bold underline mb-10">Modifier les donnée de l`&lsquo;`utilisateur</h1>
               </header>
               <form onSubmit={handleUpdate}>
                 <label className="text-xl² mb-5 font-bold">
@@ -151,9 +150,9 @@ export default function UserUpdate() {
                   Nom
                   <input value={lastName} onChange={handleLastName} />
                 </label>
-                <label className="text-xl² my-16 font-bold" type="email">
+                <label className="text-xl² my-16 font-bold">
                   Email
-                  <input value={email} onChange={handleEmail} />
+                  <input value={email} onChange={handleEmail} type="email" />
                 </label>
                 <label className="text-xl² my-16 font-bold">
                   Téléphone
@@ -164,10 +163,12 @@ export default function UserUpdate() {
                   <input value={password} onChange={handlePassword} />
                 </label>
                 <div className="my-16"></div>
-                <button /*onClick={handleOpenModal}*/ type="button">Valider</button>
-                {/* {open && (
+                <button onClick={handleOpenModal} type="button">
+                  Valider
+                </button>
+                {open && (
                   <UserUpdateModal
-                    firstName={firstname}
+                    firstName={firstName}
                     open={open}
                     titleCloseButton="Fermer"
                     titleCreateButton="Mettre à jour"
@@ -175,7 +176,7 @@ export default function UserUpdate() {
                     onClose={handleCloseModal}
                     onUpdate={handleUpdate}
                   />
-                )} */}
+                )}
               </form>
             </>
           ) : null}
