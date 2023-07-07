@@ -89,13 +89,15 @@ export default function UserManagementModule() {
           <p>Chargement...</p>
         ) : (
           <table className="border-y-2 border-y-black">
-            <caption className="text-2xl font-bold mb-6 ">Tableau de gestion des users</caption>
+            <caption className="text-2xl font-bold mb-6 ">Espace de gestion des utilisateurs</caption>
             <thead className="border-b-2 border-b-black">
-              <tr className="flex border-y-[1px] border-t-black w-full justify-around items-center">
-                <th className="px-10 py-2">Titre</th>
-                <th className="ml-16">Contenu</th>
-                <th>Date de création</th>
-                <th>Actions</th>
+              <tr className="flex border-y-[1px] border-t-black w-full">
+                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Nom</th>
+                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Prénom</th>
+                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Email</th>
+                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Téléphone</th>
+                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Mot de passe</th>
+                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Actions</th>
               </tr>
             </thead>
             <tbody>

@@ -28,14 +28,17 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
       <>
         <ArticleManagementTitle
           title={nohtmlTitle}
-          styles="px-10 py-2 focus:bg-slate-400 w-1/5 flex justify-center items-center"
+          styles="focus:bg-slate-400 w-1/4 flex justify-center items-center"
         />
         <ArticleManagementContent
           content={nohtmlContent}
-          styles="mr-10 focus:bg-slate-400 w-1/5 flex items-center truncate ..."
+          styles="focus:bg-slate-400 w-1/4 flex items-center justify-center truncate ..."
         />
-        <ArticleManagementCreationDate createdAt={props.createdAt} />
-        <td>
+        <ArticleManagementCreationDate
+          createdAt={props.createdAt}
+          styles="focus:bg-slate-400 w-1/4 flex justify-center items-center"
+        />
+        <td className="focus:bg-slate-400 w-1/4 flex justify-center items-center">
           <Composite orientation="horizontal">
             <ArticleManagementLink cuid={props.cuid} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
               Modifier

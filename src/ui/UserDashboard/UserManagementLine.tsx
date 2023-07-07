@@ -36,20 +36,23 @@ export default function UserManagementLine(props: PropsWithChildren<Props>) {
   const nohtmlPhone = password?.replace(/(<([^>]+)>)/gi, "");
 
   return (
-    <tr className="flex border-y-[1px] border-t-black w-[100vw] justify-around">
+    <tr className="flex border-y-[1px] border-t-black w-[100vw] justify-between">
       <>
         <UserManagementFirstName
           firstName={nohtmlFirstName}
-          styles="px-10 py-2 focus:bg-slate-400 w-1/5 flex justify-center items-center"
+          styles="py-2 focus:bg-slate-400 w-1/5 flex justify-center items-center"
         />
         <UserManagementLastname
           lastName={nohtmlLastName}
-          styles="mr-10 focus:bg-slate-400 w-1/5 flex items-center truncate ..."
+          styles=" focus:bg-slate-400 w-1/5 flex items-center justify-center truncate ..."
         />
-        <UserManagementEmail email={nohtmlEmail} styles="" />
-        <UserManagementPhone phone={nohtmlPhone} styles="" />
-        <UserManagementPassword password={nohtmlPassword} styles="" />
-        <td>
+        <UserManagementEmail email={nohtmlEmail} styles="focus:bg-slate-400 w-1/5 flex items-center justify-center" />
+        <UserManagementPhone phone={nohtmlPhone} styles="focus:bg-slate-400 w-1/5 flex items-center justify-center" />
+        <UserManagementPassword
+          password={nohtmlPassword}
+          styles="focus:bg-slate-400 w-1/5 flex items-center justify-center"
+        />
+        <td className="w-1/5 flex items-center justify-center">
           <Composite orientation="horizontal">
             <UserManagementLink cuid={props.cuid} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
               Modifier

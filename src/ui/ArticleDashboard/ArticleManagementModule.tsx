@@ -85,11 +85,11 @@ export default function ArticleManagementModule() {
           <table className="border-y-2 border-y-black">
             <caption className="text-2xl font-bold mb-6 ">Tableau de gestion des documents</caption>
             <thead className="border-b-2 border-b-black">
-              <tr className="flex border-y-[1px] border-t-black w-full justify-around items-center">
-                <th className="px-10 py-2">Titre</th>
-                <th className="ml-16">Contenu</th>
-                <th>Date de création</th>
-                <th>Actions</th>
+              <tr className="flex border-y-[1px] border-t-black w-full items-center">
+                <th className="w-1/4 flex justify-center items-center">Titre</th>
+                <th className="w-1/4 flex justify-center items-center">Contenu</th>
+                <th className="w-1/4 flex justify-center items-center">Date de création</th>
+                <th className="w-1/4 flex justify-center items-center">Actions</th>
               </tr>
             </thead>
             <tbody>
