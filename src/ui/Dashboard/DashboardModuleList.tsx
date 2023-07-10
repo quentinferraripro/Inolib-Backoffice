@@ -7,10 +7,10 @@ export function DashboardModuleList() {
     <ul className="flex justify-around w-[70%]">
       <DashboardModule moduleName="Utilisateur" styles="flex flex-col items-center">
         <DashboardButtonlist>
-          <DashboardButton href="/" styles="">
+          {/* <DashboardButton href="/" styles="">
             Création d’utilisateur
-          </DashboardButton>
-          <DashboardButton href="/" styles="">
+          </DashboardButton> */}
+          <DashboardButton href="/usermanagementdashboard" styles="">
             Gestion d’utilisateur
           </DashboardButton>
         </DashboardButtonlist>
@@ -27,7 +27,7 @@ export function DashboardModuleList() {
         </DashboardButtonlist>
       </DashboardModule>
 
-      <DashboardModule moduleName="Quizz" styles="flex flex-col items-center">
+      {/* <DashboardModule moduleName="Quizz" styles="flex flex-col items-center">
         <DashboardButtonlist>
           <DashboardButton href="/" styles="">
             Création des quizz
@@ -36,7 +36,7 @@ export function DashboardModuleList() {
             Gestion des quizz
           </DashboardButton>
         </DashboardButtonlist>
-      </DashboardModule>
+      </DashboardModule> */}
     </ul>
   );
 }

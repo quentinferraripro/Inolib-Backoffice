@@ -10,7 +10,7 @@ const showedDate = numbers.slice(0, 10);
 it("should render a sliced element of 10 characters", () => {
   render(
     <Composite orientation="horizontal">
-      <ArticleManagementcreationDate createdAt={showedDate} />
+      <ArticleManagementcreationDate createdAt={showedDate} styles="" />
     </Composite>
   );
 });

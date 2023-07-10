@@ -1,3 +1,4 @@
+import FastAccesMenu from "./FastAccesMenu";
 function NavigationBar() {
   return (
     <nav>
@@ -7,6 +8,7 @@ function NavigationBar() {
           <img className="hidden h-32 lg:block w-auto my-[-2rem] z-10 p-4" src="/logoinolibvf.png" alt="Inolib" />
         </div>
         <div className="hidden md:block md:text-xl md:p-4">
+          <FastAccesMenu />
           <a
             className="rounded-md px-3 p-1 font-medium text-[#0B3168] hover:bg-[#0B3168] hover:text-white md:max-h-14 transition ease-in delay-75"
             href="/"

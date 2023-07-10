@@ -1,21 +1,23 @@
 import { type FormEventHandler, type MouseEventHandler } from "react";
 
-type UpdateModalProps = {
-  title: string;
+type UserCreateModalProps = {
   open: boolean;
   onClose: MouseEventHandler<HTMLButtonElement>;
-  onUpdate: FormEventHandler<HTMLButtonElement>;
+  onCreate: FormEventHandler<HTMLButtonElement>;
+  firstName: string;
   titleCloseButton: string;
   titleCreateButton: string;
   styles: string;
+  createModalRef: () => void;
 };
 
-function UpdateModal(props: UpdateModalProps) {
+function UserCreateModal(props: UserCreateModalProps) {
+  const nohtmlfirstName = props.firstName.replace(/(<([^>]+)>)/gi, "");
   return (
-    <div className={props.styles} role="dialog" aria-modal="true">
+    <span className={props.styles} role="dialog" aria-modal="true">
       {props.open && (
-        <span className="bg-yellow-600 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center">
-          <p className="py-4">Mettre à jour l’article ?</p>
+        <span className="bg-red-700 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center">
+          <p className="py-4">Etes-vous sur de vouloir créer l’article : {nohtmlfirstName}?</p>
           <button
             className="bg-white rounded-md px-8 py-4 mb-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
             onClick={props.onClose}
@@ -24,15 +26,15 @@ function UpdateModal(props: UpdateModalProps) {
           </button>
           <button
             className="bg-white rounded-md px-8 py-4 mt-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
-            onClick={props.onUpdate}
+            onClick={props.onCreate}
             type="button"
           >
             {props.titleCreateButton}
           </button>
         </span>
       )}
-    </div>
+    </span>
   );
 }
 
-export default UpdateModal;
+export default UserCreateModal;

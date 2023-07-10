@@ -8,7 +8,7 @@ import ReactQuill from "react-quill";
 import quillTitleConfig from "../config/quillTitleConfig";
 import quillContentConfig from "../config/quillContentConfig";
 import { setAttribute } from "../helpers";
-import CreateModal from "../ui/ArticleDashboard/CreateModal";
+import CreateModal from "../ui/ArticleDashboard/ArticleCreateModal";
 
 //requete POST
 const CREATE_ARTICLE = gql`

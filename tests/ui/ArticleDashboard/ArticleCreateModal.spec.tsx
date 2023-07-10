@@ -2,18 +2,18 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { it, expect, vi } from "vitest";
 
-import UpdateModal from "../../../src/ui/ArticleDashboard/UpdateModal";
+import ArticleCreateModal from "../../../src/ui/ArticleDashboard/ArticleCreateModal";
 
 it("should render a dialog element", async () => {
   render(
-    <UpdateModal
+    <ArticleCreateModal
       title=""
       titleCloseButton=""
       titleCreateButton=""
       onClose={() => undefined}
-      onUpdate={() => undefined}
-      open={true}
+      onCreate={() => undefined}
       styles=""
+      open
     />
   );
   const modal = await screen.findByRole("dialog");
@@ -29,23 +29,24 @@ it("should call `onClose` callback when clicking on the button internal element"
   const spy = vi.spyOn(_, "callback");
 
   render(
-    <UpdateModal
+    <ArticleCreateModal
       styles=""
       title=""
       titleCloseButton="Fermer"
       titleCreateButton=""
       onClose={_.callback}
-      onUpdate={() => undefined}
+      onCreate={() => undefined}
       open={true}
     />
   );
+
   const user = userEvent.setup();
   await user.click(await screen.findByText("Fermer"));
 
   expect(spy).toHaveBeenCalled();
 });
 
-it("should call `onClick` callback when clicking on the button internal element", async () => {
+it("should call `onCreate` callback when clicking on the button internal element", async () => {
   const _ = {
     callback: () => undefined,
   };
@@ -53,19 +54,19 @@ it("should call `onClick` callback when clicking on the button internal element"
   const spy = vi.spyOn(_, "callback");
 
   render(
-    <UpdateModal
+    <ArticleCreateModal
       styles=""
       title=""
       titleCloseButton=""
-      titleCreateButton="Mettre à jour"
+      titleCreateButton="Créer"
       onClose={() => undefined}
-      onUpdate={_.callback}
+      onCreate={_.callback}
       open={true}
     />
   );
 
   const user = userEvent.setup();
-  await user.click(await screen.findByText("Mettre à jour"));
+  await user.click(await screen.findByText("Créer"));
 
   expect(spy).toHaveBeenCalled();
 });

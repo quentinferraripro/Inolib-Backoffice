@@ -11,7 +11,9 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <NavigationBar />
-        <AllRoutes />
+        <main>
+          <AllRoutes />
+        </main>
       </Router>
     </ApolloProvider>
   );
