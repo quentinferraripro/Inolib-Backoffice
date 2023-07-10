@@ -139,31 +139,60 @@ export default function UserUpdate() {
           {data !== undefined ? (
             <>
               <header>
-                <h1 className="text-3xl font-bold underline mb-10">Modifier les donnée de l`&lsquo;`utilisateur</h1>
+                <h1
+                  className="text-3xl font-bold underline mb-4
+                "
+                >
+                  Modifier les données de l&lsquo;utilisateur
+                </h1>
               </header>
-              <form onSubmit={handleUpdate}>
+              <form className="flex flex-col" onSubmit={handleUpdate}>
                 <label className="text-xl² mb-5 font-bold">
-                  Prénom
-                  <input value={firstName} onChange={handleFirstName} />
+                  Prénom :
+                  <input
+                    className="border-[1px] border-[#0B3168] rounded-md pl-2 ml-2"
+                    value={firstName}
+                    onChange={handleFirstName}
+                  />
                 </label>
-                <label className="text-xl² my-16 font-bold">
-                  Nom
-                  <input value={lastName} onChange={handleLastName} />
+                <label className="text-xl² mb-5 font-bold">
+                  Nom :
+                  <input
+                    className="border-[1px] border-[#0B3168] rounded-md pl-2 ml-2"
+                    value={lastName}
+                    onChange={handleLastName}
+                  />
                 </label>
-                <label className="text-xl² my-16 font-bold">
-                  Email
-                  <input value={email} onChange={handleEmail} type="email" />
+                <label className="text-xl² mb-5 font-bold">
+                  Email :
+                  <input
+                    className="border-[1px] border-[#0B3168] rounded-md pl-2 ml-2"
+                    value={email}
+                    onChange={handleEmail}
+                    type="email"
+                  />
                 </label>
-                <label className="text-xl² my-16 font-bold">
-                  Téléphone
-                  <input value={phone} onChange={handlePhone} />
+                <label className="text-xl² mb-5 font-bold">
+                  Téléphone :
+                  <input
+                    className="border-[1px] border-[#0B3168] rounded-md pl-2 ml-2"
+                    value={phone}
+                    onChange={handlePhone}
+                  />
                 </label>
-                <label className="text-xl² my-16 font-bold">
-                  mot de passe
-                  <input value={password} onChange={handlePassword} />
+                <label className="text-xl² mb-5 font-bold">
+                  mot de passe :
+                  <input
+                    className="border-[1px] border-[#0B3168] rounded-md pl-2 ml-2"
+                    value={password}
+                    onChange={handlePassword}
+                  />
                 </label>
-                <div className="my-16"></div>
-                <button onClick={handleOpenModal} type="button">
+                <button
+                  className="bg-[#0B3168] rounded-md px-8 py-4 text-white text-xl hover:scale-105 transition ease-in delay-75 w-24 flex justify-center"
+                  onClick={handleOpenModal}
+                  type="button"
+                >
                   Valider
                 </button>
                 {open && (

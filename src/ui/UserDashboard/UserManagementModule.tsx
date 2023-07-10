@@ -11,6 +11,7 @@ type DeleteUserData = {
     lastName?: string;
     email?: string;
     phone?: string;
+    isAdmin: boolean;
     password?: string;
   };
 };
@@ -25,6 +26,7 @@ type User = {
   lastName: string;
   email: string;
   phone: string;
+  isAdmin: boolean;
   password: string;
 };
 
@@ -46,6 +48,7 @@ export const GET_USER_DATA = gql`
       lastName
       email
       phone
+      isAdmin
       password
     }
   }
@@ -92,12 +95,13 @@ export default function UserManagementModule() {
             <caption className="text-2xl font-bold mb-6 ">Espace de gestion des utilisateurs</caption>
             <thead className="border-b-2 border-b-black">
               <tr className="flex border-y-[1px] border-t-black w-full">
-                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Nom</th>
-                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Prénom</th>
-                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Email</th>
-                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Téléphone</th>
-                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Mot de passe</th>
-                <th className="focus:bg-slate-400 w-1/5 flex items-center justify-center">Actions</th>
+                <th className="focus:bg-slate-400 w-[14%] flex items-center justify-center">Nom</th>
+                <th className="focus:bg-slate-400 w-[14%] flex items-center justify-center">Prénom</th>
+                <th className="focus:bg-slate-400 w-[14%] flex items-center justify-center">Email</th>
+                <th className="focus:bg-slate-400 w-[14%] flex items-center justify-center">Téléphone</th>
+                <th className="focus:bg-slate-400 w-[14%] flex items-center justify-center">Rôle</th>
+                <th className="focus:bg-slate-400 w-[14%] flex items-center justify-center">Mot de passe</th>
+                <th className="focus:bg-slate-400 w-[14%] flex items-center justify-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -110,6 +114,7 @@ export default function UserManagementModule() {
                       lastName={user.lastName}
                       email={user.email}
                       phone={user.phone}
+                      isAdmin={user.isAdmin}
                       password={user.password}
                       openDeleteModal={openDeleteModal}
                     />
