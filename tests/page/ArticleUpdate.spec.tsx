@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import type { MockedProviderProps } from "@apollo/client/testing";
 import { MockedProvider } from "@apollo/client/testing";
-import userEvent from "@testing-library/user-event";
+// import userEvent from "@testing-library/user-event";
 import type { DocumentNode } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { expect, it } from "vitest";

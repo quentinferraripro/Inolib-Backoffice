@@ -1,4 +1,8 @@
+/.next/
+/.vercel/
+/build/
+/coverage/
 /node_modules/
-/dist/
+/out/
 
 !/**/*.cjs
