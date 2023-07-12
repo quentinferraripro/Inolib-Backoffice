@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, type PropsWithChildren } from "react";
 import { useComposite } from "../Composite";
+import Link from "next/link";
 
 type ButtonProps = {
   cuid: string;
@@ -16,8 +17,8 @@ export default function UserManagementLink(props: PropsWithChildren<ButtonProps>
   }, [addRef]);
 
   return (
-    <a className={props.styles} href={`/userupdate/${props.cuid}`} id={id} ref={ref} role="menuitem">
+    <Link className={props.styles} href={`/userupdate/${props.cuid}`} id={id} ref={ref} role="menuitem">
       {props.children}
-    </a>
+    </Link>
   );
 }

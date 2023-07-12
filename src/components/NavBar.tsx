@@ -1,32 +1,47 @@
+import Image from "next/image";
+import Link from "next/link";
+
 import FastAccesMenu from "./FastAccesMenu";
 function NavigationBar() {
   return (
     <nav>
       <div className="w-full flex justify-between">
         <div>
-          <img className="block h-16 w-auto lg:hidden z-10" src="/logoinolibvf.png" alt="Inolib" />
-          <img className="hidden h-32 lg:block w-auto my-[-2rem] z-10 p-4" src="/logoinolibvf.png" alt="Inolib" />
+          <Image
+            className="block h-16 w-8 lg:hidden z-10"
+            height={120}
+            width={200}
+            src="/logoinolibvf.png"
+            alt="Inolib"
+          />
+          <Image
+            className="hidden h-32 w-8 lg:block  my-[-2rem] z-10 p-4"
+            height={120}
+            width={200}
+            src="/logoinolibvf.png"
+            alt="Inolib"
+          />
         </div>
         <div className="hidden md:block md:text-xl md:p-4">
           <FastAccesMenu />
-          <a
+          <Link
             className="rounded-md px-3 p-1 font-medium text-[#0B3168] hover:bg-[#0B3168] hover:text-white md:max-h-14 transition ease-in delay-75"
             href="/"
           >
             Accueil
-          </a>
-          <a
+          </Link>
+          <Link
             className="rounded-md px-3 p-1 font-medium text-[#0B3168] hover:bg-[#0B3168] hover:text-white md:max-h-14 transition ease-in delay-75"
             href="/dashboard"
           >
             Gestion
-          </a>
-          <a
+          </Link>
+          <Link
             className="rounded-md px-3 p-1 font-medium text-[#0B3168] hover:bg-[#0B3168] hover:text-white md:max-h-14 transition ease-in delay-75"
             href="/connexion"
           >
             Connexion
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
