@@ -1,8 +1,8 @@
 module.exports = {
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:jsx-a11y/recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
@@ -19,7 +19,7 @@ module.exports = {
     },
     ecmaVersion: "latest",
     sourceType: "module",
-    project: ["./tsconfig.eslint.json"],
+    project: "./tsconfig.eslint.json",
     tsconfigRootDir: __dirname,
   },
   rules: {

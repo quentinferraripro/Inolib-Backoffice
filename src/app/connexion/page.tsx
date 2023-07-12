@@ -1,6 +1,6 @@
 import BasicButton from "@components/Button/BasicButton";
 
-export default function Connexion() {
+const Connexion = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className=" text-3xl text-[#0B3168] md:mb-16 md:mt-10">Connectez-vous</h1>
@@ -20,4 +20,6 @@ export default function Connexion() {
       </form>
     </div>
   );
-}
+};
+
+export default Connexion;
