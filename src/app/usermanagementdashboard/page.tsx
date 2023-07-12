@@ -1,9 +1,11 @@
 import UserManagementModule from "../../ui/UserDashboard/UserManagementModule";
 
-export default function UserManagementDashboard() {
+const UserManagementDashboard = () => {
   return (
     <div className="relative">
       <UserManagementModule />
     </div>
   );
-}
+};
+
+export default UserManagementDashboard;

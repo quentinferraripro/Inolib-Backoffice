@@ -1,3 +1,5 @@
+"use client";
+
 import "react-quill/dist/quill.snow.css";
 
 import { gql, useMutation, useQuery } from "@apollo/client";
