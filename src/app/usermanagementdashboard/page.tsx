@@ -1,4 +1,4 @@
-import UserManagementModule from "../ui/UserDashboard/UserManagementModule";
+import UserManagementModule from "../../ui/UserDashboard/UserManagementModule";
 
 export default function UserManagementDashboard() {
   return (

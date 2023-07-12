@@ -1,11 +1,9 @@
 import "react-quill/dist/quill.snow.css";
 
 import { gql, useMutation, useQuery } from "@apollo/client";
-
 import { useEffect, useState, type FormEvent } from "react";
-import { useParams } from "react-router-dom";
 
-import UserUpdateModal from "../ui/UserDashboard/UserUpdateModal";
+import UserUpdateModal from "../../../ui/UserDashboard/UserUpdateModal";
 
 type Data = {
   findUser: User[];
@@ -20,8 +18,13 @@ type User = {
   password?: string;
 };
 
-export default function UserUpdate() {
-  const { id } = useParams();
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+const UserUpdate = ({ params }: Props) => {
   const USER = gql`
     query findUser($id: Cuid!) {
       findUser(id: $id) {
@@ -65,7 +68,7 @@ export default function UserUpdate() {
 
   const { data, error, loading } = useQuery<Data>(USER, {
     variables: {
-      id,
+      id: params.id,
     },
   });
 
@@ -75,7 +78,7 @@ export default function UserUpdate() {
     void (async () => {
       const response = await updateUser({
         variables: {
-          id,
+          id: params.id,
           firstName,
           lastName,
           email,
@@ -213,4 +216,6 @@ export default function UserUpdate() {
       )}
     </>
   );
-}
+};
+
+export default UserUpdate;

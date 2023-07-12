@@ -1,5 +1,7 @@
-import { useState } from "react";
+"use client";
+
 import { useMutation, useQuery, gql } from "@apollo/client";
+import { useState } from "react";
 
 import UserManagementLine from "./UserManagementLine";
 import UserDeleteModal from "./UserDeleteModal";

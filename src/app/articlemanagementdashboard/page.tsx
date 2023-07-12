@@ -1,4 +1,4 @@
-import ArticleManagementModule from "../ui/ArticleDashboard/ArticleManagementModule";
+import ArticleManagementModule from "../../ui/ArticleDashboard/ArticleManagementModule";
 
 export default function ArticleManagementDashboard() {
   return (

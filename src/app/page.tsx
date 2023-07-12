@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 import BasicButton from "@components/Button/BasicButton";
 
-export default function Home() {
+const Home = () => {
   return (
     <div className="text-[#0B3168]">
       <h1 className="text-center text-3xl mb-20">Bienvenue sur le site gestion d’Inolib</h1>
@@ -10,9 +12,9 @@ export default function Home() {
             <p className="text-lg pb-10">
               Si vous n’êtes pas membre de notre équipe retournez sur notre site en cliquant ici
             </p>
-            <a href="/connexion">
+            <Link href="/connexion">
               <BasicButton label="employé" type="button" color="white" styles="border-[#0B3168] border-[1px]" />
-            </a>
+            </Link>
           </div>
           <div className="flex flex-col justify-center items-center md:w-1/2">
             <p className="text-lg pb-16">Sinon connectez-vous en cliquant ici</p>
@@ -24,4 +26,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default Home;
