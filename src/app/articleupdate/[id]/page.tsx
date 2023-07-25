@@ -13,10 +13,10 @@ import { setAttribute } from "../../../helpers";
 import ArticleUpdateModal from "../../../ui/ArticleDashboard/ArticleUpdateModal";
 
 type Data = {
-  findDocument: Document[];
+  findArticle: Article[];
 };
 
-type Document = {
+type Article = {
   id?: string;
   title?: string;
   content?: string;
@@ -60,8 +60,8 @@ const observeOptions = (listbox: Element, listboxLabel: string) => {
 
 const ArticleUpdate = ({ params }: Props) => {
   const ARTICLE = gql`
-    query findDocument($id: Cuid!) {
-      findDocument(id: $id) {
+    query findArticle($id: Cuid!) {
+      findArticle(id: $id) {
         id
         title
         content
@@ -72,8 +72,8 @@ const ArticleUpdate = ({ params }: Props) => {
 
   // requete UPDATE
   const UPDATE_ARTICLE = gql`
-    mutation updateDocument($id: Cuid!, $title: String!, $content: String!) {
-      updateDocument(id: $id, title: $title, content: $content) {
+    mutation updateArticle($id: Cuid!, $title: String!, $content: String!) {
+      updateArticle(id: $id, title: $title, content: $content) {
         id
         title
         content
@@ -134,9 +134,9 @@ const ArticleUpdate = ({ params }: Props) => {
   }, [changed]);
 
   useEffect(() => {
-    if (data?.findDocument[0]) {
-      setTitle(data?.findDocument[0].title || "");
-      setContent(data?.findDocument[0].content || "");
+    if (data?.findArticle[0]) {
+      setTitle(data?.findArticle[0].title || "");
+      setContent(data?.findArticle[0].content || "");
     }
 
     const titleEditor = quillTitleRef.current?.getEditor();
@@ -498,7 +498,7 @@ const ArticleUpdate = ({ params }: Props) => {
         classObserver.disconnect();
       });
     };
-  }, [handleToolbarEvent, data?.findDocument]);
+  }, [handleToolbarEvent, data?.findArticle]);
 
   return (
     <>
