@@ -7,7 +7,7 @@ import ArticleManagementLine from "./ArticleManagementLine";
 import DeleteModal from "./ArticleDeleteModal";
 
 type DeleteArticleData = {
-  deleteDocument: {
+  deleteArticle: {
     id?: string;
     title?: string;
     content?: string;
@@ -16,10 +16,10 @@ type DeleteArticleData = {
 };
 
 type GetArticleData = {
-  documents: Document[];
+  articles: Article[];
 };
 
-type Document = {
+type Article = {
   id: string;
   title: string;
   content: string;
@@ -30,7 +30,7 @@ export type OpenDeleteModal = (cuid: string, title: string) => void;
 
 export const DELETE_ARTICLE = gql`
   mutation DeleteArticle($id: Cuid!) {
-    deleteDocument(id: $id) {
+    deleteArticle(id: $id) {
       id
     }
   }
@@ -38,7 +38,7 @@ export const DELETE_ARTICLE = gql`
 
 export const GET_ARTICLE_DATA = gql`
   query GetArticleData {
-    documents {
+    articles {
       id
       title
       content
@@ -85,7 +85,7 @@ export default function ArticleManagementModule() {
           <p>Chargement...</p>
         ) : (
           <table className="border-y-2 border-y-black">
-            <caption className="text-2xl font-bold mb-6 ">Tableau de gestion des documents</caption>
+            <caption className="text-2xl font-bold mb-6 ">Tableau de gestion des Articles</caption>
             <thead className="border-b-2 border-b-black">
               <tr className="flex border-y-[1px] border-t-black w-full items-center">
                 <th className="w-1/4 flex justify-center items-center">Titre</th>
@@ -96,13 +96,13 @@ export default function ArticleManagementModule() {
             </thead>
             <tbody>
               {data !== undefined
-                ? data.documents.map((document) => (
+                ? data.articles.map((article) => (
                     <ArticleManagementLine
-                      key={document.id}
-                      cuid={document.id}
-                      title={document.title}
-                      createdAt={document.createdAt}
-                      content={document.content}
+                      key={article.id}
+                      cuid={article.id}
+                      title={article.title}
+                      createdAt={article.createdAt}
+                      content={article.content}
                       openDeleteModal={openDeleteModal}
                     />
                   ))
