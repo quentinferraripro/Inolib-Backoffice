@@ -7,10 +7,10 @@ export function DashboardModuleList() {
     <ul className="flex justify-around w-[70%]">
       <DashboardModule moduleName="Utilisateur" styles="flex flex-col items-center">
         <DashboardButtonlist>
-          <DashboardButton index={0} href="/" styles="">
+          {/* <DashboardButton href="/" styles="">
             Création d’utilisateur
-          </DashboardButton>
-          <DashboardButton index={1} href="/" styles="">
+          </DashboardButton> */}
+          <DashboardButton href="/usermanagementdashboard" styles="">
             Gestion d’utilisateur
           </DashboardButton>
         </DashboardButtonlist>
@@ -18,25 +18,25 @@ export function DashboardModuleList() {
 
       <DashboardModule moduleName="Articles" styles="flex flex-col items-center">
         <DashboardButtonlist>
-          <DashboardButton index={0} href="/articlecreation" styles="">
+          <DashboardButton href="/articlecreation" styles="">
             Création d’article
           </DashboardButton>
-          <DashboardButton index={1} href="/articlemanagementdashboard" styles="">
+          <DashboardButton href="/articlemanagementdashboard" styles="">
             Gestion d’article
           </DashboardButton>
         </DashboardButtonlist>
       </DashboardModule>
 
-      <DashboardModule moduleName="Quizz" styles="flex flex-col items-center">
+      {/* <DashboardModule moduleName="Quizz" styles="flex flex-col items-center">
         <DashboardButtonlist>
-          <DashboardButton index={0} href="/" styles="">
+          <DashboardButton href="/" styles="">
             Création des quizz
           </DashboardButton>
-          <DashboardButton index={1} href="/" styles="">
+          <DashboardButton href="/" styles="">
             Gestion des quizz
           </DashboardButton>
         </DashboardButtonlist>
-      </DashboardModule>
+      </DashboardModule> */}
     </ul>
   );
 }

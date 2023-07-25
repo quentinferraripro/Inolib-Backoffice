@@ -1,158 +1,342 @@
+"use client";
+
 import {
   createContext,
   useContext,
   useEffect,
-  type Dispatch,
-  type KeyboardEvent,
+  useId,
+  useReducer,
+  type HTMLAttributes,
   type PropsWithChildren,
   type RefObject,
 } from "react";
-import { useImmerReducer } from "use-immer";
 
-export type Axis = "horizontal" | "vertical";
-type ContextId = string;
-type Focusables = Record<Index, Ref>;
-export type Index = number;
+import { useDidUpdateEffect } from "../hooks/useDidUpdateEffect";
+
+type AriaOrientation = Attributes["aria-orientation"];
+type Attributes = HTMLAttributes<HTMLElement>;
+type CompositeId = string;
+type Composites = Record<CompositeId, Ref[]>;
+type Index = number;
 type Ref = RefObject<HTMLElement>;
-
-type DispatchFunction = Dispatch<KeyboardEvent>;
-type RegisterFunction = (id: ContextId, index: Index, ref: Ref) => void;
+type Role = Attributes["role"];
 
 type Props = {
-  readonly axis?: Axis | undefined;
-  readonly focusableIndex?: Index | undefined;
-  readonly id: ContextId;
+  readonly initialIndex?: Index | undefined;
+  readonly onFocus?: (event: FocusEvent) => void | undefined;
+  readonly orientation?: AriaOrientation;
+  readonly role?: Role;
 };
 
 type State = {
-  readonly axis: NonNullable<Props["axis"]>;
-  focusables: Focusables;
-  focusableIndex: NonNullable<Props["focusableIndex"]>;
-  readonly id: ContextId;
+  readonly id: CompositeId;
+  readonly focusableIndex: Index;
+  readonly orientation: NonNullable<AriaOrientation>;
 };
 
-type Store = Record<ContextId, Focusables>;
+class CompositeError extends Error {}
 
-const store: Store = {};
+/** Context object containing the internal state of the {@linkcode Composite} component. */
+const CompositeContext = createContext<State>({} as State);
 
-//Gestion du passage du focus par changement du tabindex
-const focus = (draft: State, index: Index) => {
-  Object.values(draft.focusables).forEach((_ref, _index) => {
-    const element = _ref.current;
+/** Registry shared between all {@linkcode Composite} components. */
+const composites: Composites = {};
 
-    if (_index === index) {
+/**
+ * Returns a callback which adds a reference to a navigable descendant in the shared registry.
+ *
+ * @param id The id of the {@linkcode Composite} component.
+ *
+ * @returns The callback for the {@linkcode useComposite} hook.
+ *
+ * @see {@linkcode Composite} component
+ * @see {@linkcode useComposite} hook
+ */
+const addRef = (id: CompositeId) => (ref: Ref) => {
+  if (!composites[id].includes(ref)) {
+    composites[id].push(ref);
+  }
+};
+
+/**
+ * Returns the default orientation for a given role.
+ *
+ * The following roles have an implicit `aria-orientation` value: `"listbox"`, `"menu"`, `"menubar"`, `"scrollbar"`,
+ * `"separator"`, `"slider"`, `"tablist"`, `"toolbar"`, and `"tree"`.
+ *
+ * @param role The WAI-ARIA role.
+ *
+ * @returns `"horizontal"` or `"vertical"` if `role` has an implicit `aria-orientation` value, `undefined` otherwise.
+ *
+ * @see {@link https://www.w3.org/TR/wai-aria-1.2/#aria-orientation}
+ */
+const defaultOrientation = (role: Role) => {
+  switch (role) {
+    case "menubar":
+    case "separator":
+    case "slider":
+    case "tablist":
+    case "toolbar": {
+      return "horizontal";
+    }
+
+    case "listbox":
+    case "menu":
+    case "scrollbar":
+    case "tree": {
+      return "vertical";
+    }
+  }
+
+  return undefined;
+};
+
+/**
+ * Sets the browser focus on a navigable descendant.
+ *
+ * @param state The internal state of the {@linkcode Composite} component.
+ * @param index The navigation index of the element.
+ *
+ * @see {@linkcode Composite} component
+ */
+const focus = (state: State, index: Index) => {
+  for (let i = 0; i < composites[state.id].length; i++) {
+    const element = composites[state.id][i].current;
+
+    if (i === index) {
       element?.setAttribute("tabindex", "0");
       element?.focus();
     } else {
       element?.setAttribute("tabindex", "-1");
     }
-  });
-
-  return draft;
+  }
 };
 
-//gestion du focus au prochain élément si est dans le tableau
-const focusNext = (draft: State) => {
-  if (draft.focusableIndex < Object.keys(draft.focusables).length - 1) {
-    draft.focusableIndex += 1;
+/**
+ * Decrements the index of the focusable descendant.
+ *
+ * @param state The internal state of the {@linkcode Composite} component.
+ *
+ * @returns The updated internal state.
+ *
+ * @see {@linkcode Composite} component
+ */
+const decrementFocusableIndex = (state: State) => {
+  if (state.focusableIndex > 0) {
+    state = { ...state, focusableIndex: state.focusableIndex - 1 };
   }
 
-  return draft;
+  return state;
 };
 
-//gestion focus élément précédent
-const focusPrevious = (draft: State) => {
-  if (draft.focusableIndex > 0) {
-    draft.focusableIndex -= 1;
+/**
+ * Increments the index of the focusable descendant.
+ *
+ * @param state The internal state of the {@linkcode Composite} component.
+ *
+ * @returns The updated internal state.
+ *
+ * @see {@linkcode Composite} component
+ */
+const incrementFocusableIndex = (state: State) => {
+  if (state.focusableIndex < composites[state.id].length - 1) {
+    state = { ...state, focusableIndex: state.focusableIndex + 1 };
   }
 
-  return draft;
+  return state;
 };
 
-//gestion des touches est appelée par la fonction dispatch
-const reducer = (draft: State, event: KeyboardEvent) => {
-  if (Object.keys(draft.focusables).length === 0) {
-    draft.focusables = store[draft.id];
-  }
-  switch (draft.axis) {
-    case "horizontal": {
-      switch (event.code) {
-        case "ArrowLeft": {
-          return focusPrevious(draft);
+/**
+ * Handles mouse on `click` and keyboard navigation on `keydown`.
+ *
+ * @param state The internal state of the {@linkcode Composite} component.
+ * @param event The dispatched event object.
+ *
+ * @returns The updated internal state.
+ *
+ * @see {@linkcode Composite} component
+ * @see {@link https://developer.mozilla.org/docs/Web/API/KeyboardEvent}
+ * @see {@link https://developer.mozilla.org/docs/Web/API/MouseEvent}
+ */
+const reducer = (state: State, event: KeyboardEvent | MouseEvent) => {
+  switch (event.type) {
+    case "click": {
+      state = { ...state, focusableIndex: composites[state.id].findIndex((ref) => ref.current === event.target) };
+      break;
+    }
+
+    case "keydown": {
+      switch (state.orientation) {
+        case "horizontal": {
+          switch ((event as KeyboardEvent).code) {
+            case "ArrowLeft": {
+              state = decrementFocusableIndex(state);
+              break;
+            }
+
+            case "ArrowRight": {
+              state = incrementFocusableIndex(state);
+              break;
+            }
+          }
+          break;
         }
 
-        case "ArrowRight": {
-          return focusNext(draft);
+        case "vertical": {
+          switch ((event as KeyboardEvent).code) {
+            case "ArrowDown": {
+              state = incrementFocusableIndex(state);
+              break;
+            }
+
+            case "ArrowUp": {
+              state = decrementFocusableIndex(state);
+              break;
+            }
+          }
+          break;
         }
       }
       break;
     }
-
-    case "vertical": {
-      switch (event.code) {
-        case "ArrowDown": {
-          return focusNext(draft);
-        }
-
-        case "ArrowUp": {
-          return focusPrevious(draft);
-        }
-      }
-      break;
-    }
   }
 
-  return draft;
+  return state;
 };
 
-//register: pour enregistrer une référence d'un élément dans un objet "Store"
-const register: RegisterFunction = (id, index, ref) => {
-  store[id][index] ??= ref;
-};
-
-//création des 3 context
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const DispatchContext = createContext<DispatchFunction>(() => {});
-const RegisterContext = createContext(register);
-const StateContext = createContext<State>({} as State);
-
-//costum hook contenant les contexts
-
+/**
+ * Use this hook to add the ref of a navigable descendant in the shared registry.
+ *
+ * @example
+ *   export const MyButton(({ children }) => {
+ *     const { addRef } = useComposite();
+ *     const ref = useRef<HTMLButtonElement>(null);
+ *
+ *     useEffect(() => {
+ *       addRef(ref);
+ *     }, [addRef]);
+ *
+ *     return <button ref={ref}>{children}</button>;
+ *   });
+ *
+ * @returns An object providing `addRef`.
+ */
 export const useComposite = () => {
+  const state = useContext(CompositeContext);
+
   return {
-    dispatch: useContext(DispatchContext),
-    register: useContext(RegisterContext),
-    state: useContext(StateContext),
+    addRef: addRef(state.id),
   };
 };
 
-export const Composite = (props: PropsWithChildren<Props>) => {
-  const focusableIndex = props.focusableIndex ?? 0;
+/**
+ * Use this component to handle mouse and keyboard navigation inside a composite widget.
+ *
+ * This component does not generate any element in the DOM.
+ *
+ * @example
+ *   const reducer = (state, event) => {
+ *     return { ...state, activeDescendant: event.target.id };
+ *   };
+ *
+ *   const Item = ({ children }) => {
+ *     const { addRef } = useComposite();
+ *     const id = useId();
+ *     const ref = useRef<HTMLButtonElement>(null);
+ *
+ *     useEffect(() => {
+ *       addRef(ref);
+ *     }, [addRef]);
+ *
+ *     return (
+ *       <li role="none">
+ *         <button id={id} ref={ref} role="menuitem">
+ *           {children}
+ *         </button>
+ *       </li>
+ *     );
+ *   };
+ *
+ *   export const MyMenu = () => {
+ *     const [state, dispatch] = useReducer(reducer, { activeDescendant: "" });
+ *
+ *     return (
+ *       <ul aria-activedescendant={state.activeDescendant} aria-orientation="horizontal" role="menu">
+ *         <Composite onFocus={dispatch} role="menu">
+ *           <Item>Update</Item>
+ *           <Item>Delete</Item>
+ *         </Composite>
+ *       </ul>
+ *     );
+ *   };
+ *
+ * @param props The props passed to the component.
+ * @param props.children The children passed to the component.
+ * @param props.initialIndex The position of the initially focusable descendant.
+ * @param props.onFocus The callback function to be called when the focus is set on one of the navigable descendants.
+ * @param props.orientation The value of the widget’s `aria-orientation` attribute.
+ * @param props.role The value of the widget’s `role` attribute.
+ *
+ * @returns The JSX element to render.
+ *
+ * @throws A {@linkcode CompositeError} when `aria-orientation` is undefined and `role` does not have an implicit
+ *   `aria-orientation` value.
+ * @see {@link https://www.w3.org/TR/wai-aria-1.2/#aria-orientation}
+ */
+export const Composite = ({ children, initialIndex = 0, onFocus, orientation, role }: PropsWithChildren<Props>) => {
+  const id = useId();
 
-  const [state, dispatch] = useImmerReducer(reducer, {
-    axis: props.axis ?? "vertical",
-    focusables: {},
-    focusableIndex,
-    id: props.id,
-  });
+  orientation = orientation ?? defaultOrientation(role);
 
-  store[props.id] ??= {};
+  if (orientation === undefined) {
+    throw new CompositeError(
+      "Cannot determine navigation orientation, 'aria-orientation' is undefined and 'role' does not have an implicit " +
+        "'aria-orientation' value."
+    );
+  }
+
+  const [state, dispatch] = useReducer(
+    reducer,
+    Object.freeze({
+      id,
+      focusableIndex: initialIndex,
+      orientation,
+    })
+  );
+
+  composites[id] ??= [];
 
   useEffect(() => {
-    Object.values(store[props.id]).forEach((ref, index) => {
-      ref.current?.setAttribute("tabindex", index === focusableIndex ? "0" : "-1");
-    });
-  }, [focusableIndex, props.id]);
+    for (let i = 0; i < composites[id].length; i++) {
+      const element = composites[id][i].current;
 
-  useEffect(() => {
+      element?.addEventListener("click", dispatch);
+      element?.addEventListener("keydown", dispatch);
+
+      if (onFocus !== undefined) {
+        element?.addEventListener("focus", onFocus);
+      }
+
+      element?.setAttribute("tabindex", i === initialIndex ? "0" : "-1");
+    }
+
+    return () => {
+      for (const ref of composites[id]) {
+        const element = ref.current;
+
+        element?.removeEventListener("click", dispatch);
+        element?.removeEventListener("keydown", dispatch);
+
+        if (onFocus !== undefined) {
+          element?.removeEventListener("focus", onFocus);
+        }
+      }
+    };
+  }, [dispatch, id, initialIndex, onFocus]);
+
+  useDidUpdateEffect(() => {
     focus(state, state.focusableIndex);
   }, [state]);
 
-  return (
-    <DispatchContext.Provider value={dispatch}>
-      <RegisterContext.Provider value={register}>
-        <StateContext.Provider value={state}>{props.children}</StateContext.Provider>
-      </RegisterContext.Provider>
-    </DispatchContext.Provider>
-  );
+  return <CompositeContext.Provider value={state}>{children}</CompositeContext.Provider>;
 };
