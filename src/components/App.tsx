@@ -6,7 +6,7 @@ import type { PropsWithChildren } from "react";
 import NavigationBar from "@components/NavBar";
 
 const client = new ApolloClient({
-  uri: "http://localhost:3000",
+  uri: "https://api-back-end-inolib.vercel.app",
   cache: new InMemoryCache(),
 });
 
