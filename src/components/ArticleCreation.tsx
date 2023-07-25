@@ -4,14 +4,14 @@ import "react-quill/dist/quill.snow.css";
 
 import { gql, useMutation } from "@apollo/client";
 import { nanoid } from "nanoid";
-import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
-import ReactQuill from "react-quill";
 
-import quillTitleConfig from "../../config/quillTitleConfig";
-import quillContentConfig from "../../config/quillContentConfig";
-import { setAttribute } from "../../helpers";
-import CreateModal from "../../ui/ArticleDashboard/ArticleCreateModal";
+import quillTitleConfig from "../config/quillTitleConfig";
+import quillContentConfig from "../config/quillContentConfig";
+import { setAttribute } from "../helpers";
+import CreateModal from "../ui/ArticleDashboard/ArticleCreateModal";
+
+import ReactQuill from "react-quill";
 
 //requete POST
 const CREATE_ARTICLE = gql`
@@ -54,7 +54,7 @@ const observeOptions = (listbox: Element, listboxLabel: string) => {
   return classObserver;
 };
 
-const DynamicArticleCreation = () => {
+const ArticleCreation = () => {
   //gestion de la modale
   const [open, setOpen] = useState(false);
 
@@ -68,8 +68,8 @@ const DynamicArticleCreation = () => {
 
   const [createArticle] = useMutation(CREATE_ARTICLE);
 
-  const quillTitleRef = useRef<ReactQuill | null>(null);
-  const quillContentRef = useRef<ReactQuill | null>(null);
+  const quillTitleRef = useRef<ReactQuill>(null);
+  const quillContentRef = useRef<ReactQuill>(null);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -528,7 +528,5 @@ const DynamicArticleCreation = () => {
     </div>
   );
 };
-
-const ArticleCreation = dynamic(() => Promise.resolve(DynamicArticleCreation), { ssr: false });
 
 export default ArticleCreation;
