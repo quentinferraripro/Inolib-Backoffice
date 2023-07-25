@@ -69,8 +69,8 @@ const ArticleCreation = () => {
 
   const [createArticle] = useMutation(CREATE_ARTICLE);
 
-  const quillTitleRef = useRef<ReactQuill | null>(null);
-  const quillContentRef = useRef<ReactQuill | null>(null);
+  const quillTitleRef = useRef<typeof ReactQuill | null>(null);
+  const quillContentRef = useRef<typeof ReactQuill | null>(null);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
