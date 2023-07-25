@@ -6,12 +6,13 @@ import { gql, useMutation } from "@apollo/client";
 import { nanoid } from "nanoid";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
-import ReactQuill from "react-quill";
 
 import quillTitleConfig from "../../config/quillTitleConfig";
 import quillContentConfig from "../../config/quillContentConfig";
 import { setAttribute } from "../../helpers";
 import CreateModal from "../../ui/ArticleDashboard/ArticleCreateModal";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 //requete POST
 const CREATE_ARTICLE = gql`
@@ -54,7 +55,7 @@ const observeOptions = (listbox: Element, listboxLabel: string) => {
   return classObserver;
 };
 
-const DynamicArticleCreation = () => {
+const ArticleCreation = () => {
   //gestion de la modale
   const [open, setOpen] = useState(false);
 
@@ -528,7 +529,5 @@ const DynamicArticleCreation = () => {
     </div>
   );
 };
-
-const ArticleCreation = dynamic(() => Promise.resolve(DynamicArticleCreation), { ssr: false });
 
 export default ArticleCreation;
