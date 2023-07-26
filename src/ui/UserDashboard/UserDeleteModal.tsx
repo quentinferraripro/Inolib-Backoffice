@@ -12,7 +12,7 @@ type UserDeleteModalProps = {
 
 function UserDeleteModal(props: UserDeleteModalProps) {
   props.firstName !== undefined ? props.firstName : "";
-  const clickRef = useRef<HTMLDialogElement>();
+  const clickRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     if (props.open) {

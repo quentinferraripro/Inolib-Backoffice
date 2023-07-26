@@ -11,7 +11,7 @@ type UpdateModalProps = {
 };
 
 function ArticleUpdateModal(props: UpdateModalProps) {
-  const clickRef = useRef<HTMLDialogElement>();
+  const clickRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     if (props.open) {

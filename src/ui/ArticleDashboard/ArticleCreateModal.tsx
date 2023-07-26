@@ -12,7 +12,7 @@ type CreateModalProps = {
 
 function ArticleCreateModal(props: CreateModalProps) {
   const nohtmlTitle = props.title.replace(/(<([^>]+)>)/gi, "");
-  const clickRef = useRef<HTMLDialogElement>();
+  const clickRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     if (props.open) {
