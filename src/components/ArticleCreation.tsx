@@ -16,7 +16,7 @@ import ReactQuill from "react-quill";
 //requete POST
 const CREATE_ARTICLE = gql`
   mutation CreateArticle($title: String!, $content: String!) {
-    newDocument(title: $title, content: $content) {
+    newArticle(title: $title, content: $content) {
       id
       title
       content
