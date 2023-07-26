@@ -550,7 +550,7 @@ const ArticleUpdate = ({ params }: Props) => {
                     open={open}
                     titleCloseButton="Fermer"
                     titleCreateButton="Mettre à jour"
-                    styles="absolute top-1/2 left-1/2"
+                    styles="absolute top-1/2 bg-yellow-600 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center"
                     onClose={handleCloseModal}
                     onUpdate={handleUpdate}
                   />

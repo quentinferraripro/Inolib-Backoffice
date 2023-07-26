@@ -133,7 +133,7 @@ export default function UserManagementModule() {
           firstName={deleteModalState.firstName}
           titleCloseButton="Fermer"
           titleDeleteButton="Supprimer"
-          styles="absolute top-1/2 left-1/4"
+          styles="absolute top-1/2 bg-red-700 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center"
           onClose={handleDeleteModalClose}
           onDelete={() => void (async () => await handleDeleteModalDelete())()}
         />
