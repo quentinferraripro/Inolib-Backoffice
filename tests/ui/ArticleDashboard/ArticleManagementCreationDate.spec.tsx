@@ -1,5 +1,4 @@
 import { render } from "@testing-library/react";
-import { expect, it } from "vitest";
 
 import ArticleManagementcreationDate from "../../../src/ui/ArticleDashboard/ArticleManagementCreationDate";
 import { Composite } from "../../../src/ui/Composite";

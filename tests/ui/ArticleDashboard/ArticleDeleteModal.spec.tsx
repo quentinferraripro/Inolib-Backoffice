@@ -2,7 +2,6 @@ import { gql } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { it, expect, vi } from "vitest";
 
 import ArticleDeleteModal from "../../../src/ui/ArticleDashboard/ArticleDeleteModal";
 
@@ -53,7 +52,7 @@ it("should call `onClose` callback when clicking on the button internal element"
     callback: () => undefined,
   };
 
-  const spy = vi.spyOn(_, "callback");
+  const spy = jest.spyOn(_, "callback");
 
   render(
     <MockedProvider mocks={mocks} addTypename={false}>
@@ -84,7 +83,7 @@ it("should call `onDelete` callback when clicking on the button internal element
     callback: () => undefined,
   };
 
-  const spy = vi.spyOn(_, "callback");
+  const spy = jest.spyOn(_, "callback");
 
   render(
     <MockedProvider mocks={mocks} addTypename={false}>

@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it, vi } from "vitest";
 
 import ArticleManagementButton from "../../../src/ui/ArticleDashboard/ArticleManagementButton";
 import { Composite } from "../../../src/ui/Composite";
@@ -46,7 +45,7 @@ it("should call `onClick` callback when clicking on the element", async () => {
     callback: () => undefined,
   };
 
-  const spy = vi.spyOn(_, "callback");
+  const spy = jest.spyOn(_, "callback");
 
   render(
     <Composite orientation="horizontal">

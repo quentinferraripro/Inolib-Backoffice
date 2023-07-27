@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { it, expect } from "vitest";
 
 import ArticleManagementLink from "../../../src/ui/ArticleDashboard/ArticleManagementLink";
 import { Composite } from "../../../src/ui/Composite";

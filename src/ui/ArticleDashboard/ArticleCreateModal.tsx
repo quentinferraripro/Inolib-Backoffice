@@ -1,9 +1,9 @@
 import { type FormEventHandler, type MouseEventHandler, useRef, useEffect } from "react";
 
 type CreateModalProps = {
-  open: boolean;
   onClose: MouseEventHandler<HTMLButtonElement>;
   onCreate: FormEventHandler<HTMLButtonElement>;
+  open: boolean;
   title: string;
   titleCloseButton: string;
   titleCreateButton: string;

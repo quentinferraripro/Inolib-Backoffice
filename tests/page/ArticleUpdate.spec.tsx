@@ -4,13 +4,12 @@ import { MockedProvider } from "@apollo/client/testing";
 // import userEvent from "@testing-library/user-event";
 import type { DocumentNode } from "@apollo/client";
 import { gql } from "@apollo/client";
-import { expect, it } from "vitest";
 
-import ArticleUpdate from "../../src/pages/ArticleUpdate";
+import ArticleUpdate from "../../src/app/articleupdate/[id]/page";
 
 const ARTICLE: DocumentNode = gql`
-  query findDocument($id: Cuid!) {
-    findDocument(id: $id) {
+  query findArticle($id: Cuid!) {
+    findArticle(id: $id) {
       id
       title
       content
@@ -45,7 +44,7 @@ const mocks: MockedProviderProps["mocks"] = [
     },
     result: {
       data: {
-        documents: [
+        articles: [
           {
             id: mockArticle.cuid,
             title: mockArticle.title,
@@ -68,7 +67,7 @@ const mocks: MockedProviderProps["mocks"] = [
   // },
   // result: {
   //   data: {
-  //     updateDocument: {
+  //     updateArticle: {
   //       ...mockArticle,
   //       title: "Updated Article 1",
   //       content: "Updated Content 1",

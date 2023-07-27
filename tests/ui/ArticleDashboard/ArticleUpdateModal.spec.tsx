@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { it, expect, vi } from "vitest";
 
 import ArticleUpdateModal from "../../../src/ui/ArticleDashboard/ArticleUpdateModal";
 
@@ -26,7 +25,7 @@ it("should call `onClose` callback when clicking on the button internal element"
     callback: () => undefined,
   };
 
-  const spy = vi.spyOn(_, "callback");
+  const spy = jest.spyOn(_, "callback");
 
   render(
     <ArticleUpdateModal
@@ -50,7 +49,7 @@ it("should call `onClick` callback when clicking on the button internal element"
     callback: () => undefined,
   };
 
-  const spy = vi.spyOn(_, "callback");
+  const spy = jest.spyOn(_, "callback");
 
   render(
     <ArticleUpdateModal

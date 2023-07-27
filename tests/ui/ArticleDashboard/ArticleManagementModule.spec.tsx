@@ -1,7 +1,6 @@
 import { MockedProvider, type MockedProviderProps } from "@apollo/client/testing";
 import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
 
 import ArticleManagementModule, {
   DELETE_ARTICLE,
@@ -24,7 +23,7 @@ const mocks: MockedProviderProps["mocks"] = [
     },
     result: {
       data: {
-        documents: [
+        articles: [
           {
             id: mockArticle.cuid,
             title: mockArticle.title,
@@ -44,7 +43,7 @@ const mocks: MockedProviderProps["mocks"] = [
     },
     result: {
       data: {
-        deleteDocument: {
+        deleteArticle: {
           id: mockArticle.cuid,
         },
       },
