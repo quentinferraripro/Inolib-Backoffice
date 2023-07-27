@@ -61,9 +61,6 @@ const ArticleCreation = () => {
   const handleCloseCreationModal = () => setOpen(false);
   const handleOpenCreationModal = () => {
     setOpen(true);
-    if (createModalRef.current) {
-      createModalRef.current.focus();
-    }
   };
 
   const [createArticle] = useMutation(CREATE_ARTICLE);
@@ -105,8 +102,6 @@ const ArticleCreation = () => {
       console.log(response);
     })();
   };
-
-  const createModalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const titleEditor = quillTitleRef.current?.getEditor();
@@ -519,7 +514,7 @@ const ArticleCreation = () => {
             open={open}
             titleCloseButton="Fermer"
             titleCreateButton="Creer"
-            styles="absolute top-1/2 left-1/4"
+            styles="absolute top-1/2 bg-red-700 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center"
             onClose={handleCloseCreationModal}
             onCreate={handleCreation}
           />

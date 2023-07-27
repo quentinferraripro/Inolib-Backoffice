@@ -1,4 +1,4 @@
-import { type FormEventHandler, type MouseEventHandler } from "react";
+import { type FormEventHandler, type MouseEventHandler, useRef, useEffect } from "react";
 
 type UpdateModalProps = {
   title: string;
@@ -11,27 +11,33 @@ type UpdateModalProps = {
 };
 
 function ArticleUpdateModal(props: UpdateModalProps) {
+  const clickRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (props.open) {
+      clickRef.current?.focus();
+    } else {
+      clickRef.current?.close();
+    }
+  }, [props.open]);
+
   return (
-    <div className={props.styles} role="dialog" aria-modal="true">
-      {props.open && (
-        <span className="bg-yellow-600 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center">
-          <p className="py-4">Mettre à jour l’article ?</p>
-          <button
-            className="bg-white rounded-md px-8 py-4 mb-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
-            onClick={props.onClose}
-          >
-            {props.titleCloseButton}
-          </button>
-          <button
-            className="bg-white rounded-md px-8 py-4 mt-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
-            onClick={props.onUpdate}
-            type="button"
-          >
-            {props.titleCreateButton}
-          </button>
-        </span>
-      )}
-    </div>
+    <dialog open={props.open} ref={clickRef} className={props.styles}>
+      <p className="py-4">Mettre à jour l’article ?</p>
+      <button
+        className="bg-white rounded-md px-8 py-4 mb-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
+        onClick={props.onClose}
+      >
+        {props.titleCloseButton}
+      </button>
+      <button
+        className="bg-white rounded-md px-8 py-4 mt-2 text-red-600 text-xl hover:scale-105 transition ease-in delay-75"
+        onClick={props.onUpdate}
+        type="button"
+      >
+        {props.titleCreateButton}
+      </button>
+    </dialog>
   );
 }
 
