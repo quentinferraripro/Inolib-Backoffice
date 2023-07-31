@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function ArticleManagementButton(props: PropsWithChildren<Props>) {
-  const { addRef } = useComposite();
+  // const { addRef } = useComposite();
   const id = useId();
   // const ref = useRef<HTMLButtonElement>(null);
 

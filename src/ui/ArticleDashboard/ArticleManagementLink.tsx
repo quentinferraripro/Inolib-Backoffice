@@ -10,7 +10,7 @@ type ButtonProps = {
 export default function ArticleManagementLink(props: PropsWithChildren<ButtonProps>) {
   // const { addRef } = useComposite();
   const id = useId();
-  const ref = useRef<HTMLAnchorElement>(null);
+  // const ref = useRef<HTMLAnchorElement>(null);
 
   // useEffect(() => {
   //   addRef(ref);

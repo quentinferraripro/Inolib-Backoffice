@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from "react";
 
-import { Composite } from "../Composite";
+// import { Composite } from "../Composite";
 import ArticleManagementButton from "./ArticleManagementButton";
 import ArticleManagementContent from "./ArticleManagementContent";
 import ArticleManagementCreationDate from "./ArticleManagementCreationDate";

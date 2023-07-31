@@ -20,7 +20,7 @@ type Article = {
   id?: string;
   title?: string;
   content?: string;
-  createdAt?: string;
+  createdAt?: Date;
 };
 
 type Props = {
@@ -72,8 +72,8 @@ const ArticleUpdate = ({ params }: Props) => {
 
   // requete UPDATE
   const UPDATE_ARTICLE = gql`
-    mutation updateArticle($id: Cuid!, $title: String!, $content: String!) {
-      updateArticle(id: $id, title: $title, content: $content) {
+    mutation updateArticle($id: Cuid!, $title: String!, $content: String!, $createdAt: Date!) {
+      updateArticle(id: $id, title: $title, content: $content, createdAt: $createdAt) {
         id
         title
         content
@@ -97,6 +97,7 @@ const ArticleUpdate = ({ params }: Props) => {
           id: params.id,
           title,
           content,
+          createdAt,
         },
       });
 
@@ -117,6 +118,7 @@ const ArticleUpdate = ({ params }: Props) => {
 
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
+  const [createdAt, setCreatedAt] = useState<Date>("");
 
   //gestion du re-render du composant lors du clic des bouton de la toolbar
   const [changed, setChanged] = useState(false);
@@ -129,14 +131,21 @@ const ArticleUpdate = ({ params }: Props) => {
     setContent(contentValue);
   };
 
+  const handleCreatedAt = (createdAtValue: string) => {
+    setCreatedAt(createdAtValue);
+  };
+
   const handleToolbarEvent = useCallback(() => {
     setChanged(!changed);
   }, [changed]);
+
+  const formatedDate = data?.findArticle[0].createdAt.slice(0, 10) || undefined;
 
   useEffect(() => {
     if (data?.findArticle[0]) {
       setTitle(data?.findArticle[0].title || "");
       setContent(data?.findArticle[0].content || "");
+      setCreatedAt(formatedDate);
     }
 
     const titleEditor = quillTitleRef.current?.getEditor();
@@ -497,6 +506,7 @@ const ArticleUpdate = ({ params }: Props) => {
               </header>
               <form onSubmit={handleUpdate}>
                 <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
+
                 <div>
                   <ReactQuill
                     ref={quillTitleRef}
@@ -507,6 +517,7 @@ const ArticleUpdate = ({ params }: Props) => {
                     style={{ height: "10rem" }}
                   />
                 </div>
+
                 <p className="text-xl² my-16 font-bold">Contenu de votre article</p>
                 <div>
                   <ReactQuill
@@ -518,14 +529,14 @@ const ArticleUpdate = ({ params }: Props) => {
                     style={{ height: "10rem" }}
                   ></ReactQuill>
                 </div>
-                <div className="my-16">
-                  <button className="p-2 border-[1px] border-black rounded lg" type="button">
-                    ajouter une image
-                  </button>
-                </div>
+
+                <input type="date" value={createdAt} onChange={handleCreatedAt} />
+                {console.log("date de creation", createdAt)}
+
                 <button onClick={handleOpenModal} type="button">
                   Valider
                 </button>
+
                 {open && (
                   <ArticleUpdateModal
                     title={title}
