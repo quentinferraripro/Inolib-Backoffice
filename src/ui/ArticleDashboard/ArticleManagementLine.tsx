@@ -38,20 +38,22 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
           createdAt={props.createdAt}
           styles="focus:bg-slate-400 w-1/4 flex justify-center items-center"
         />
+        {/* <Composite orientation="vertical"> */}
         <td className="focus:bg-slate-400 w-1/4 flex justify-center items-center">
-          <Composite orientation="horizontal">
-            <ArticleManagementLink cuid={props.cuid} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
-              Modifier
-            </ArticleManagementLink>
-
-            <ArticleManagementButton
-              onClick={() => void props.openDeleteModal(props.cuid, nohtmlTitle)}
-              styles="p-2 mx-4 bg-red-600 rounded-lg"
-            >
-              Supprimer
-            </ArticleManagementButton>
-          </Composite>
+          <ArticleManagementLink cuid={props.cuid} title={nohtmlTitle} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
+            Modifier
+          </ArticleManagementLink>
         </td>
+        <td>
+          <ArticleManagementButton
+            onClick={() => void props.openDeleteModal(props.cuid, nohtmlTitle)}
+            styles="p-2 mx-4 bg-red-600 rounded-lg"
+            title={nohtmlTitle}
+          >
+            Supprimer
+          </ArticleManagementButton>
+        </td>
+        {/* </Composite> */}
       </>
     </tr>
   );
