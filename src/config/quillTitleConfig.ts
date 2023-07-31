@@ -10,7 +10,6 @@ const config = {
           color: ["#0B3168", "black", "white"],
         },
       ],
-      [{ list: "ordered" }, { list: "bullet" }],
     ],
   },
   formats: ["size", "align", "bold", "underline", "italic", "color", "list"],

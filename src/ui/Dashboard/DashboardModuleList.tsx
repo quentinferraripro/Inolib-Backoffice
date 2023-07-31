@@ -7,9 +7,9 @@ export function DashboardModuleList() {
     <ul className="flex justify-around w-[70%]">
       <DashboardModule moduleName="Utilisateur" styles="flex flex-col items-center">
         <DashboardButtonlist>
-          {/* <DashboardButton href="/" styles="">
+          <DashboardButton href="/usercreation" styles="">
             Création d’utilisateur
-          </DashboardButton> */}
+          </DashboardButton>
           <DashboardButton href="/usermanagementdashboard" styles="">
             Gestion d’utilisateur
           </DashboardButton>

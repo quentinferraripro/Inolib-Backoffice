@@ -16,7 +16,7 @@ it("should render a dialog element", async () => {
     />
   );
 
-  const modal = await screen.findByText("Etes-vous sur");
+  const modal = await screen.findByText(/Etes-vous sur de vouloir créer/);
 
   expect(modal).toBeInTheDocument;
 });
@@ -69,4 +69,54 @@ it("should call `onCreate` callback when clicking on the button internal element
   await user.click(await screen.findByText("Créer"));
 
   expect(spy).toHaveBeenCalled();
+});
+
+it("should close callback when clicking on the fermer button internal element", async () => {
+  const _ = {
+    callback: () => undefined,
+  };
+
+  const spy = jest.spyOn(_, "callback");
+
+  render(
+    <ArticleCreateModal
+      styles=""
+      title=""
+      titleCloseButton="Fermer"
+      titleCreateButton=""
+      onClose={_.callback}
+      onCreate={() => undefined}
+      open={true}
+    />
+  );
+  const closeButton = await screen.findByText("Fermer");
+  const user = userEvent.setup();
+  await user.click(closeButton);
+
+  expect(closeButton).not.toBeInTheDocument;
+});
+
+it("should close callback when clicking on the créer button internal element", async () => {
+  const _ = {
+    callback: () => undefined,
+  };
+
+  const spy = jest.spyOn(_, "callback");
+
+  render(
+    <ArticleCreateModal
+      styles=""
+      title=""
+      titleCloseButton=""
+      titleCreateButton="Créer"
+      onClose={() => undefined}
+      onCreate={_.callback}
+      open={true}
+    />
+  );
+  const createButton = await screen.findByText("Créer");
+  const user = userEvent.setup();
+  await user.click(createButton);
+
+  expect(createButton).not.toBeInTheDocument;
 });

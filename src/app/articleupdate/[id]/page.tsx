@@ -184,43 +184,43 @@ const ArticleUpdate = ({ params }: Props) => {
             switch (element.className) {
               case "ql-bold": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer gras");
+                element.setAttribute("aria-label", "le gras désactivé");
                 break;
               }
 
               case "ql-bold ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Désactiver gras");
+                element.setAttribute("aria-label", "gras activé");
                 break;
               }
 
               case "ql-underline": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer soulignement");
+                element.setAttribute("aria-label", "Soulignement désactivé");
                 break;
               }
 
               case "ql-underline ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Desactiver soulignement");
+                element.setAttribute("aria-label", "Soulignement activé");
                 break;
               }
 
               case "ql-italic": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer italique");
+                element.setAttribute("aria-label", "Italique désactivé");
                 break;
               }
 
               case "ql-italic ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Desactiver italique");
+                element.setAttribute("aria-label", "Italique activé");
                 break;
               }
 
               case "ql-link": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "creer un lien");
+                element.setAttribute("aria-label", "Créer un lien");
                 break;
               }
 
@@ -266,22 +266,22 @@ const ArticleUpdate = ({ params }: Props) => {
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
-                    item.setAttribute("aria-label", "aligner à gauche");
+                    item.setAttribute("aria-label", "texte aligné à gauche");
                     break;
                   }
 
                   case "center": {
-                    item.setAttribute("aria-label", "aligner au centre");
+                    item.setAttribute("aria-label", "texte aligné au centre");
                     break;
                   }
 
                   case "right": {
-                    item.setAttribute("aria-label", "aligner à droite");
+                    item.setAttribute("aria-label", "texte aligné à droite");
                     break;
                   }
 
                   case "justify": {
-                    item.setAttribute("aria-label", "justifier");
+                    item.setAttribute("aria-label", "texte justifié");
                     break;
                   }
                 }
@@ -348,57 +348,39 @@ const ArticleUpdate = ({ params }: Props) => {
             switch (element.className) {
               case "ql-bold": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer gras");
+                element.setAttribute("aria-label", "Gras désactivé");
                 break;
               }
 
               case "ql-bold ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Désactiver gras");
+                element.setAttribute("aria-label", "Gras activé");
                 break;
               }
 
               case "ql-underline": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer soulignement");
+                element.setAttribute("aria-label", "Soulignement désactivé");
                 break;
               }
 
               case "ql-underline ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Desactiver soulignement");
+                element.setAttribute("aria-label", "Soulignement activé");
                 break;
               }
 
               case "ql-italic": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer italique");
+                element.setAttribute("aria-label", "Italique désactivé");
                 break;
               }
 
               case "ql-italic ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Desactiver italique");
+                element.setAttribute("aria-label", "Italique activé");
                 break;
               }
-
-              case "ql-list":
-                {
-                  switch ((element as HTMLButtonElement).value) {
-                    case "ordered": {
-                      element.addEventListener("click", handleToolbarEvent, { once: true });
-                      element.setAttribute("aria-label", "transformer en liste ordonée");
-                      break;
-                    }
-                    case "bullet": {
-                      element.addEventListener("click", handleToolbarEvent, { once: true });
-                      element.setAttribute("aria-label", "transformer en liste à puce");
-                      break;
-                    }
-                  }
-                  break;
-                }
-                break;
             }
           }
           break;
@@ -418,22 +400,22 @@ const ArticleUpdate = ({ params }: Props) => {
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
-                    item.setAttribute("aria-label", "aligner à gauche");
+                    item.setAttribute("aria-label", "Texte aligné à gauche");
                     break;
                   }
 
                   case "center": {
-                    item.setAttribute("aria-label", "aligner au centre");
+                    item.setAttribute("aria-label", "Texte aligné au centre");
                     break;
                   }
 
                   case "right": {
-                    item.setAttribute("aria-label", "aligner à droite");
+                    item.setAttribute("aria-label", "Texte aligné à droite");
                     break;
                   }
 
                   case "justify": {
-                    item.setAttribute("aria-label", "justifier");
+                    item.setAttribute("aria-label", "Texte justifié");
                     break;
                   }
                 }

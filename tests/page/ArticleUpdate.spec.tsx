@@ -18,16 +18,16 @@ const ARTICLE: DocumentNode = gql`
   }
 `;
 
-// const UPDATE_ARTICLE: DocumentNode = gql`
-//   mutation updateDocument($id: Cuid!, $title: String!, $content: String!) {
-//     updateDocument(id: $id, title: $title, content: $content) {
-//       id
-//       title
-//       content
-//       createdAt
-//     }
-//   }
-// `;
+const UPDATE_ARTICLE: DocumentNode = gql`
+  mutation updateArticle($id: Cuid!, $title: String!, $content: String!) {
+    updateArticle(id: $id, title: $title, content: $content) {
+      id
+      title
+      content
+      createdAt
+    }
+  }
+`;
 const mockArticle = {
   cuid: "",
   title: "Article 1",
@@ -56,25 +56,25 @@ const mocks: MockedProviderProps["mocks"] = [
     },
   },
 
-  // {
-  // request: {
-  //   query: UPDATE_ARTICLE,
-  //   variables: {
-  //     id: mockArticle.cuid,
-  //     title: mockArticle.title,
-  //     content: mockArticle.content,
-  //   },
-  // },
-  // result: {
-  //   data: {
-  //     updateArticle: {
-  //       ...mockArticle,
-  //       title: "Updated Article 1",
-  //       content: "Updated Content 1",
-  //     },
-  //   },
-  // },
-  // },
+  {
+    request: {
+      query: UPDATE_ARTICLE,
+      variables: {
+        id: mockArticle.cuid,
+        title: mockArticle.title,
+        content: mockArticle.content,
+      },
+    },
+    result: {
+      data: {
+        updateArticle: {
+          ...mockArticle,
+          title: "Updated Article 1",
+          content: "Updated Content 1",
+        },
+      },
+    },
+  },
 ];
 
 it("Should render the list of article lines", async () => {
@@ -86,16 +86,15 @@ it("Should render the list of article lines", async () => {
 
   expect(await screen.findByText("Article 1")).toBeInTheDocument();
   expect(await screen.findByText("Content 1")).toBeInTheDocument();
+
+  const updateButton = screen.getByText("Mettre à jour");
+  expect(updateButton).toBeInTheDocument();
+
+  const user = userEvent.setup();
+  await user.click(await screen.findByText("Mettre à jour"));
+  expect(await screen.findByText("Updated Article 1")).toBeInTheDocument();
+  expect(await screen.findByText("Updated Content 1")).toBeInTheDocument();
 });
-//   const updateButton = screen.getByText("Mettre à jour");
-//   expect(updateButton).toBeInTheDocument();
-
-//   const user = userEvent.setup();
-//   await user.click(await screen.findByText("Mettre à jour"));
-
-//   expect(await screen.findByText("Updated Article 1")).toBeInTheDocument();
-//   expect(await screen.findByText("Updated Content 1")).toBeInTheDocument();
-// });
 
 it("should render a <form> element", async () => {
   render(
