@@ -5,7 +5,7 @@ import { DashboardModule } from "./DashboardModule";
 export function DashboardModuleList() {
   return (
     <ul className="flex justify-around w-[70%]">
-      <DashboardModule moduleName="Utilisateur" styles="flex flex-col items-center">
+      <DashboardModule moduleName="Utilisateurs" styles="flex flex-col items-center">
         <DashboardButtonlist>
           <DashboardButton href="/usercreation" styles="">
             Création d’utilisateur

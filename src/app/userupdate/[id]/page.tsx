@@ -43,27 +43,27 @@ const UserUpdate = ({ params }: Props) => {
   // requete UPDATE
   const UPDATE_USER = gql`
     mutation updateUser(
-      $id: Cuid!
-      $firstName: String!
-      $lastName: String!
       $email: String!
-      $phone: String!
+      $firstName: String!
+      $id: Cuid!
+      $lastName: String!
       $password: String!
+      $phone: String!
     ) {
       updateUser(
-        id: $id
-        firstName: $firstName
-        lastName: $lastName
         email: $email
-        phone: $phone
+        firstName: $firstName
+        id: $id
+        lastName: $lastName
         password: $password
+        phone: $phone
       ) {
-        id
-        firstName
-        lastName
         email
-        phone
+        firstName
+        id
+        lastName
         password
+        phone
       }
     }
   `;
@@ -151,7 +151,7 @@ const UserUpdate = ({ params }: Props) => {
                   Modifier les données de l&lsquo;utilisateur
                 </h1>
               </header>
-              <form className="flex flex-col" onSubmit={handleUpdate}>
+              <div className="flex flex-col">
                 <label className="text-xl² mb-5 font-bold">
                   Prénom :
                   <input
@@ -211,7 +211,7 @@ const UserUpdate = ({ params }: Props) => {
                     onUpdate={handleUpdate}
                   />
                 )}
-              </form>
+              </div>
             </>
           ) : null}
         </div>

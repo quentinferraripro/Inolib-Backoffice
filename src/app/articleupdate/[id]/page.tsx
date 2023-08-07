@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css";
 
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { nanoid } from "nanoid";
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type ChangeEventHandler, type FormEvent } from "react";
 import ReactQuill from "react-quill";
 
 import quillTitleConfig from "../../../config/quillTitleConfig";
@@ -72,7 +72,7 @@ const ArticleUpdate = ({ params }: Props) => {
 
   // requete UPDATE
   const UPDATE_ARTICLE = gql`
-    mutation updateArticle($id: Cuid!, $title: String!, $content: String!, $createdAt: Date!) {
+    mutation updateArticle($id: Cuid!, $title: String!, $content: String!, $createdAt: DateTime!) {
       updateArticle(id: $id, title: $title, content: $content, createdAt: $createdAt) {
         id
         title
@@ -97,7 +97,7 @@ const ArticleUpdate = ({ params }: Props) => {
           id: params.id,
           title,
           content,
-          createdAt,
+          createdAt: new Date(createdAt),
         },
       });
 
@@ -118,7 +118,7 @@ const ArticleUpdate = ({ params }: Props) => {
 
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [createdAt, setCreatedAt] = useState<Date>("");
+  const [createdAt, setCreatedAt] = useState<string>("");
 
   //gestion du re-render du composant lors du clic des bouton de la toolbar
   const [changed, setChanged] = useState(false);
@@ -131,8 +131,8 @@ const ArticleUpdate = ({ params }: Props) => {
     setContent(contentValue);
   };
 
-  const handleCreatedAt = (createdAtValue: string) => {
-    setCreatedAt(createdAtValue);
+  const handleCreatedAt: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setCreatedAt(event.target.value);
   };
 
   const handleToolbarEvent = useCallback(() => {
@@ -182,6 +182,24 @@ const ArticleUpdate = ({ params }: Props) => {
     const colortitleButton = titleToolbar?.querySelector(".ql-color");
     if (colortitleButton?.getAttribute("aria-label") === null) {
       colortitleButton?.setAttribute("aria-label", "changer couleur texte");
+    }
+
+    const sizecontentButton = contentToolbar?.querySelector(".ql-size");
+    if (sizecontentButton?.getAttribute("aria-label") === null) {
+      sizecontentButton?.setAttribute("aria-label", "changer la taille du texte");
+    }
+    const sizetitleButton = titleToolbar?.querySelector(".ql-size");
+    if (sizetitleButton?.getAttribute("aria-label") === null) {
+      sizetitleButton?.setAttribute("aria-label", "changer la taille du texte");
+    }
+
+    const headercontentButton = contentToolbar?.querySelector(".ql-header");
+    if (headercontentButton?.getAttribute("aria-label") === null) {
+      headercontentButton?.setAttribute("aria-label", "niveau de titre");
+    }
+    const headertitleButton = titleToolbar?.querySelector(".ql-header");
+    if (headertitleButton?.getAttribute("aria-label") === null) {
+      headertitleButton?.setAttribute("aria-label", "niveau de titre");
     }
 
     //ecoute chaque bouton, au clic provoque au re-render
@@ -344,6 +362,46 @@ const ArticleUpdate = ({ params }: Props) => {
               setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
+            case element.className.includes("ql-size"): {
+              element.addEventListener("click", handleToolbarEvent, { once: true });
+
+              const items = element.querySelectorAll(".ql-picker-item");
+
+              items.forEach((item) => {
+                item.setAttribute("id", nanoid());
+                item.setAttribute("role", "option");
+
+                classObservers.push(observeOptions(element, "changer la taille du texte"));
+
+                switch (item.getAttribute("data-value")) {
+                  case null: {
+                    item.setAttribute("aria-label", "taille texte normale");
+                    break;
+                  }
+
+                  case "small": {
+                    item.setAttribute("aria-label", "taille texte petite");
+                    break;
+                  }
+
+                  case "large": {
+                    item.setAttribute("aria-label", "taille texte grande");
+                    break;
+                  }
+
+                  case "huge": {
+                    item.setAttribute("aria-label", "taille texte très grande");
+                    break;
+                  }
+                }
+              });
+              const selectedItem = element.querySelector(".ql-picker-item.ql-selected");
+
+              //ajout d'attribut pour mimer le comportement d'un <select>
+              element.setAttribute("role", "listbox");
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
+              break;
+            }
           }
           break;
         }
@@ -478,6 +536,61 @@ const ArticleUpdate = ({ params }: Props) => {
               setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
+            case element.className.includes("ql-header"): {
+              element.addEventListener("click", handleToolbarEvent, { once: true });
+
+              const items = element.querySelectorAll(".ql-picker-item");
+
+              items.forEach((item) => {
+                item.setAttribute("id", nanoid());
+                item.setAttribute("role", "option");
+
+                classObservers.push(observeOptions(element, "niveau de titre"));
+
+                switch (item.getAttribute("data-value")) {
+                  case null: {
+                    item.setAttribute("aria-label", "aucun choix");
+                    break;
+                  }
+
+                  case "1": {
+                    item.setAttribute("aria-label", "niveau H1");
+                    break;
+                  }
+
+                  case "2": {
+                    item.setAttribute("aria-label", "niveau H2");
+                    break;
+                  }
+
+                  case "3": {
+                    item.setAttribute("aria-label", "niveau H3");
+                    break;
+                  }
+
+                  case "4": {
+                    item.setAttribute("aria-label", "niveau H4");
+                    break;
+                  }
+
+                  case "5": {
+                    item.setAttribute("aria-label", "niveau H5");
+                    break;
+                  }
+
+                  case "6": {
+                    item.setAttribute("aria-label", "niveau H6");
+                    break;
+                  }
+                }
+              });
+              const selectedItem = element.querySelector(".ql-picker-item.ql-selected");
+
+              //ajout d'attribut pour mimer le comportement d'un <select>
+              element.setAttribute("role", "listbox");
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
+              break;
+            }
           }
           break;
         }
@@ -504,7 +617,7 @@ const ArticleUpdate = ({ params }: Props) => {
               <header>
                 <h1 className="text-3xl font-bold underline mb-10">Modifier votre article</h1>
               </header>
-              <form onSubmit={handleUpdate}>
+              <div>
                 <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
 
                 <div>
@@ -530,7 +643,7 @@ const ArticleUpdate = ({ params }: Props) => {
                   ></ReactQuill>
                 </div>
 
-                <input type="date" value={createdAt} onChange={handleCreatedAt} />
+                <input className="mt-20" type="date" value={createdAt} onChange={handleCreatedAt} />
                 {console.log("date de creation", createdAt)}
 
                 <button onClick={handleOpenModal} type="button">
@@ -548,7 +661,7 @@ const ArticleUpdate = ({ params }: Props) => {
                     onUpdate={handleUpdate}
                   />
                 )}
-              </form>
+              </div>
             </>
           ) : null}
         </div>

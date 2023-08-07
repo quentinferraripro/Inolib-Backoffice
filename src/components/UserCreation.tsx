@@ -107,7 +107,7 @@ const UserCreation = () => {
               Créer un nouvel utilisateur.
             </h1>
           </header>
-          <form className="flex flex-col" onSubmit={handleCreation}>
+          <div className="flex flex-col">
             <label className="text-xl² mb-5 font-bold">
               Prénom :
               <input
@@ -183,7 +183,7 @@ const UserCreation = () => {
                 onCreate={handleCreation}
               />
             )}
-          </form>
+          </div>
         </>
       </div>
     </>
