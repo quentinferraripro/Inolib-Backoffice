@@ -15,12 +15,13 @@ import ReactQuill from "react-quill";
 
 //requete POST
 const CREATE_ARTICLE = gql`
-  mutation CreateArticle($title: String!, $content: String!, $createdAt: DateTime!) {
-    newArticle(title: $title, content: $content, createdAt: $createdAt) {
+  mutation CreateArticle($title: String!, $content: String!, $createdAt: DateTime!, $description: String!) {
+    newArticle(title: $title, content: $content, createdAt: $createdAt, description: $description) {
       id
       title
       content
       createdAt
+      description
     }
   }
 `;
@@ -72,6 +73,7 @@ const ArticleCreation = () => {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [createdAt, setCreatedAt] = useState<string>(new Date().toISOString().substring(0, 10));
+  const [description, setDescription] = useState<string>("");
 
   //gestion du re-render du composant lors du clic des bouton de la toolbar
   const [changed, setChanged] = useState(false);
@@ -91,6 +93,10 @@ const ArticleCreation = () => {
     setCreatedAt(event.target.value);
   };
 
+  const handleDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(event.target.value);
+  };
+
   const handleToolbarEvent = useCallback(() => {
     setChanged(!changed);
   }, [changed]);
@@ -104,6 +110,7 @@ const ArticleCreation = () => {
         variables: {
           title,
           content,
+          description,
           createdAt: new Date(createdAt),
         },
       });
@@ -608,7 +615,7 @@ const ArticleCreation = () => {
         <h1 className="text-3xl font-bold underline mb-10">Créer votre article</h1>
       </header>
       <div>
-        <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
+        <p className="text-xl² mb-5 font-bold">Titre de votre article :</p>
         <div>
           <ReactQuill
             ref={quillTitleRef}
@@ -620,7 +627,7 @@ const ArticleCreation = () => {
             style={{ height: "10rem" }}
           />
         </div>
-        <p className="text-xl² mt-16 mb-5 font-bold">Contenu de votre article</p>
+        <p className="text-xl² mt-16 mb-5 font-bold">Contenu de votre article :</p>
         <div>
           <ReactQuill
             ref={quillContentRef}
@@ -632,9 +639,18 @@ const ArticleCreation = () => {
             style={{ height: "10rem" }}
           />
         </div>
-        <label>
+        <label className="flex flex-col mt-16 text-l font-bold">
+          Ajouter une description :
+          <input
+            type="text"
+            className="border-[1px] border-[#0B3168] rounded-md h-8 mt-4 font-normal"
+            value={description}
+            onChange={handleDescription}
+          />
+        </label>
+        <label className="border-[1px] border-[#0B3168] rounded-lg p-2">
           Date de creation
-          <input className="mt-16" type="date" value={createdAt} onChange={handleCreatedAt} />
+          <input className="mt-16 pl-2" type="date" value={createdAt} onChange={handleCreatedAt} />
         </label>
         <div className="my-16 flex">
           <button className="p-2 border-[1px] font-s border-[#0B3168] rounded lg mr-10 hover:scale-105 transition ease-in delay-75">

@@ -21,6 +21,7 @@ type Article = {
   title?: string;
   content?: string;
   createdAt?: string;
+  description?: string;
 };
 
 type Props = {
@@ -66,18 +67,26 @@ const ArticleUpdate = ({ params }: Props) => {
         title
         content
         createdAt
+        description
       }
     }
   `;
 
   // requete UPDATE
   const UPDATE_ARTICLE = gql`
-    mutation updateArticle($id: Cuid!, $title: String!, $content: String!, $createdAt: DateTime!) {
-      updateArticle(id: $id, title: $title, content: $content, createdAt: $createdAt) {
+    mutation updateArticle(
+      $id: Cuid!
+      $title: String!
+      $content: String!
+      $createdAt: DateTime!
+      $description: String!
+    ) {
+      updateArticle(id: $id, title: $title, content: $content, createdAt: $createdAt, description: $description) {
         id
         title
         content
         createdAt
+        description
       }
     }
   `;
@@ -98,6 +107,7 @@ const ArticleUpdate = ({ params }: Props) => {
           title,
           content,
           createdAt: new Date(createdAt),
+          description,
         },
       });
 
@@ -119,6 +129,7 @@ const ArticleUpdate = ({ params }: Props) => {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [createdAt, setCreatedAt] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   //gestion du re-render du composant lors du clic des bouton de la toolbar
   const [changed, setChanged] = useState(false);
@@ -135,6 +146,10 @@ const ArticleUpdate = ({ params }: Props) => {
     setCreatedAt(event.target.value);
   };
 
+  const handleDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(event.target.value);
+  };
+
   const handleToolbarEvent = useCallback(() => {
     setChanged(!changed);
   }, [changed]);
@@ -146,6 +161,7 @@ const ArticleUpdate = ({ params }: Props) => {
       setTitle(data?.findArticle[0].title ?? "");
       setContent(data?.findArticle[0].content ?? "");
       setCreatedAt(formatedDate);
+      setDescription(data?.findArticle[0].description ?? "");
     }
 
     const titleEditor = quillTitleRef.current?.getEditor();
@@ -642,7 +658,15 @@ const ArticleUpdate = ({ params }: Props) => {
                     style={{ height: "10rem" }}
                   ></ReactQuill>
                 </div>
-
+                <label className="flex flex-col mt-16 text-l font-bold">
+                  Modifier la description :
+                  <input
+                    type="text"
+                    className="border-[1px] border-[#0B3168] rounded-md h-8 mt-4 font-normal"
+                    value={description}
+                    onChange={handleDescription}
+                  />
+                </label>
                 <input className="mt-20" type="date" value={createdAt} onChange={handleCreatedAt} />
                 {console.log("date de creation", createdAt)}
 

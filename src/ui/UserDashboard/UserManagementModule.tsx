@@ -23,13 +23,13 @@ type GetUserData = {
 };
 
 type User = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  isAdmin: boolean;
-  password: string;
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  isAdmin?: boolean;
+  password?: string;
 };
 
 export type OpenDeleteModal = (cuid: string, firstName: string) => void;
