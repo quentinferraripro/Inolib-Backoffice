@@ -125,11 +125,11 @@ const UserUpdate = ({ params }: Props) => {
 
   useEffect(() => {
     if (data?.findUser[0]) {
-      setFirstName(data?.findUser[0].firstName || "");
-      setLastName(data?.findUser[0].lastName || "");
-      setEmail(data?.findUser[0].email || "");
-      setPhone(data?.findUser[0].phone || "");
-      setPassword(data?.findUser[0].password || "");
+      setFirstName(data?.findUser[0].firstName ?? "");
+      setLastName(data?.findUser[0].lastName ?? "");
+      setEmail(data?.findUser[0].email ?? "");
+      setPhone(data?.findUser[0].phone ?? "");
+      setPassword(data?.findUser[0].password ?? "");
     }
   }, [data?.findUser]);
   console.log(data);

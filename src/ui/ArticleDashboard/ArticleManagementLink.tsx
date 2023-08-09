@@ -1,4 +1,4 @@
-import { useEffect, useId, /*useRef,*/ type PropsWithChildren } from "react";
+import { useId, /*useRef,*/ type PropsWithChildren } from "react";
 import Link from "next/link";
 // import { useComposite } from "../Composite";
 

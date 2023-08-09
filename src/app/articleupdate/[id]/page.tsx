@@ -20,7 +20,7 @@ type Article = {
   id?: string;
   title?: string;
   content?: string;
-  createdAt?: Date;
+  createdAt?: string;
 };
 
 type Props = {
@@ -41,7 +41,7 @@ const observeOptions = (listbox: Element, listboxLabel: string) => {
           });
           target.setAttribute("aria-selected", "");
 
-          listbox.setAttribute("aria-label", target.getAttribute("aria-label") as string);
+          listbox.setAttribute("aria-label", target.getAttribute("aria-label"));
         } else if (listbox.querySelector(".ql-selected") === null) {
           listbox.querySelectorAll(".ql-picker-item").forEach((option) => {
             option.removeAttribute("aria-selected");
@@ -139,12 +139,12 @@ const ArticleUpdate = ({ params }: Props) => {
     setChanged(!changed);
   }, [changed]);
 
-  const formatedDate = data?.findArticle[0].createdAt.slice(0, 10) || undefined;
+  const formatedDate = data?.findArticle[0]?.createdAt.slice(0, 10) ?? undefined;
 
   useEffect(() => {
     if (data?.findArticle[0]) {
-      setTitle(data?.findArticle[0].title || "");
-      setContent(data?.findArticle[0].content || "");
+      setTitle(data?.findArticle[0].title ?? "");
+      setContent(data?.findArticle[0].content ?? "");
       setCreatedAt(formatedDate);
     }
 
@@ -602,7 +602,7 @@ const ArticleUpdate = ({ params }: Props) => {
         classObserver.disconnect();
       });
     };
-  }, [handleToolbarEvent, data?.findArticle]);
+  }, [handleToolbarEvent, data?.findArticle, formatedDate]);
 
   return (
     <>

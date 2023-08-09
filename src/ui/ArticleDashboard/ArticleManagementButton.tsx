@@ -1,4 +1,4 @@
-import { useEffect, useId, /*useRef,*/ type MouseEventHandler, type PropsWithChildren } from "react";
+import { useId, /*useRef,*/ type MouseEventHandler, type PropsWithChildren } from "react";
 // import { useComposite } from "../Composite";
 
 type Props = {

@@ -17,7 +17,7 @@ const Home = () => {
             </a>
           </div>
           <div className="flex flex-col justify-center items-center md:w-1/2">
-            <p className="text-lg">Pour gérer le contenu c'est ici</p>
+            <p className="text-lg">Pour gérer le contenu c`&aposest ici</p>
             <Link href="/dashboard">
               <BasicButton
                 label="tableau de bord"

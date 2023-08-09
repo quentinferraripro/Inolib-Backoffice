@@ -17,8 +17,8 @@ type Props = {
 };
 
 export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
-  const title = props.title !== undefined ? props.title : "";
-  const content = props.content !== undefined ? props.content : "";
+  const title = props.title ?? "";
+  const content = props.content ?? "";
 
   const nohtmlTitle = title?.replace(/(<([^>]+)>)/gi, "");
   const nohtmlContent = content?.replace(/(<([^>]+)>)/gi, "");

@@ -1,11 +1,9 @@
 "use client";
 
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { nanoid } from "nanoid";
-import { useCallback, useRef, useState, type FormEvent } from "react";
+import { gql, useMutation } from "@apollo/client";
 
-import quillTitleConfig from "../config/quillTitleConfig";
-import quillContentConfig from "../config/quillContentConfig";
+import { useState, type FormEvent } from "react";
+
 import UserCreateModal from "../ui/UserDashboard/UserCreateModal";
 
 //requete POST
