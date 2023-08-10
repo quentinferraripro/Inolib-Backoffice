@@ -1,9 +1,10 @@
 import { type PropsWithChildren } from "react";
 
-import { Composite } from "../Composite";
+// import { Composite } from "../Composite";
 import ArticleManagementButton from "./ArticleManagementButton";
 import ArticleManagementContent from "./ArticleManagementContent";
 import ArticleManagementCreationDate from "./ArticleManagementCreationDate";
+import ArticleManagementDescription from "./ArticleManagementDescription";
 import ArticleManagementLink from "./ArticleManagementLink";
 import { type OpenDeleteModal } from "./ArticleManagementModule";
 import ArticleManagementTitle from "./ArticleManagementTitle";
@@ -12,14 +13,16 @@ type Props = {
   content: string;
   createdAt: string;
   cuid: string;
+  description: string;
   openDeleteModal: OpenDeleteModal;
   title: string;
 };
 
 export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
-  const title = props.title !== undefined ? props.title : "";
-  const content = props.content !== undefined ? props.content : "";
-
+  const title = props.title ?? "";
+  const content = props.content ?? "";
+  const description = props.description ?? "";
+  const nohtmlDescription = description?.replace(/(<([^>]+)>)/gi, "");
   const nohtmlTitle = title?.replace(/(<([^>]+)>)/gi, "");
   const nohtmlContent = content?.replace(/(<([^>]+)>)/gi, "");
 
@@ -28,30 +31,36 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
       <>
         <ArticleManagementTitle
           title={nohtmlTitle}
-          styles="focus:bg-slate-400 w-1/4 flex justify-center items-center"
+          styles="focus:bg-slate-400 w-1/6 flex justify-center items-center"
         />
         <ArticleManagementContent
           content={nohtmlContent}
-          styles="focus:bg-slate-400 w-1/4 flex items-center justify-center truncate ..."
+          styles="focus:bg-slate-400 w-1/6 flex items-center justify-center truncate ..."
+        />
+        <ArticleManagementDescription
+          description={nohtmlDescription}
+          styles="focus:bg-slate-400 w-1/6 flex justify-center items-center"
         />
         <ArticleManagementCreationDate
           createdAt={props.createdAt}
-          styles="focus:bg-slate-400 w-1/4 flex justify-center items-center"
+          styles="focus:bg-slate-400 w-1/6 flex justify-center items-center"
         />
-        <td className="focus:bg-slate-400 w-1/4 flex justify-center items-center">
-          <Composite orientation="horizontal">
-            <ArticleManagementLink cuid={props.cuid} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
-              Modifier
-            </ArticleManagementLink>
-
-            <ArticleManagementButton
-              onClick={() => void props.openDeleteModal(props.cuid, nohtmlTitle)}
-              styles="p-2 mx-4 bg-red-600 rounded-lg"
-            >
-              Supprimer
-            </ArticleManagementButton>
-          </Composite>
+        {/* <Composite orientation="vertical"> */}
+        <td className="focus:bg-slate-400 w-1/6 flex justify-center items-center">
+          <ArticleManagementLink cuid={props.cuid} title={nohtmlTitle} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
+            Modifier
+          </ArticleManagementLink>
         </td>
+        <td className="focus:bg-slate-400 w-1/6 flex justify-center items-center">
+          <ArticleManagementButton
+            onClick={() => void props.openDeleteModal(props.cuid, nohtmlTitle)}
+            styles="p-2 mx-4 bg-red-600 rounded-lg"
+            title={nohtmlTitle}
+          >
+            Supprimer
+          </ArticleManagementButton>
+        </td>
+        {/* </Composite> */}
       </>
     </tr>
   );

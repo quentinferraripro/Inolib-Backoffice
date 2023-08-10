@@ -1,7 +1,6 @@
 import { MockedProvider, type MockedProviderProps } from "@apollo/client/testing";
 import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
 
 import ArticleManagementModule, {
   DELETE_ARTICLE,
@@ -24,7 +23,7 @@ const mocks: MockedProviderProps["mocks"] = [
     },
     result: {
       data: {
-        documents: [
+        articles: [
           {
             id: mockArticle.cuid,
             title: mockArticle.title,
@@ -44,7 +43,7 @@ const mocks: MockedProviderProps["mocks"] = [
     },
     result: {
       data: {
-        deleteDocument: {
+        deleteArticle: {
           id: mockArticle.cuid,
         },
       },
@@ -59,8 +58,7 @@ it("Should render the list of article lines correctly", async () => {
     </MockedProvider>
   );
 
-  expect(await screen.findByText("Chargement...")).toBeInTheDocument();
-  // TODO: expect(await screen.findByText("Chargement...")).toBeInTheDocument();
+  expect(await screen.findByText(/Chargement/)).toBeInTheDocument();
 
   // Attendez que les données soient chargées et vérifiez le rendu
   await screen.findByText("Article 1");
@@ -69,28 +67,28 @@ it("Should render the list of article lines correctly", async () => {
   expect(screen.getByText("2023-06-25")).toBeInTheDocument();
 });
 
-// it("Should display error message when there is an error", async () => {
-//   const mockError = new Error("Failed to fetch");
+it("Should display error message when there is an error", async () => {
+  const mockError = new Error("Failed to fetch");
 
-//   render(
-//     <MockedProvider error={mockError}>
-//       <ArticleManagementModule />
-//     </MockedProvider>
-//   );
-
-//   const texterror = await screen.findByText("Failed to fetch");
-//   expect(texterror).toBeInTheDocument();
-// });
-
-it("Should display loading message when data is loading", () => {
   render(
-    <MockedProvider addTypename={false} mocks={mocks}>
+    <MockedProvider error={mockError}>
       <ArticleManagementModule />
     </MockedProvider>
   );
 
-  // TODO: expect(await screen.findByText("Chargement...")).toBeInTheDocument();
+  const texterror = await screen.findByText(/Failed to fetch/);
+  expect(texterror).toBeInTheDocument();
 });
+
+// it("Should display loading message when data is loading", () => {
+//   render(
+//     <MockedProvider addTypename={false} mocks={mocks}>
+//       <ArticleManagementModule />
+//     </MockedProvider>
+//   );
+
+// TODO: expect(await screen.findByText("Chargement...")).toBeInTheDocument();
+// });
 
 it("should call the delete request on Supprimer button clic", async () => {
   render(
@@ -103,7 +101,7 @@ it("should call the delete request on Supprimer button clic", async () => {
   await user.click(await screen.findByText("Supprimer"));
 
   // cliquer sur le boutton supprimer de la modale (continer la verification de la suppression dans (ArticleModule)
-  await screen.findByRole("dialog");
+  await screen.findByText(/Êtes-vous sur de vouloir supprimer/);
   await user.click(await screen.findByTestId("DeleteModal-button-delete"));
 
   // TODO: await waitForElementToBeRemoved(() => screen.queryByText("Article 1"));

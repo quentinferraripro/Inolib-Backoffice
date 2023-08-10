@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css";
 
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { nanoid } from "nanoid";
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type ChangeEventHandler, type FormEvent } from "react";
 import ReactQuill from "react-quill";
 
 import quillTitleConfig from "../../../config/quillTitleConfig";
@@ -21,6 +21,7 @@ type Article = {
   title?: string;
   content?: string;
   createdAt?: string;
+  description?: string;
 };
 
 type Props = {
@@ -29,6 +30,7 @@ type Props = {
   };
 };
 
+//mise en place de la surveillance de toute les classe nécessaire pour la modification des aria-label
 const observeOptions = (listbox: Element, listboxLabel: string) => {
   const classObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
@@ -41,7 +43,10 @@ const observeOptions = (listbox: Element, listboxLabel: string) => {
           });
           target.setAttribute("aria-selected", "");
 
-          listbox.setAttribute("aria-label", target.getAttribute("aria-label") as string);
+          const ariaLabel = target.getAttribute("aria-label");
+          if (ariaLabel !== null) {
+            listbox.setAttribute("aria-label", ariaLabel);
+          }
         } else if (listbox.querySelector(".ql-selected") === null) {
           listbox.querySelectorAll(".ql-picker-item").forEach((option) => {
             option.removeAttribute("aria-selected");
@@ -66,18 +71,26 @@ const ArticleUpdate = ({ params }: Props) => {
         title
         content
         createdAt
+        description
       }
     }
   `;
 
   // requete UPDATE
   const UPDATE_ARTICLE = gql`
-    mutation updateArticle($id: Cuid!, $title: String!, $content: String!) {
-      updateArticle(id: $id, title: $title, content: $content) {
+    mutation updateArticle(
+      $id: Cuid!
+      $title: String!
+      $content: String!
+      $createdAt: DateTime!
+      $description: String!
+    ) {
+      updateArticle(id: $id, title: $title, content: $content, createdAt: $createdAt, description: $description) {
         id
         title
         content
         createdAt
+        description
       }
     }
   `;
@@ -97,6 +110,8 @@ const ArticleUpdate = ({ params }: Props) => {
           id: params.id,
           title,
           content,
+          createdAt: new Date(createdAt),
+          description,
         },
       });
 
@@ -117,6 +132,8 @@ const ArticleUpdate = ({ params }: Props) => {
 
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
+  const [createdAt, setCreatedAt] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   //gestion du re-render du composant lors du clic des bouton de la toolbar
   const [changed, setChanged] = useState(false);
@@ -129,14 +146,26 @@ const ArticleUpdate = ({ params }: Props) => {
     setContent(contentValue);
   };
 
+  const handleCreatedAt: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setCreatedAt(event.target.value);
+  };
+
+  const handleDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(event.target.value);
+  };
+
   const handleToolbarEvent = useCallback(() => {
     setChanged(!changed);
   }, [changed]);
 
+  const formatedDate = data?.findArticle[0]?.createdAt?.slice(0, 10) ?? undefined;
+
   useEffect(() => {
     if (data?.findArticle[0]) {
-      setTitle(data?.findArticle[0].title || "");
-      setContent(data?.findArticle[0].content || "");
+      setTitle(data?.findArticle[0].title ?? "");
+      setContent(data?.findArticle[0].content ?? "");
+      setCreatedAt(formatedDate ?? "");
+      setDescription(data?.findArticle[0].description ?? "");
     }
 
     const titleEditor = quillTitleRef.current?.getEditor();
@@ -149,10 +178,13 @@ const ArticleUpdate = ({ params }: Props) => {
     delete keyboardTitle?.bindings[9];
     delete keyboardContent?.bindings[9];
 
-    const contentToolbar = contentEditor?.root.parentElement?.parentElement?.querySelector(".ql-toolbar");
-    const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");
-    const titleToolbar = titleEditor?.root.parentElement?.parentElement?.querySelector(".ql-toolbar");
+    const titleEditorElement = titleEditor?.root;
+    const titleToolbar = titleEditorElement?.parentElement?.parentElement?.querySelector(".ql-toolbar");
     const titleToolbarElements = titleToolbar?.querySelectorAll("button, span");
+
+    const contentEditorElement = contentEditor?.root;
+    const contentToolbar = contentEditorElement?.parentElement?.parentElement?.querySelector(".ql-toolbar");
+    const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");
 
     const classObservers: MutationObserver[] = [];
 
@@ -175,6 +207,32 @@ const ArticleUpdate = ({ params }: Props) => {
       colortitleButton?.setAttribute("aria-label", "changer couleur texte");
     }
 
+    const sizecontentButton = contentToolbar?.querySelector(".ql-size");
+    if (sizecontentButton?.getAttribute("aria-label") === null) {
+      sizecontentButton?.setAttribute("aria-label", "changer la taille du texte");
+    }
+    const sizetitleButton = titleToolbar?.querySelector(".ql-size");
+    if (sizetitleButton?.getAttribute("aria-label") === null) {
+      sizetitleButton?.setAttribute("aria-label", "changer la taille du texte");
+    }
+
+    const headercontentButton = contentToolbar?.querySelector(".ql-header");
+    if (headercontentButton?.getAttribute("aria-label") === null) {
+      headercontentButton?.setAttribute("aria-label", "niveau de titre");
+    }
+    const headertitleButton = titleToolbar?.querySelector(".ql-header");
+    if (headertitleButton?.getAttribute("aria-label") === null) {
+      headertitleButton?.setAttribute("aria-label", "niveau de titre");
+    }
+
+    if (titleEditorElement?.getAttribute("aria-label") === null) {
+      titleEditorElement?.setAttribute("aria-label", "zone d'édition du titre");
+    }
+
+    if (contentEditorElement?.getAttribute("aria-label") === null) {
+      contentEditorElement?.setAttribute("aria-label", "zone d'édition du contenu");
+    }
+
     //ecoute chaque bouton, au clic provoque au re-render
     //et il y une surveillance de la className du boutton pour lui ajouter le bon aria-label
     contentToolbarElements?.forEach((element) => {
@@ -184,43 +242,43 @@ const ArticleUpdate = ({ params }: Props) => {
             switch (element.className) {
               case "ql-bold": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer gras");
+                element.setAttribute("aria-label", "Gras désactivé");
                 break;
               }
 
               case "ql-bold ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Désactiver gras");
+                element.setAttribute("aria-label", "Gras activé");
                 break;
               }
 
               case "ql-underline": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer soulignement");
+                element.setAttribute("aria-label", "Soulignement désactivé");
                 break;
               }
 
               case "ql-underline ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Desactiver soulignement");
+                element.setAttribute("aria-label", "Soulignement activé");
                 break;
               }
 
               case "ql-italic": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer italique");
+                element.setAttribute("aria-label", "Italique désactivé");
                 break;
               }
 
               case "ql-italic ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Desactiver italique");
+                element.setAttribute("aria-label", "Italique activé");
                 break;
               }
 
               case "ql-link": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "creer un lien");
+                element.setAttribute("aria-label", "Créer un lien");
                 break;
               }
 
@@ -266,22 +324,22 @@ const ArticleUpdate = ({ params }: Props) => {
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
-                    item.setAttribute("aria-label", "aligner à gauche");
+                    item.setAttribute("aria-label", "texte aligné à gauche");
                     break;
                   }
 
                   case "center": {
-                    item.setAttribute("aria-label", "aligner au centre");
+                    item.setAttribute("aria-label", "texte aligné au centre");
                     break;
                   }
 
                   case "right": {
-                    item.setAttribute("aria-label", "aligner à droite");
+                    item.setAttribute("aria-label", "texte aligné à droite");
                     break;
                   }
 
                   case "justify": {
-                    item.setAttribute("aria-label", "justifier");
+                    item.setAttribute("aria-label", "texte justifié");
                     break;
                   }
                 }
@@ -324,6 +382,46 @@ const ArticleUpdate = ({ params }: Props) => {
 
                   case "white": {
                     item.setAttribute("aria-label", "blanc");
+                    break;
+                  }
+                }
+              });
+              const selectedItem = element.querySelector(".ql-picker-item.ql-selected");
+
+              //ajout d'attribut pour mimer le comportement d'un <select>
+              element.setAttribute("role", "listbox");
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
+              break;
+            }
+            case element.className.includes("ql-size"): {
+              element.addEventListener("click", handleToolbarEvent, { once: true });
+
+              const items = element.querySelectorAll(".ql-picker-item");
+
+              items.forEach((item) => {
+                item.setAttribute("id", nanoid());
+                item.setAttribute("role", "option");
+
+                classObservers.push(observeOptions(element, "changer la taille du texte"));
+
+                switch (item.getAttribute("data-value")) {
+                  case null: {
+                    item.setAttribute("aria-label", "taille texte normale");
+                    break;
+                  }
+
+                  case "small": {
+                    item.setAttribute("aria-label", "taille texte petite");
+                    break;
+                  }
+
+                  case "large": {
+                    item.setAttribute("aria-label", "taille texte grande");
+                    break;
+                  }
+
+                  case "huge": {
+                    item.setAttribute("aria-label", "taille texte très grande");
                     break;
                   }
                 }
@@ -348,57 +446,39 @@ const ArticleUpdate = ({ params }: Props) => {
             switch (element.className) {
               case "ql-bold": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer gras");
+                element.setAttribute("aria-label", "Gras désactivé");
                 break;
               }
 
               case "ql-bold ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Désactiver gras");
+                element.setAttribute("aria-label", "Gras activé");
                 break;
               }
 
               case "ql-underline": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer soulignement");
+                element.setAttribute("aria-label", "Soulignement désactivé");
                 break;
               }
 
               case "ql-underline ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Desactiver soulignement");
+                element.setAttribute("aria-label", "Soulignement activé");
                 break;
               }
 
               case "ql-italic": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Activer italique");
+                element.setAttribute("aria-label", "Italique désactivé");
                 break;
               }
 
               case "ql-italic ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "Desactiver italique");
+                element.setAttribute("aria-label", "Italique activé");
                 break;
               }
-
-              case "ql-list":
-                {
-                  switch ((element as HTMLButtonElement).value) {
-                    case "ordered": {
-                      element.addEventListener("click", handleToolbarEvent, { once: true });
-                      element.setAttribute("aria-label", "transformer en liste ordonée");
-                      break;
-                    }
-                    case "bullet": {
-                      element.addEventListener("click", handleToolbarEvent, { once: true });
-                      element.setAttribute("aria-label", "transformer en liste à puce");
-                      break;
-                    }
-                  }
-                  break;
-                }
-                break;
             }
           }
           break;
@@ -418,22 +498,22 @@ const ArticleUpdate = ({ params }: Props) => {
 
                 switch (item.getAttribute("data-value")) {
                   case null: {
-                    item.setAttribute("aria-label", "aligner à gauche");
+                    item.setAttribute("aria-label", "Texte aligné à gauche");
                     break;
                   }
 
                   case "center": {
-                    item.setAttribute("aria-label", "aligner au centre");
+                    item.setAttribute("aria-label", "Texte aligné au centre");
                     break;
                   }
 
                   case "right": {
-                    item.setAttribute("aria-label", "aligner à droite");
+                    item.setAttribute("aria-label", "Texte aligné à droite");
                     break;
                   }
 
                   case "justify": {
-                    item.setAttribute("aria-label", "justifier");
+                    item.setAttribute("aria-label", "Texte justifié");
                     break;
                   }
                 }
@@ -487,6 +567,61 @@ const ArticleUpdate = ({ params }: Props) => {
               setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
               break;
             }
+            case element.className.includes("ql-header"): {
+              element.addEventListener("click", handleToolbarEvent, { once: true });
+
+              const items = element.querySelectorAll(".ql-picker-item");
+
+              items.forEach((item) => {
+                item.setAttribute("id", nanoid());
+                item.setAttribute("role", "option");
+
+                classObservers.push(observeOptions(element, "niveau de titre"));
+
+                switch (item.getAttribute("data-value")) {
+                  case null: {
+                    item.setAttribute("aria-label", "aucun choix");
+                    break;
+                  }
+
+                  case "1": {
+                    item.setAttribute("aria-label", "niveau H1");
+                    break;
+                  }
+
+                  case "2": {
+                    item.setAttribute("aria-label", "niveau H2");
+                    break;
+                  }
+
+                  case "3": {
+                    item.setAttribute("aria-label", "niveau H3");
+                    break;
+                  }
+
+                  case "4": {
+                    item.setAttribute("aria-label", "niveau H4");
+                    break;
+                  }
+
+                  case "5": {
+                    item.setAttribute("aria-label", "niveau H5");
+                    break;
+                  }
+
+                  case "6": {
+                    item.setAttribute("aria-label", "niveau H6");
+                    break;
+                  }
+                }
+              });
+              const selectedItem = element.querySelector(".ql-picker-item.ql-selected");
+
+              //ajout d'attribut pour mimer le comportement d'un <select>
+              element.setAttribute("role", "listbox");
+              setAttribute(element, "aria-activedescendant", selectedItem?.getAttribute("id"));
+              break;
+            }
           }
           break;
         }
@@ -498,7 +633,7 @@ const ArticleUpdate = ({ params }: Props) => {
         classObserver.disconnect();
       });
     };
-  }, [handleToolbarEvent, data?.findArticle]);
+  }, [handleToolbarEvent, data?.findArticle, formatedDate]);
 
   return (
     <>
@@ -513,8 +648,9 @@ const ArticleUpdate = ({ params }: Props) => {
               <header>
                 <h1 className="text-3xl font-bold underline mb-10">Modifier votre article</h1>
               </header>
-              <form onSubmit={handleUpdate}>
+              <div>
                 <p className="text-xl² mb-5 font-bold">Titre de votre article</p>
+
                 <div>
                   <ReactQuill
                     ref={quillTitleRef}
@@ -525,6 +661,7 @@ const ArticleUpdate = ({ params }: Props) => {
                     style={{ height: "10rem" }}
                   />
                 </div>
+
                 <p className="text-xl² my-16 font-bold">Contenu de votre article</p>
                 <div>
                   <ReactQuill
@@ -536,14 +673,21 @@ const ArticleUpdate = ({ params }: Props) => {
                     style={{ height: "10rem" }}
                   ></ReactQuill>
                 </div>
-                <div className="my-16">
-                  <button className="p-2 border-[1px] border-black rounded lg" type="button">
-                    ajouter une image
-                  </button>
-                </div>
+                <label className="flex flex-col mt-16 text-l font-bold">
+                  Modifier la description :
+                  <input
+                    type="text"
+                    className="border-[1px] border-[#0B3168] rounded-md h-8 mt-4 font-normal"
+                    value={description}
+                    onChange={handleDescription}
+                  />
+                </label>
+                <input className="mt-20" type="date" value={createdAt} onChange={handleCreatedAt} />
+
                 <button onClick={handleOpenModal} type="button">
                   Valider
                 </button>
+
                 {open && (
                   <ArticleUpdateModal
                     title={title}
@@ -555,7 +699,7 @@ const ArticleUpdate = ({ params }: Props) => {
                     onUpdate={handleUpdate}
                   />
                 )}
-              </form>
+              </div>
             </>
           ) : null}
         </div>

@@ -12,6 +12,7 @@ type DeleteArticleData = {
     title?: string;
     content?: string;
     createdAt?: string;
+    description: string;
   };
 };
 
@@ -24,6 +25,7 @@ type Article = {
   title: string;
   content: string;
   createdAt: string;
+  description: string;
 };
 
 export type OpenDeleteModal = (cuid: string, title: string) => void;
@@ -43,6 +45,7 @@ export const GET_ARTICLE_DATA = gql`
       title
       content
       createdAt
+      description
     }
   }
 `;
@@ -75,7 +78,7 @@ export default function ArticleManagementModule() {
   const openDeleteModal: OpenDeleteModal = (cuid, title) => {
     setDeleteModalState({ ...deleteModalState, cuid, isOpen: true, title });
   };
-
+  console.log(data);
   return (
     <>
       <div className="mt-10">
@@ -88,10 +91,12 @@ export default function ArticleManagementModule() {
             <caption className="text-2xl font-bold mb-6 ">Tableau de gestion des Articles</caption>
             <thead className="border-b-2 border-b-black">
               <tr className="flex border-y-[1px] border-t-black w-full items-center">
-                <th className="w-1/4 flex justify-center items-center">Titre</th>
-                <th className="w-1/4 flex justify-center items-center">Contenu</th>
-                <th className="w-1/4 flex justify-center items-center">Date de création</th>
-                <th className="w-1/4 flex justify-center items-center">Actions</th>
+                <th className="w-1/6 flex justify-center items-center">Titre</th>
+                <th className="w-1/6 flex justify-center items-center">Contenu</th>
+                <th className="w-1/6 flex justify-center items-center">Description</th>
+                <th className="w-1/6 flex justify-center items-center">Date de création</th>
+                <th className="w-1/6 flex justify-center items-center">Modifier un utilisateur</th>
+                <th className="w-1/6 flex justify-center items-center">Supprimer un utilisateur</th>
               </tr>
             </thead>
             <tbody>
@@ -103,6 +108,7 @@ export default function ArticleManagementModule() {
                       title={article.title}
                       createdAt={article.createdAt}
                       content={article.content}
+                      description={article.description}
                       openDeleteModal={openDeleteModal}
                     />
                   ))

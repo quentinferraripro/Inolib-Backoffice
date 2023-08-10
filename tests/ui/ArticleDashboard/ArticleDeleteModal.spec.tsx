@@ -2,7 +2,6 @@ import { gql } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { it, expect, vi } from "vitest";
 
 import ArticleDeleteModal from "../../../src/ui/ArticleDashboard/ArticleDeleteModal";
 
@@ -43,7 +42,7 @@ const mocks = [
 
 it("should render a dialog element", async () => {
   render(<ArticleDeleteModal open={true} onClose={() => undefined} onDelete={() => undefined} />);
-  const modal = await screen.findByRole("dialog");
+  const modal = await screen.findByText(/Êtes-vous sur de vouloir supprimer/);
 
   expect(modal).toBeInTheDocument();
 });
@@ -53,7 +52,7 @@ it("should call `onClose` callback when clicking on the button internal element"
     callback: () => undefined,
   };
 
-  const spy = vi.spyOn(_, "callback");
+  const spy = jest.spyOn(_, "callback");
 
   render(
     <MockedProvider mocks={mocks} addTypename={false}>
@@ -84,7 +83,7 @@ it("should call `onDelete` callback when clicking on the button internal element
     callback: () => undefined,
   };
 
-  const spy = vi.spyOn(_, "callback");
+  const spy = jest.spyOn(_, "callback");
 
   render(
     <MockedProvider mocks={mocks} addTypename={false}>
@@ -103,4 +102,58 @@ it("should call `onDelete` callback when clicking on the button internal element
   await user.click(await screen.findByText("Supprimer"));
 
   expect(spy).toHaveBeenCalled();
+});
+
+it("should close callback when clicking on the fermer button internal element", async () => {
+  const _ = {
+    callback: () => undefined,
+  };
+
+  const spy = jest.spyOn(_, "callback");
+
+  render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <ArticleDeleteModal
+        styles=""
+        title=""
+        titleCloseButton="Fermer"
+        titleDeleteButton=""
+        onClose={_.callback}
+        onDelete={() => undefined}
+        open={true}
+      />
+    </MockedProvider>
+  );
+  const closeButton = await screen.findByText("Fermer");
+  const user = userEvent.setup();
+  await user.click(closeButton);
+
+  expect(closeButton).not.toBeInTheDocument;
+});
+
+it("should close callback when clicking on the supprimer button internal element", async () => {
+  const _ = {
+    callback: () => undefined,
+  };
+
+  const spy = jest.spyOn(_, "callback");
+
+  render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <ArticleDeleteModal
+        styles=""
+        title=""
+        titleCloseButton=""
+        titleDeleteButton="Supprimer"
+        onClose={_.callback}
+        onDelete={() => undefined}
+        open={true}
+      />
+    </MockedProvider>
+  );
+  const deleteButton = await screen.findByText("Supprimer");
+  const user = userEvent.setup();
+  await user.click(deleteButton);
+
+  expect(deleteButton).not.toBeInTheDocument;
 });
