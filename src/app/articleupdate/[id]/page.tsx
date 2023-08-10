@@ -30,6 +30,7 @@ type Props = {
   };
 };
 
+//mise en place de la surveillance de toute les classe nécessaire pour la modification des aria-label
 const observeOptions = (listbox: Element, listboxLabel: string) => {
   const classObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
@@ -181,6 +182,7 @@ const ArticleUpdate = ({ params }: Props) => {
     const contentEditorElement = contentEditor?.root;
     const contentToolbar = contentEditorElement?.parentElement?.parentElement?.querySelector(".ql-toolbar");
     const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");
+
     const classObservers: MutationObserver[] = [];
 
     // gestion des nom des boutons deroulants
@@ -237,13 +239,13 @@ const ArticleUpdate = ({ params }: Props) => {
             switch (element.className) {
               case "ql-bold": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "le gras désactivé");
+                element.setAttribute("aria-label", "Gras désactivé");
                 break;
               }
 
               case "ql-bold ql-active": {
                 element.addEventListener("click", handleToolbarEvent, { once: true });
-                element.setAttribute("aria-label", "gras activé");
+                element.setAttribute("aria-label", "Gras activé");
                 break;
               }
 
