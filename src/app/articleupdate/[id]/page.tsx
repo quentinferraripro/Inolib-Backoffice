@@ -43,7 +43,10 @@ const observeOptions = (listbox: Element, listboxLabel: string) => {
           });
           target.setAttribute("aria-selected", "");
 
-          listbox.setAttribute("aria-label", target.getAttribute("aria-label"));
+          const ariaLabel = target.getAttribute("aria-label");
+          if (ariaLabel !== null) {
+            listbox.setAttribute("aria-label", ariaLabel);
+          }
         } else if (listbox.querySelector(".ql-selected") === null) {
           listbox.querySelectorAll(".ql-picker-item").forEach((option) => {
             option.removeAttribute("aria-selected");
