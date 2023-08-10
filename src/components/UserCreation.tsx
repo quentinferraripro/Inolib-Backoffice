@@ -47,7 +47,7 @@ const UserCreation = () => {
 
   const [email, setEmail] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState();
   const [lastName, setLastName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [password, setPassword] = useState<string>("");
