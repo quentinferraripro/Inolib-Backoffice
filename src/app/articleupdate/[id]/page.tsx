@@ -158,7 +158,7 @@ const ArticleUpdate = ({ params }: Props) => {
     setChanged(!changed);
   }, [changed]);
 
-  const formatedDate = data?.findArticle[0]?.createdAt.slice(0, 10) ?? undefined;
+  const formatedDate = data?.findArticle[0]?.createdAt?.slice(0, 10) ?? undefined;
 
   useEffect(() => {
     if (data?.findArticle[0]) {
