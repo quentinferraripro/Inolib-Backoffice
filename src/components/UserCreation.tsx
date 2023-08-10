@@ -47,7 +47,7 @@ const UserCreation = () => {
 
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>("false");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -68,7 +68,7 @@ const UserCreation = () => {
     setPassword(event.target.value);
   };
   const handleIsAdmin = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value === "true" ? "true" : "false";
+    const value = event.target.value === "true";
     setIsAdmin(value);
   };
 
