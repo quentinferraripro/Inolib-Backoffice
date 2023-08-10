@@ -164,7 +164,7 @@ const ArticleUpdate = ({ params }: Props) => {
     if (data?.findArticle[0]) {
       setTitle(data?.findArticle[0].title ?? "");
       setContent(data?.findArticle[0].content ?? "");
-      setCreatedAt(formatedDate);
+      setCreatedAt(formatedDate ?? "");
       setDescription(data?.findArticle[0].description ?? "");
     }
 
