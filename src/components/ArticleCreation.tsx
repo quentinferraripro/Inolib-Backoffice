@@ -131,14 +131,13 @@ const ArticleCreation = () => {
     delete keyboardTitle?.bindings[9];
     delete keyboardContent?.bindings[9];
 
-    const contentToolbar = contentEditor?.root.parentElement?.parentElement?.querySelector(".ql-toolbar");
-    const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");
-    const titleToolbar = titleEditor?.root.parentElement?.parentElement?.querySelector(".ql-toolbar");
+    const titleEditorElement = titleEditor?.root;
+    const titleToolbar = titleEditorElement?.parentElement?.parentElement?.querySelector(".ql-toolbar");
     const titleToolbarElements = titleToolbar?.querySelectorAll("button, span");
-    // const contentEditorSpace = contentEditor?.root.parentElement?.parentElement?.querySelector(".ql-container");
-    // const contentEditorSpaceElements = contentEditorSpace?.querySelectorAll("div");
-    // const titleEditorSpace = titleEditor?.root.parentElement?.parentElement?.querySelector(".ql-container");
-    // const titleEditorSpaceElements = titleEditorSpace?.querySelectorAll("div");
+
+    const contentEditorElement = contentEditor?.root;
+    const contentToolbar = contentEditorElement?.parentElement?.parentElement?.querySelector(".ql-toolbar");
+    const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");
 
     const classObservers: MutationObserver[] = [];
 
@@ -178,15 +177,14 @@ const ArticleCreation = () => {
     if (headertitleButton?.getAttribute("aria-label") === null) {
       headertitleButton?.setAttribute("aria-label", "niveau de titre");
     }
-    // const titleEditionSpace = titleEditorSpace?.querySelector("ql-editor");
-    // if (titleEditionSpace?.getAttribute("aria-label") === null) {
-    //   titleEditionSpace?.setAttribute("aria-label", "zone d'édition du titre");
-    // }
 
-    // const contentEditionSpace = contentEditorSpace?.querySelector("ql-editor ql-blank");
-    // if (contentEditionSpace?.getAttribute("aria-label") === null) {
-    //   contentEditionSpace?.setAttribute("aria-label", "zone d'édition du titre");
-    // }
+    if (titleEditorElement?.getAttribute("aria-label") === null) {
+      titleEditorElement?.setAttribute("aria-label", "zone d'édition du titre");
+    }
+
+    if (contentEditorElement?.getAttribute("aria-label") === null) {
+      contentEditorElement?.setAttribute("aria-label", "zone d'édition du contenu");
+    }
 
     //ecoute chaque bouton, au clic provoque au re-render
     //et il y une surveillance de la className du boutton pour lui ajouter le bon aria-label
@@ -394,20 +392,6 @@ const ArticleCreation = () => {
         }
       }
     });
-
-    // titleEditorSpaceElements?.forEach((element) => {
-    //   switch (element.tagName) {
-    //     case "DIV": {
-    //       switch (element.className) {
-    //         case "ql-editor": {
-    //           element.addEventListener("click", handleToolbarEvent, { once: true });
-    //           element.setAttribute("aria-label", "espace d'édition");
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   }
-    // });
 
     titleToolbarElements?.forEach((element) => {
       switch (element.tagName) {

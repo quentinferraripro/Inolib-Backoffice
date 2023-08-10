@@ -174,11 +174,13 @@ const ArticleUpdate = ({ params }: Props) => {
     delete keyboardTitle?.bindings[9];
     delete keyboardContent?.bindings[9];
 
-    const contentToolbar = contentEditor?.root.parentElement?.parentElement?.querySelector(".ql-toolbar");
-    const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");
-    const titleToolbar = titleEditor?.root.parentElement?.parentElement?.querySelector(".ql-toolbar");
+    const titleEditorElement = titleEditor?.root;
+    const titleToolbar = titleEditorElement?.parentElement?.parentElement?.querySelector(".ql-toolbar");
     const titleToolbarElements = titleToolbar?.querySelectorAll("button, span");
 
+    const contentEditorElement = contentEditor?.root;
+    const contentToolbar = contentEditorElement?.parentElement?.parentElement?.querySelector(".ql-toolbar");
+    const contentToolbarElements = contentToolbar?.querySelectorAll("button, span");
     const classObservers: MutationObserver[] = [];
 
     // gestion des nom des boutons deroulants
@@ -216,6 +218,14 @@ const ArticleUpdate = ({ params }: Props) => {
     const headertitleButton = titleToolbar?.querySelector(".ql-header");
     if (headertitleButton?.getAttribute("aria-label") === null) {
       headertitleButton?.setAttribute("aria-label", "niveau de titre");
+    }
+
+    if (titleEditorElement?.getAttribute("aria-label") === null) {
+      titleEditorElement?.setAttribute("aria-label", "zone d'édition du titre");
+    }
+
+    if (contentEditorElement?.getAttribute("aria-label") === null) {
+      contentEditorElement?.setAttribute("aria-label", "zone d'édition du contenu");
     }
 
     //ecoute chaque bouton, au clic provoque au re-render
