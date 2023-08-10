@@ -683,7 +683,6 @@ const ArticleUpdate = ({ params }: Props) => {
                   />
                 </label>
                 <input className="mt-20" type="date" value={createdAt} onChange={handleCreatedAt} />
-                {console.log("date de creation", createdAt)}
 
                 <button onClick={handleOpenModal} type="button">
                   Valider
