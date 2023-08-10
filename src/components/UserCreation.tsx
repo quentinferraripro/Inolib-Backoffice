@@ -47,7 +47,7 @@ const UserCreation = () => {
 
   const [email, setEmail] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
-  const [isAdmin, setIsAdmin] = useState<boolean>();
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [lastName, setLastName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -67,11 +67,12 @@ const UserCreation = () => {
   const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
-  const handleIsAdmin = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleIsAdmin = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value === "true";
     setIsAdmin(value);
   };
 
+  const isAdminToString = isAdmin ? "true" : "false";
   //a la soumission formulaire appel de la requete POST définie plus haut
   const handleCreation = (event: FormEvent) => {
     event.preventDefault();
@@ -153,7 +154,7 @@ const UserCreation = () => {
             </label>
             <label className="text-xl² mb-5 font-bold">
               Admin?
-              <select value={isAdmin} onChange={handleIsAdmin}>
+              <select value={isAdminToString} onChange={handleIsAdmin}>
                 <option value="true">Oui</option>
                 <option value="false">Non</option>
               </select>
@@ -167,13 +168,9 @@ const UserCreation = () => {
             </button>
             {open && (
               <UserCreateModal
-                email={email}
                 firstName={firstName}
-                isAdmin={isAdmin}
                 lastName={lastName}
                 open={open}
-                phone={phone}
-                password={password}
                 titleCloseButton="Fermer"
                 titleCreateButton="Mettre à jour"
                 styles="absolute top-1/4 bg-yellow-600 text-white text-2xl h-[16rem] w-auto p-4 rounded-lg flex flex-col items-center justify-center"

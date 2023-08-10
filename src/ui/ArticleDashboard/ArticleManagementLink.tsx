@@ -5,6 +5,7 @@ import Link from "next/link";
 type ButtonProps = {
   cuid: string;
   styles: string;
+  title: string;
 };
 
 export default function ArticleManagementLink(props: PropsWithChildren<ButtonProps>) {

@@ -9,7 +9,6 @@ type UserCreateModalProps = {
   titleCloseButton: string;
   titleCreateButton: string;
   styles: string;
-  createModalRef: () => void;
 };
 
 function UserCreateModal(props: UserCreateModalProps) {

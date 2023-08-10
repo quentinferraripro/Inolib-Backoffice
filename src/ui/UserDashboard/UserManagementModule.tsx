@@ -111,13 +111,13 @@ export default function UserManagementModule() {
                 ? data.users.map((user) => (
                     <UserManagementLine
                       key={user.id}
-                      cuid={user.id}
-                      firstName={user.firstName}
-                      lastName={user.lastName}
-                      email={user.email}
-                      phone={user.phone}
-                      isAdmin={user.isAdmin}
-                      password={user.password}
+                      cuid={user.id! ?? ""}
+                      firstName={user.firstName! ?? ""}
+                      lastName={user.lastName! ?? ""}
+                      email={user.email! ?? ""}
+                      phone={user.phone! ?? ""}
+                      isAdmin={user.isAdmin! ?? ""}
+                      password={user.password! ?? ""}
                       openDeleteModal={openDeleteModal}
                     />
                   ))
