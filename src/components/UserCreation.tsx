@@ -45,12 +45,12 @@ const UserCreation = () => {
 
   const [createUser] = useMutation(CREATE_USER);
 
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [isAdmin, setIsAdmin] = useState<boolean>("false");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [lastName, setLastName] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleFirstName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFirstName(event.target.value);
