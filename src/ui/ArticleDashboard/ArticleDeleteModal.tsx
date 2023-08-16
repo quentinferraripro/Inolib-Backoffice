@@ -11,7 +11,9 @@ type DeleteModalProps = {
 };
 
 function ArticleDeleteModal(props: DeleteModalProps) {
+
   props.title ?? "";
+
   const clickRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
