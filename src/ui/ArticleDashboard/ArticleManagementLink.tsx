@@ -1,14 +1,14 @@
-import { useId, /*useRef,*/ type PropsWithChildren } from "react";
-import Link from "next/link";
+import { useId, /*useRef,*/ type AnchorHTMLAttributes, type RefAttributes } from "react";
+import Link, { type LinkProps } from "next/link";
 // import { useComposite } from "../Composite";
 
-type ButtonProps = {
-  cuid: string;
-  styles: string;
-  title: string;
-};
+type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps | "id" | "role"> &
+  Omit<LinkProps, "href"> &
+  RefAttributes<HTMLAnchorElement> & {
+    cuid: string;
+  };
 
-export default function ArticleManagementLink(props: PropsWithChildren<ButtonProps>) {
+export default function ArticleManagementLink({ children, cuid, ...rest }: Props) {
   // const { addRef } = useComposite();
   const id = useId();
   // const ref = useRef<HTMLAnchorElement>(null);
@@ -18,9 +18,8 @@ export default function ArticleManagementLink(props: PropsWithChildren<ButtonPro
   // }, [addRef]);
 
   return (
-    <Link className={props.styles} href={`/articleupdate/${props.cuid}`} id={id} /*ref={ref}*/ role="menuitem">
-      {props.children}
-      <span className="sr-only">{props.title}</span>
+    <Link href={`/articleupdate/${cuid}`} id={id} /*ref={ref}*/ role="menuitem" {...rest}>
+      {children}
     </Link>
   );
 }
