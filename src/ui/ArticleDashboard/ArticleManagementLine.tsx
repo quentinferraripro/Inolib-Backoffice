@@ -26,8 +26,16 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
   const nohtmlTitle = title?.replace(/(<([^>]+)>)/gi, "");
   const nohtmlContent = content?.replace(/(<([^>]+)>)/gi, "");
 
+  const handleKeyUp: React.KeyboardEventHandler<HTMLAnchorElement | HTMLButtonElement> = (event) => {
+    if (event.code === "Escape") {
+      // Déplacer le focus vers l'élément parent <tr>
+      const tr = (event.currentTarget as HTMLElement | null)?.parentElement?.parentElement;
+      tr?.focus();
+    }
+  };
+
   return (
-    <tr className="flex border-y-[1px] border-t-black w-[100vw] justify-around">
+    <tr className="flex border-y-[1px] border-t-black w-[100vw] justify-around" tabIndex={0}>
       <>
         <ArticleManagementTitle
           title={nohtmlTitle}
@@ -47,15 +55,21 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
         />
         {/* <Composite orientation="vertical"> */}
         <td className="focus:bg-slate-400 w-1/6 flex justify-center items-center">
-          <ArticleManagementLink cuid={props.cuid} title={nohtmlTitle} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
+          <ArticleManagementLink
+            aria-label={`Modifier ${nohtmlTitle}`}
+            className="p-2 mx-4 bg-yellow-600 rounded-lg"
+            cuid={props.cuid}
+            onKeyUp={handleKeyUp}
+          >
             Modifier
           </ArticleManagementLink>
         </td>
         <td className="focus:bg-slate-400 w-1/6 flex justify-center items-center">
           <ArticleManagementButton
+            aria-label={`Supprimer ${nohtmlTitle}`}
+            className="p-2 mx-4 bg-red-600 rounded-lg"
             onClick={() => void props.openDeleteModal(props.cuid, nohtmlTitle)}
-            styles="p-2 mx-4 bg-red-600 rounded-lg"
-            title={nohtmlTitle}
+            onKeyUp={handleKeyUp}
           >
             Supprimer
           </ArticleManagementButton>

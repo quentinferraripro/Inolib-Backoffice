@@ -1,25 +1,13 @@
-import { useId, /*useRef,*/ type MouseEventHandler, type PropsWithChildren } from "react";
-// import { useComposite } from "../Composite";
+import { useId, type ButtonHTMLAttributes } from "react";
 
-type Props = {
-  onClick: MouseEventHandler<HTMLButtonElement>;
-  styles: string;
-  title: string;
-};
+type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "id" | "role" | "type">;
 
-export default function ArticleManagementButton(props: PropsWithChildren<Props>) {
-  // const { addRef } = useComposite();
+export default function ArticleManagementButton({ children, ...rest }: Props) {
   const id = useId();
-  // const ref = useRef<HTMLButtonElement>(null);
-
-  // useEffect(() => {
-  //   addRef(ref);
-  // }, [addRef]);
 
   return (
-    <button type="button" className={props.styles} id={id} /*ref={ref}*/ role="menuitem" onClick={props.onClick}>
-      {props.children}
-      <span className="sr-only">{props.title}</span>
+    <button id={id} role="menuitem" type="button" {...rest}>
+      {children}
     </button>
   );
 }
