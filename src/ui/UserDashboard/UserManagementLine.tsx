@@ -1,7 +1,5 @@
 import { type PropsWithChildren } from "react";
 
-import { Composite } from "../Composite";
-
 import { type OpenDeleteModal } from "./UserManagementModule";
 
 import UserManagementLink from "./UserManagementLink";
@@ -25,8 +23,16 @@ type Props = {
 };
 
 export default function UserManagementLine(props: PropsWithChildren<Props>) {
+  const handleKeyUp: React.KeyboardEventHandler<HTMLAnchorElement | HTMLButtonElement> = (event) => {
+    if (event.code === "Escape") {
+      // Déplacer le focus vers l'élément parent <tr>
+      const tr = (event.currentTarget as HTMLElement | null)?.parentElement?.parentElement;
+      tr?.focus();
+    }
+  };
+
   return (
-    <tr className="flex border-y-[1px] border-t-black w-[100vw]">
+    <tr className="flex border-y-[1px] border-t-black w-[100vw]" tabIndex={0}>
       <>
         <UserManagementFirstName
           firstName={props.firstName}
@@ -47,18 +53,23 @@ export default function UserManagementLine(props: PropsWithChildren<Props>) {
           styles="focus:bg-slate-400 w-[14%] flex items-center justify-center"
         />
         <td className="w-[14%] flex items-center justify-center">
-          <Composite orientation="horizontal">
-            <UserManagementLink cuid={props.cuid} styles="p-2 mx-4 bg-yellow-600 rounded-lg ">
-              Modifier
-            </UserManagementLink>
+          <UserManagementLink
+            cuid={props.cuid}
+            className="p-2 mx-4 bg-yellow-600 rounded-lg "
+            aria-label={`Modifier ${props.firstName} ${props.lastName}`}
+            onKeyUp={handleKeyUp}
+          >
+            Modifier
+          </UserManagementLink>
 
-            <UserManagementButton
-              onClick={() => void props.openDeleteModal(props.cuid, props.firstName)}
-              styles="p-2 mx-4 bg-red-600 rounded-lg"
-            >
-              Supprimer
-            </UserManagementButton>
-          </Composite>
+          <UserManagementButton
+            onClick={() => void props.openDeleteModal(props.cuid, props.firstName)}
+            className="p-2 mx-4 bg-red-600 rounded-lg"
+            aria-label={`Supprimer ${props.firstName} ${props.lastName}`}
+            onKeyUp={handleKeyUp}
+          >
+            Supprimer
+          </UserManagementButton>
         </td>
       </>
     </tr>

@@ -26,7 +26,7 @@ export default function ArticleManagementLine(props: PropsWithChildren<Props>) {
   const nohtmlTitle = title?.replace(/(<([^>]+)>)/gi, "");
   const nohtmlContent = content?.replace(/(<([^>]+)>)/gi, "");
 
-  const handleKeyUp = (event: KeyboardEvent) => {
+  const handleKeyUp: React.KeyboardEventHandler<HTMLAnchorElement | HTMLButtonElement> = (event) => {
     if (event.code === "Escape") {
       // Déplacer le focus vers l'élément parent <tr>
       const tr = (event.currentTarget as HTMLElement | null)?.parentElement?.parentElement;
